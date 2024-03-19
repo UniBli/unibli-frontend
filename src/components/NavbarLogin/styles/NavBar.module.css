@@ -1,0 +1,53 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  
+  background-color: #ffffff;
+  border-bottom: 5px solid #055904;
+  
+  width: 100%;
+  padding: 1vh 0;
+  padding-right: 10px;/*apenas para compensar o encosto do botão*/
+  position: relative;
+}
+
+.navbar a {
+  text-decoration: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+}
+.logo > img {
+  width: 95px;
+}
+
+.loginButton, .search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+  
+
+/*Media queries*/
+/*usando max-width se lê: 569px é o seu máximo, passou aplica outro style*/
+@media (max-width:569px){
+  .navbar {
+    flex-wrap: wrap; 
+    padding: 20px 0;
+  }
+}
+
+
+@media (max-width:559px){
+  .navbar {
+    gap: 20px;
+  }
+}

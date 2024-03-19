@@ -1,0 +1,30 @@
+.profile, .usersActions {
+    margin-right: 10px !important;
+    background-color: #055904;
+}
+.usersActions , .bibliotecarioActions, a{
+    text-decoration: none;
+}
+
+
+.hamburgerButton {
+    margin-right: 1%;
+}
+
+.bibliotecarioActions{
+    background-color: #ffffff;    
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;   
+    margin-top: 12vh;
+}
+
+.usersActions button:hover{
+    color: #055904 !important;
+}
+
+.bibliotecarioActions button:hover{
+    background-color: #ffffff !important;
+    color: #055904 !important;
+}

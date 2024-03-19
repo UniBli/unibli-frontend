@@ -1,0 +1,216 @@
+
+/* section_bookInformationReservation */
+section.section_bookInformationReservation {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    /* garante que o conteúdo tenha o mesmo tamanho*/
+    height: 100%;
+    margin: 50px;
+}
+/* ---------------------------------- */
+
+div.div_informationsBook,
+div.div_details, div.div_autor,
+div.div_ondeEncontrar
+ {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 50%;
+    justify-content: flex-start;
+}
+.div_resume h2, 
+.div_autor h2, .div_ondeEncontrar h2 {
+        color: #055904 !important;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 30px;
+}
+
+
+
+/* div_bookButton */
+div.div_bookButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+
+.div_bookButton form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    gap:30px;
+}
+
+    /*book*/
+    .div_bookButton .book {	
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        /*Controle do tamanho do card aqui*/
+        width: 400px;
+    }  
+        /*CardBook_container__OuPif*/
+        .div_bookButton .book > div {
+            width: 100% !important;
+        }
+            /*CardBook_book__oypwZ*/
+            .div_bookButton .book > div > div:nth-child(1) {
+                display: flex;
+                justify-content: center;
+                width: 100% !important;
+                height: 100% !important;
+            }
+            /*CardBook_divBookBorder__8mm9U*/
+            .div_bookButton .book > div > div:nth-child(1)> div {
+                display: block;
+                height: 500px;
+            }
+            .div_bookButton .book > div > div:nth-child(1)> div > h5 {         
+                height: 35em;
+            }
+            
+            .div_bookButton .book > div > div:nth-child(2) > p {
+                font-size: 20px;
+            }
+
+        
+    /*----*/
+
+    /*button*/
+    .div_bookButton .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    /*------*/
+
+
+/* ---------------------------------- */
+
+/* div_informationsBook */
+
+
+    /*div_resume*/
+    .div_resume {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .div_resume h1 {
+        color: #055904 !important;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 600;
+    }
+    
+    div.div_informationsBook .div_resume h1{
+        font-size: 45px;
+        text-transform: capitalize;
+    }
+    div.div_informationsBook .div_resume h2{
+        text-align: justify;
+        font-size: 30px;
+    }
+    
+
+
+        /*div_resumeTxt*/
+        .section_bookInformationReservation .div_resume .div_resumeTxt {
+            /*Layout*/
+                display: flex;
+                flex-direction: row;
+            /*Typography*/
+                /* oculta o texto além do contêiner */
+                overflow: hidden !important; 
+                /* adiciona reticências (...) para indicar que há mais texto */
+                color: #000;
+                /* impede a quebra de linha */
+                white-space: pre-wrap;
+                font-family: Arial;
+                font-size: 18px;
+                line-height: 1.50em;
+                gap: 5px;
+                
+        }
+            /*descricaoLivro*/
+            p.descricaoLivro{
+                width: 95%;
+                text-align: justify;
+                font-family: Arial, Helvetica, sans-serif
+            }
+            /*--------------*/
+
+            /*moreDescription*/
+            .moreDescription{
+                width: 5%;
+                display: flex;
+                align-items: flex-end;
+                /* right: 42px; */
+            }
+            /*-------------*/
+
+        /*-------------*/
+
+        /*moreDescription*/
+        /*---------------*/
+
+    /*----------*/
+/* ---------------------------------- */
+
+
+/*Media queries*/
+/*usando max-width se lê: 569px é o seu máximo, passou do máximo (pra baixo) aplica outro style*/
+@media (max-width:1024px){
+    /* section_bookInformationReservation */
+    section.section_bookInformationReservation {
+        flex-direction: column !important;
+        align-items: center;
+        gap: 30px !important;
+    }
+}
+
+@media (max-width:800px){
+    .div_bookButton .book {	
+        width: 100%;
+    }
+    div.div_bookButton, div.div_informationsBook {
+        width: 500px;
+    }
+    .div_bookButton .book > div > div:nth-child(1)> div {
+        height: 630px;
+    }
+    
+}
+
+@media (max-width:600px){
+
+    div.div_bookButton, div.div_informationsBook {
+        width: 340px;
+    }
+    .div_bookButton .book > div > div:nth-child(1)> div {
+        height: 424px;
+    }
+}
+
+@media (max-width:500px){
+    .div_bookButton .book > div > div:nth-child(2) > p {
+        font-size: 15px;
+    }
+    div.div_bookButton, div.div_informationsBook {
+        width: 230px;
+    }
+    .div_bookButton .book > div > div:nth-child(1)> div {
+        height: 300px;
+    }
+}

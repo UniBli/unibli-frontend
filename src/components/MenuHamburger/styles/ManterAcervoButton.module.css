@@ -1,0 +1,16 @@
+.containerManterAcervoButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 10px;
+}
+
+.manterAcervoButton {
+    margin-top: 10px !important;
+    color: #055904 !important;
+    font-size: large !important;
+    font-weight: 500 !important;
+}
+.manterAcervoButton:hover {
+    background-color: #055904 !important; 
+    color: #ffffff !important;
+}

@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@700&family=Nunito:wght@200;400;500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+body{
+  overflow-x: hidden;
+}
+
+/*Configurando as scrolbars*/
+::-webkit-scrollbar {
+  width: 6px;
+} 
+::-webkit-scrollbar-track {
+  background: #5ba50194;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #055904 ;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #055904 transparent;
+}
+
+::selection {
+  background-color: #055904;
+  color: #fff;
+}
+

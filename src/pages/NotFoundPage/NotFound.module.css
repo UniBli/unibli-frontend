@@ -1,0 +1,31 @@
+
+.sectionNotFound{
+    width: 100%;
+    height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center; 
+}
+.sectionNotFound img {
+    width: 100%;
+    height: 73%;
+}
+
+.txtNotFound, .sectionNotFound small{
+    font-family: 'Nunito', sans-serif;
+    color: #263238;
+    text-transform: uppercase;
+    text-align: center;
+}
+.txtNotFound{
+    font-size: 1.5em;
+}
+.sectionNotFound small{
+    font-size: 1em;
+}
+
+/*
+#055904
+*/

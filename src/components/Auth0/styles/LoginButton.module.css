@@ -1,0 +1,11 @@
+.loginButton {
+    background-color: #055904 !important;
+    border: 3px solid #055904 !important;
+    margin-right: 1%;
+}  
+.loginButton:hover{
+    background-color: #ffffff !important;
+    color: #055904 !important;
+}
+
+

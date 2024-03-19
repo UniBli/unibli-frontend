@@ -1,0 +1,15 @@
+.containerLogoutButton{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logoutButton{
+    margin-top: 10px !important;
+    color: #ffffff !important;
+    font-size: large !important;
+    font-weight: 500 !important;
+}
+.logoutButton:hover{
+    background-color: #ffffff !important;
+    color: #055904 !important;
+}

@@ -1,0 +1,20 @@
+.containerAvatarProfile  {
+    margin: 30px 0 8px 0 !important;
+    display: flex;
+    justify-content: flex-end;
+}
+.sidebar h3{
+    color: #ffffff !important;
+    text-align: end;
+}
+
+.avatarProfile {
+    border: 4px solid #ffffff;
+}
+
+
+.sidebar h3 , .sidebar p {
+    margin: 8px;
+    color: #ffffff;
+    text-align: right;
+}

@@ -1,0 +1,53 @@
+.containerInputPesquisa{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 20px;
+  width: 70%;
+}
+.containerInputPesquisa a {
+  text-decoration: none;
+}
+
+.inputPesquisa {
+  border-radius: 16px 0px 0px 16px !important;
+  border:2px solid #055904 !important;
+}
+.inputPesquisa:focus {
+  box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, 0.5) !important;
+  border:2px solid #055904 !important;
+  outline:2px solid #055904 ;
+}
+
+
+
+.buttonPesquisa{
+    justify-content: center;
+    align-items: center;
+    
+    width: 74px !important;/*largura do botão*/
+    padding: 11px 20px;
+    border-radius: 0px 16px 16px 0px !important;
+    
+    color: white;
+    background-color:#055904 !important;
+    border: 2px solid #055904 !important;
+    cursor: pointer;
+}
+
+
+
+/*Media queries*/
+/*usando max-width se lê: 569px é o seu máximo, passou aplica outro style*/
+@media (max-width:569px){
+  .containerInputPesquisa{
+      width: 72%;
+  }
+}
+
+
+@media (max-width:559px){
+  .containerInputPesquisa{
+      width: 100%;
+  }
+}

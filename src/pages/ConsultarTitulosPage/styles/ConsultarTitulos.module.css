@@ -1,0 +1,178 @@
+
+.banner {
+    display: flex;
+    justify-content: right;
+    width:100%;
+    height:100vh;
+}
+
+.banner  img.imgBanner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;/* Faz com que a imagem não distorça*/
+}
+
+.txtBanner {  
+    display: flex;  
+    flex-direction: column;
+    margin-right: 50px;
+    
+    position: absolute;
+    top:250px;
+    z-index: 1; /*Para a sombra diagonal ficar a baixo do conteúdo o z-index 1 faz ter mais prioridade */
+}
+
+.txtBanner > p{
+    font-family: 'Roboto', sans-serif;
+    margin: 0.1rem;
+    font-size: 2.8rem;
+    text-shadow: 0px 12px 30px #000000;
+    line-height: 118.359%; /* 54.445px */
+    color: #FFF;
+}
+.txtBanner > p > span {
+    color: #8BC43E;
+    font-family: 'Montserrat';
+    line-height: 123.119%;
+}
+
+.books{
+   margin: 30px 0px 0px 0px;
+   text-align: justify;
+}
+
+.books h2 {
+    margin-bottom: 30px;
+    color: #055904;
+    /* font-size: 35px; */
+    font-size: 2.2rem;
+    margin-left: 30px;
+    text-align: left;
+}
+
+.divScrollbarBooks{
+    display: flex; 
+    overflow-x:scroll; 
+    cursor:e-resize;
+}
+
+
+.containerBooks {
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.containerBooks a {
+    display: flex;
+    justify-content: center;
+    margin: 50px;
+}
+
+
+.divScrollbarBooks::-webkit-scrollbar {
+    height: 0;
+}
+/* .divScrollbarBooks::-webkit-scrollbar-thumb {
+    background-color: #05590428; /* Cor do tracinho 
+    border-radius: 3px; /* Borda arredondada do tracinho 
+    width: 20px;
+} */
+
+/*Media queries*/
+/*
+    Usando min-width se lê (na forma de dispositivel móvel paraforma de PC): 
+        1024px é o tamanho mínimo que apartir dele pra cima vc vai aplicar o estilo
+    
+    Usando max-width se lê(na forma de PC para forma de dispositivel móvel): 
+        569px é o seu máximo, passou aplica outro style
+*/
+
+/******************PARA O BANNER******************/
+@media (width:688px){
+    .txtBanner {
+        top:450px;
+    }
+    .txtBanner > p{
+        font-size: 2.3rem !important;
+    }
+
+}
+@media (width:1024px){
+    .txtBanner {
+        top:350px;
+    }
+}
+@media (max-width:865px){
+    .txtBanner > p{
+        font-size: 2.3rem;
+    }
+}
+@media (max-width:731px){
+    .txtBanner > p{
+        font-size: 2.1rem;
+    }
+}
+@media (max-width:670px){
+    .txtBanner {
+        top:260px;
+    }
+}
+@media (max-width:607px){
+    .txtBanner > p{
+        font-size: 2.0rem;
+    }
+}
+@media (max-width:580px) {
+    .txtBanner {
+        top:300px;
+        margin-right: 20px;
+    }
+    .txtBanner > p{
+        font-size: 1.8rem;
+    }
+}
+@media (max-width:570px){
+    .banner {
+        height: 70vh;   
+    }    
+    .books h2 {
+        font-size: 1.5rem;
+        margin-right: 20px;
+    }
+}
+@media (max-width:560px) {
+    .txtBanner {
+        top:400px;
+    }
+    .txtBanner > p{
+        font-size: 1.6rem;
+    }
+}
+/*Ficou bom no cell*/
+@media (max-width:440px ){
+    .banner {
+        height: 70vh;   
+    }    
+    .txtBanner {
+        top:440px;
+    }
+    .txtBanner > p{
+        font-size: 1.5rem;
+    }
+}
+@media (width:434px ){
+    .banner {
+        height: 71vh;   
+    }    
+}
+
+/*para quando houver rotação*/
+@media (max-width:896px) and (orientation: landscape) {
+    .txtBanner {
+        top:200px;
+    }
+    .txtBanner > p{
+        font-size: 1.8rem;
+    }
+}
+/***************************************************/
