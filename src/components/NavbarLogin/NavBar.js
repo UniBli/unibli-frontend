@@ -17,7 +17,7 @@ const NavBar = ({ books, isAuthenticated  }) => {
                 <Link to="/">
                     <Navbar.Brand className={styles.logo}>
                         <img
-                        src='https://raw.githubusercontent.com/UniBli/unibli-frontend/main/frontend/public/img/logoUniBliNav_F-Positivo.svg'
+                        src='https://raw.githubusercontent.com/UniBli/unibli-frontend/main/public/img/logoUniBliNav_F-Positivo.svg'
                         className='d-inline-block align-top'
                         alt='Logo UniBli'
                         />
