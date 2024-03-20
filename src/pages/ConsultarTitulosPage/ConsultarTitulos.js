@@ -50,7 +50,7 @@ const ConsultarTitulos = ({ books }) => {
   return (
     <main>
       <section className={styles.banner}>
-        <img className={styles.imgBanner} src="../../../public/img_banner.png" alt="Menina lendo um livro na biblioteca" />
+        <img className={styles.imgBanner} src="img_banner.png" alt="Menina lendo um livro na biblioteca" />
         <div className={styles.txtBanner}>
           <p>O sistema <span>UniBli</span> veio</p>
           <p>para facilitar a vida do</p>
