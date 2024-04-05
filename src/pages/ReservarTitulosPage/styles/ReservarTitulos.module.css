@@ -92,6 +92,10 @@ div.div_bookButton {
         align-items: center;
         width: 100%;
     }
+    .div_bookButton .disabledButton {
+        opacity: 0.5; /* Reduz a opacidade para indicar que está desativado */
+        cursor: not-allowed;
+    }
     /*------*/
 
 

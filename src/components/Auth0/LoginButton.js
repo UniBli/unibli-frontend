@@ -6,7 +6,8 @@ import styles from './styles/LoginButton.module.css'
 import { useAuth0 } from '@auth0/auth0-react';
 
 const LoginButton = () => {
-  const { loginWithRedirect, isAuthenticated, user } = useAuth0();
+  const { loginWithRedirect
+    /*, isAuthenticated, user */} = useAuth0();
 
   const handleLogin = async () => {
     try {
