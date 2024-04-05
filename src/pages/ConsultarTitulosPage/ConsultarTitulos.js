@@ -1,53 +1,35 @@
-  // components
-  import CardBook from '../../components/CardBook/CardBook';
-  import { Link } from 'react-router-dom';
-  import { Skeleton } from 'primereact/skeleton';
+// components
+import CardBook from '../../components/CardBook/CardBook';
+import { Link } from 'react-router-dom';
+import { Skeleton } from 'primereact/skeleton';
 
-  // CSS scoped
-  import styles from './styles/ConsultarTitulos.module.css';
+// CSS scoped
+import styles from './styles/ConsultarTitulos.module.css';
 
-  // Import Swiper React components
-  import { Swiper, SwiperSlide } from 'swiper/react';// Import Swiper styles
-  import 'swiper/css';
-  import 'swiper/css/navigation';
-  import 'swiper/css/pagination';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
-  // import required modules
-  import { Navigation, Pagination } from 'swiper/modules';
-  import {useState, useEffect} from 'react';
+// import required modules
+import { Navigation, Pagination } from 'swiper/modules';
+//import {useState, useEffect} from 'react';
 
 
-  import axios from 'axios';
 
+// custom hook
+import { useFetch } from '../../hooks/useFetch';  
 
   const ConsultarTitulos = () => {
 
-    /********************************************************************** */
-    const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const origin = process.env.REACT_APP_UNIBLI_SERVER_HTTP;
-                const URL = `${origin}/teste/fetec1/acervo`;
-
-                const response = await axios.get(URL);
-                setBooks(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Erro ao buscar livros:', error);
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-    /********************************************************************** */
+    const origin = process.env.REACT_APP_UNIBLI_SERVER_HTTP;
+    const url = `${origin}/unibli/acervo`;
+    const {data: books, loading, error} = useFetch(url,null,origin)   
 
 
-
-    // Swiper
+    // Swiper ----------------------------------
     const breakpoints = {
       280: {
         slidesPerView: 1,
@@ -74,6 +56,8 @@
         spaceBetween: -50,
       },
     }
+    //------------------------------------------
+
 
     /****************** PARA LOADING DO BOOOK ******************/
     const booksLoading =[
@@ -85,9 +69,10 @@
       {id:6, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
       {id:7, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)}
     ]
+
     const divSkeleton = {display:'flex', justifyContent:'center', alignItems:'center', margin:'3rem'};
     /*********************************************************/
-
+    
     return (
       <main>
         <section className={styles.banner}>
@@ -105,6 +90,7 @@
 
           <div className={styles.containerBooks}>
             <h2>Análise e Desenvolvimento de Sistemas:</h2>
+            {error && <p>{error}</p>}
             <Swiper
               slidesPerView={3}
               spaceBetween={30}
@@ -126,10 +112,14 @@
                     </SwiperSlide>
                 ))
                 : books && books.map((book) => (
-                    <SwiperSlide key={book._id}>
-                      <Link to={`/reserveTitles/${book._id}`}>
-                        <CardBook disponibilidade={book.quantidadeDisponivel}
-                          qtd={book.quantidadeLivros} img={book.imageLinks} nome={book.titulo}
+                    <SwiperSlide key={book._id || book.livro_id}>
+                      <Link to={`/reserveTitles/${book._id || book.livro_id}`}>
+                        <CardBook disponibilidade={book.quantidadeDisponivel ?? 0}
+                          qtd={
+                            (book.quantidadeLivros || book.quantidade_livros) ?? 0
+                          } img={
+                            (book.imageLinks && book.imageLinks) ||
+                            (book.image_link && book.image_link)} nome={book.titulo}
                         />
                       </Link>
                     </SwiperSlide>

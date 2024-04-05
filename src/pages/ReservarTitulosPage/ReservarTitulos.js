@@ -14,7 +14,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from 'react-router-dom';
 
-import axios from 'axios';
+
+// custom hook
+import { useFetch } from '../../hooks/useFetch';  
+
 
 const ReservarTitulos = () => {
     
@@ -24,30 +27,13 @@ const ReservarTitulos = () => {
     const [toastVisible, setToastVisible] = useState(false);
     const toast = useRef(null);
 
+    //custom hook
     
-    /********************************************************************** */
-    const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const origin = process.env.REACT_APP_UNIBLI_SERVER_HTTP;
+    const url = `${origin}/unibli/acervo`;
+    const {data: books, loading, error} = useFetch(url,bookId,origin)     
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const origin = process.env.REACT_APP_UNIBLI_SERVER_HTTP;
-                const URL = `${origin}/teste/fetec1/acervo/${bookId}`;
-
-                const response = await axios.get(URL);
-                setBooks(response.data);
-                setLoading(false);
-            } catch (error) {
-                console.error('Erro ao buscar livros:', error);
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [ bookId ]);
-    /********************************************************************** */
-
+    
     // Para a página sempre recarregar mostrando o topo primeiro
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -74,7 +60,7 @@ const ReservarTitulos = () => {
             }, 3000); // Tempo em milissegundos para ocultar o toast
         }
     };
-    
+
     if(loading){
         return(
             <ReservarTitulosLoading/>
@@ -91,7 +77,7 @@ const ReservarTitulos = () => {
         return (
             <>
             <section className={styles.section_bookInformationReservation}>
-
+                {error && <p>{error}</p>}
                 <div className={styles.div_bookButton}>
                     <form onSubmit={handleReservation}>
                         <div className={styles.book}>
@@ -118,7 +104,7 @@ const ReservarTitulos = () => {
                         <h1>{nome}</h1>
                         
                         <h2>Resumo</h2>
-                        <div className={styles.div_resumeTxt} style={checked ? { 'height': 'fit-content' } : { 'height': '6em' }}>
+                        <div className={styles.div_resumeTxt} style={checked ? { 'height': '15rem', overflowY:'auto' } : { 'height': '6em' }}>
                                 <p className={styles.descricaoLivro}> 
                                     {descricao}. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi vel tempora sint assumenda vero sit cupiditate? Quidem ratione nesciunt ad natusdasdasd neqweqwisi nihilasdasd Praesentium voluptas fugiat cumque ipdasdasdasdsasum autem quis!fsdfsd
                                     Harum rerum repellat quod velit nulla, omnis repellendus ratione animi error optio perferendis. Rerum rem facere dolores nostrum doloribus eligendi, perferendis praesentium voluptatum in recusandae officiis quasi sequi aliquam ex.
