@@ -412,15 +412,16 @@ ul.p-datascroller-list li {
 
 .p-tabview .p-tabview-nav li.p-unselectable-text  .p-tabview-nav-link[aria-selected="true"]{
   padding-bottom: 12px;
-  border-bottom: 3px solid #ffffff !important;
+  border-bottom: 3px solid #055904 !important;
   border-bottom-style: none ;
   border-left: 2px solid #055904;
   border-top: 2px solid #055904;
   border-right: 2px solid #055904;
+  background-color: #055904 !important;
+  color: #FFF !important;
 }
 
 .p-tabview .p-tabview-nav li.p-unselectable-text  .p-tabview-nav-link[aria-selected="false"]{
   border-bottom: 3px solid #055904 !important;
   border-style: none !important;
 }
-
