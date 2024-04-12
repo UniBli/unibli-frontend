@@ -376,15 +376,51 @@ ul.p-datascroller-list li {
 
 
 
+/***********Definição do TabView*************/
+.p-tabview .p-tabview-nav li .p-tabview-nav-link{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+/*borda da guia*/
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  border-radius: 8px 8px 0 0 ;
+  color: #055904 !important;
+  background-color: rgb(255, 255, 255) !important;
+}
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+  box-shadow: none !important;
+}
+.pi.pi-user-edit, .pi.pi-trash {
+  font-size: 20px;
+}
+/*CONFIGURAÇÃO PAINEL*/
 
+.p-tabview-nav-content ul.p-tabview-nav[data-pc-section="nav"]{
+  border-width: 0 0 2px 0 !important;
+  border-color: #055904 !important;
+}
+.p-tabview .p-tabview-panels {
+  border: 2px solid #055904 !important;
+  border-top-style: none !important;
+}
 
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  margin: 0 0 -3px 0 !important;
+}
 
+.p-tabview .p-tabview-nav li.p-unselectable-text  .p-tabview-nav-link[aria-selected="true"]{
+  padding-bottom: 12px;
+  border-bottom: 3px solid #ffffff !important;
+  border-bottom-style: none ;
+  border-left: 2px solid #055904;
+  border-top: 2px solid #055904;
+  border-right: 2px solid #055904;
+}
 
-
-
-
-
-
-
-
+.p-tabview .p-tabview-nav li.p-unselectable-text  .p-tabview-nav-link[aria-selected="false"]{
+  border-bottom: 3px solid #055904 !important;
+  border-style: none !important;
+}
 
