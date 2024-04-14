@@ -92,6 +92,10 @@ div.div_bookButton {
         align-items: center;
         width: 100%;
     }
+    .div_bookButton .disabledButton {
+        opacity: 0.5; /* Reduz a opacidade para indicar que está desativado */
+        cursor: not-allowed;
+    }
     /*------*/
 
 
@@ -132,7 +136,7 @@ div.div_bookButton {
                 flex-direction: row;
             /*Typography*/
                 /* oculta o texto além do contêiner */
-                overflow: hidden !important; 
+                overflow: hidden; 
                 /* adiciona reticências (...) para indicar que há mais texto */
                 color: #000;
                 /* impede a quebra de linha */
@@ -141,6 +145,7 @@ div.div_bookButton {
                 font-size: 18px;
                 line-height: 1.50em;
                 gap: 5px;
+                align-items: unset;
                 
         }
             /*descricaoLivro*/

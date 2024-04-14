@@ -21,7 +21,7 @@ import './App.css'
 const App = () => {
   // hook do auth0
   const {isAuthenticated} = useAuth0();
-
+  
   //Objeto de teste
   /**/
   const books =[
@@ -61,8 +61,8 @@ const App = () => {
           <Route path="/maintainCollection" element={<ManterAcervo/>}/>
 
           {/* Rotas Públicas */}
-          <Route path="/" element={<ConsultarTitulos books={books}/>}/>
-          <Route path="/reserveTitles/:bookId" element={<ReservarTitulos books={books}/>}/>
+          <Route path="/" element={<ConsultarTitulos />}/>
+          <Route path="/reserveTitles/:bookId" element={<ReservarTitulos />}/>
           <Route path="/consultTitles/:titleBook" element={<ResultadoConsultarTitulos books={books}/>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>    
