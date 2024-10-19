@@ -7,7 +7,9 @@ r.gba(38, 143, 255, 0.5) -> r.gba(72, 180, 97, 0.5)
 
 */
 
-
+italic{
+  font-style: italic;
+}
 
 /*Definição GLOBAL - Componente Button - PRIMEREACT*/
  .p-button {
@@ -425,3 +427,4 @@ ul.p-datascroller-list li {
   border-bottom: 3px solid #055904 !important;
   border-style: none !important;
 }
+

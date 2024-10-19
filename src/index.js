@@ -13,6 +13,9 @@ import "primereact/resources/primereact.min.css";//core
 //variaveis de ambiente configuradas no .env
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+console.log('Auth0 Domain:', process.env.REACT_APP_AUTH0_DOMAIN);
+console.log('Auth0 Client ID:', process.env.REACT_APP_AUTH0_CLIENT_ID);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
