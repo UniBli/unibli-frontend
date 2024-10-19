@@ -1,0 +1,25 @@
+.profileContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.containerAvatarProfile  {
+    display: flex;
+}
+.containerAvatarProfile .avatarProfile {
+    border: 4px solid #055904;
+}
+
+
+
+
+.profileContainer h3 , .profileContainer p {
+    margin: 8px;
+    color: #055904 !important;
+    text-align: left;
+}

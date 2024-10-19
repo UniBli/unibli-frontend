@@ -1,0 +1,39 @@
+.divEditarconta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 60px; 
+    width: 100dvh;
+}
+
+.divEditarconta section{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+}
+
+.divEditarconta section div{
+    display: flex;
+    width: 100%;
+    gap:20px;
+}
+
+.divEditarconta section div label{
+    display: flex;
+    flex-direction: column;
+}
+
+/******************************************************************/
+@media (max-width: 810px) {
+    .divEditarconta {
+        text-align: center;
+        margin: 30px; 
+    }
+  }
+
+  @media (max-width: 570px) {
+    .divEditarconta {
+        margin: 30px 5px; 
+    }
+    
+  }
