@@ -7,6 +7,37 @@ r.gba(38, 143, 255, 0.5) -> r.gba(72, 180, 97, 0.5)
 
 */
 
+
+.p-toast .p-toast-message {
+  position: absolute;
+  right: 5px;
+}
+
+@media (max-width: 520px) {
+  .p-toast .p-toast-message {
+   position: relative;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   left: 10px;
+   text-align: center;
+  }
+
+  .p-toast .p-toast-message .p-toast-message-content {
+    width: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    
+  }
+
+  .p-toast-message-text{
+    display: flex;
+    flex-direction: column;   
+    flex-wrap: wrap;
+  }
+}
+
+
 italic{
   font-style: italic;
 }
@@ -369,10 +400,6 @@ ul.p-datascroller-list li {
 
 .p-toast .p-toast-message .p-toast-message-content {
   width: max-content !important;
-}
-.p-toast .p-toast-message {
-  position: absolute !important;
-  right: 5px !important;
 }
 
 

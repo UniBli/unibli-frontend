@@ -27,7 +27,7 @@ const InputPesquisa = () => {
                 className='p-inputgroup'
             >
                 <InputText
-                    placeholder='Pesquise pelo título desejado' 
+                    placeholder='Pesquise o título desejado' 
                     className={styles.inputPesquisa}
                     name='search'
                     onChange={handleSearch}

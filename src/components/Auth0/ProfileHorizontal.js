@@ -3,7 +3,6 @@ import { Avatar } from 'primereact/avatar';
 // CSS scoped
 import styles from './styles/ProfileHorizontal.module.css'
 // hooks
-import { useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const ProfileHorizontal = () => {

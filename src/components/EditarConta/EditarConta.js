@@ -42,12 +42,12 @@ const EditarConta = () => {
 
     /** Se usuario email existe no banco unibli
      * 
-     * editar()
-     * 
+     */editar()
+     /* 
      * Senão existe
      * 
-     * cadastrar()
-    */
+     */ cadastrar()
+    /**/
 }
 
 
@@ -80,7 +80,7 @@ const EditarConta = () => {
         <div>
           <label>
               <span>CPF:*</span>
-              <input type="text" name="cpf" placeholder="Digite o seu cpf"
+              <input type="text" name="cpf" placeholder="Digite o seu CPF"
                   onChange={(e) => setCpf(e.target.value)}
                   value={cpf}
                   required/>
@@ -88,7 +88,7 @@ const EditarConta = () => {
 
           <label>
               <span>RG:*</span>
-              <input type="text" name="rg" placeholder="Digite o seu rg"
+              <input type="text" name="rg" placeholder="Digite o seu RG"
                   onChange={(e) => setRg(e.target.value)}
                   value={rg}
                   required/>
@@ -166,23 +166,21 @@ const EditarConta = () => {
             {/* MAtícula e Unidade/Polo */}
             <div>
               <label>
-                  <span>Matrícula:*</span>
-                  <input type="text" name="matricula" placeholder="Digite o seu Matrícula"
+                  <span>Matrícula:</span>
+                  <input type="text" name="matricula" placeholder="Sua Matrícula"
                       onChange={(e) => setMatricula(e.target.value)}
                       value={matricula}
-                      required/>
+                      required
+                      disabled/>
               </label>
     
               <label>
-                  <span>Unidade/Polo:*</span>
-                  <select name="unidadePolo"
-                        onChange={(e) => setUnidadePolo(e.target.value)}
-                        value={unidadePolo}
-                    required>   
-                        <option value="">Selecione a sua Unidade/Polo</option>
-                        <option value="1">Fatec A</option>
-                        <option value="2">Fatec B</option>
-                    </select>
+                  <span>Unidade/Polo:</span>
+                    <input type="text" name="unidadePolo" placeholder="Sua Unidade/Polo"
+                      onChange={(e) => setUnidadePolo(e.target.value)}
+                      value={unidadePolo}
+                      required
+                      disabled/>
               </label>
             </div>
     

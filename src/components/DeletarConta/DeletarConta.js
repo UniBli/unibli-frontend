@@ -9,10 +9,6 @@ const DeletarConta = () => {
 
     const [visible, setVisible] = useState(false);
     const [excluir, setExcluir] = useState('')
-    
-    const handleExcluir = (e) =>{
-      setExcluir(e.target.value)
-    }
   
   
     const handleDelete = (e) => {
@@ -74,7 +70,7 @@ const DeletarConta = () => {
         </p>
 
         <form onSubmit={handleDelete}>
-          <input type="text" name='excluir' value={excluir} onChange={handleExcluir} required/>
+          <input type="text" name='excluir' value={excluir} onChange={(e) => setExcluir(e.target.value)} required/>
           <button type="submit">Excluir</button>
         </form>
 

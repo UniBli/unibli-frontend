@@ -2,38 +2,117 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 60px; 
-    width: 100dvh;
-}
-
-.divEditarconta section{
-    display: flex;
-    flex-direction: column;
-    gap:20px;
-}
-
-.divEditarconta section div{
-    display: flex;
     width: 100%;
-    gap:20px;
+    color: #055904;
 }
 
-.divEditarconta section div label{
+.divEditarconta form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin: 60px 100px 100px 100px;
+}
+
+.divEditarconta form section {
     display: flex;
     flex-direction: column;
+    margin-bottom: 40px;
+    width: 100%;
+    gap:10px;
 }
 
-/******************************************************************/
-@media (max-width: 810px) {
-    .divEditarconta {
-        text-align: center;
-        margin: 30px; 
-    }
-  }
+.divEditarconta form section div{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap:40px;
+}
 
+.divEditarconta form section div label{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.divEditarconta form section div label input{
+    border: 1px solid #055904;
+    caret-color: #055904;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+
+.divEditarconta form button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    background-color: #055904;
+    color: #fff;
+    border: 2px solid #055904;
+    border-radius: 16px;
+    padding: 8px;
+}
+.divEditarconta form button:hover{
+    cursor: pointer;
+    background-color: #fff;
+    color: #055904;
+}
+
+.divEditarconta form section div label input:focus,
+.divEditarconta form button:focus{
+    outline: none;
+    box-shadow:  0px 0px 0px 3px #9df99797;
+}
+
+
+.divEditarconta form section div label input:disabled{
+    background-color: #0559041d;
+}
+
+
+
+
+
+
+
+@media (max-width: 875px) {
+    .divEditarconta form section div {
+        flex-wrap: wrap;
+        gap:5px;
+    }
+}
+
+
+
+@media (max-width: 875px) {
+    .divEditarconta form{
+        margin: 60px 60px 100px 60px;
+    }
+}
+
+@media (max-width: 725px) {
+    .divEditarconta form{
+        margin: 40px 40px 80px 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .divEditarconta form{
+        margin: 10px 10px 60px 10px;
+    }
+}
+        
+/******************************************************************
   @media (max-width: 570px) {
     .divEditarconta {
         margin: 30px 5px; 
     }
     
   }
+
+/******************************************************************/

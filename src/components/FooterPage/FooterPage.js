@@ -18,7 +18,7 @@ const FooterPage = () => {
           <small>Todos os direitos reservados a ©UniBli</small>
         </div>
 
-        <small>Feito com <span role='img' aria-label='Coração verde'>💚</span> por, Thyago, Weslley e Hélio</small>
+        <small className='authors'>Feito com <span role='img' aria-label='Coração verde'>💚</span> por, Thyago, Weslley e Hélio</small>
         <small>Orientador  Rodrigo Bossini</small>
 
       </section>
