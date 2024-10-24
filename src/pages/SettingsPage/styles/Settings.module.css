@@ -1,9 +1,7 @@
 .main{ 
     display: flex;
     flex-direction: column;
-    align-items: center;/*eixo x*/
     justify-content: flex-start;/*eixo y*/
-    height: 100dvh;
-    margin: 30px;
+    height: auto;
+    margin: 20px 30px 30px 30px;
 }
-

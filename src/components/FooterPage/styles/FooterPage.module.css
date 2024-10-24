@@ -34,7 +34,7 @@
     justify-content: center;
 }
 
-small:nth-child(n) {
+small {
     font-weight: bold;
     display: flex;
     color: #ffff;
@@ -59,4 +59,10 @@ small:nth-child(n) {
         gap: 40px;
     }
 
+}
+
+@media (max-width: 375px) {
+    #footer small {
+        flex-direction: column !important;
+    }
 }

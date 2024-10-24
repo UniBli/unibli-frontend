@@ -3,31 +3,39 @@ import styles from './styles/Settings.module.css';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { TabView, TabPanel } from 'primereact/tabview';
 
+import ProfileHorizontal from '../../components/Auth0/ProfileHorizontal.js';
+
+import DeletarConta from '../../components/DeletarConta/DeletarConta.js'
+
+import EditarConta from '../../components/EditarConta/EditarConta.js'
+
+import { useAuth0 } from '@auth0/auth0-react';
 
 
 const Settings = () => {
-  return (
-    <div className={styles.main}>
-      <TabView>
-        <TabPanel leftIcon="pi pi-user-edit" header="Editar conta">
-          <p className="m-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </p>
-        </TabPanel>
-        <TabPanel leftIcon="pi pi-trash" header="Deletar conta">
-          <p className="m-0">
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
-            eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo
-            enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui
-            ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-          </p>
-        </TabPanel>
-      </TabView>
-    </div>
 
+  const {isAuthenticated, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <div>Loading ...</div>;
+  }
+
+
+  return (
+
+    isAuthenticated && (
+      <div className={styles.main}>
+        <ProfileHorizontal/>
+        <TabView>
+          <TabPanel leftIcon="pi pi-user-edit" header="Editar conta">
+            <EditarConta/>
+          </TabPanel>
+          <TabPanel leftIcon="pi pi-trash" header="Deletar conta">
+            <DeletarConta/>
+          </TabPanel>
+        </TabView>
+      </div>
+    )
 
     // <div className={styles.tamanhoTela}>Settings</div>
   )

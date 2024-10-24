@@ -1,0 +1,167 @@
+.p-toast-message .p-toast-message-warn .p-toast-message-enter-done{
+    display: flex;
+}
+
+
+
+
+
+
+
+div.cardReservaLeitor{
+    display: flex;
+    align-items: flex-start;/*eixo y*/
+    justify-content: center;/*eixo x*/
+    flex-direction: column;
+    width:100%;
+    height: auto;
+
+    color: #055904;
+    gap:5px;
+    margin-bottom: 30px;
+
+    border: 2px solid #055904;
+    border-radius: 10px;
+    padding: 20px 10px;
+}
+
+div.cardReservaLeitor h2, div.cardReservaLeitor p{
+    margin: 0px 20px;
+}
+
+div.cardReservaLeitor h2{
+    font-size: 30px;
+
+}
+div.cardReservaLeitor p{
+   font-size: 25px;
+}
+
+
+div.cardReservaLeitor span{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+div.cardReservaLeitor button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    margin: 0px 20px;
+    padding: 9px 20px;
+
+    color: #fff;
+    background-color:#EA2727;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 15px;
+
+    border: none;
+    box-shadow: none;
+    outline: none;
+    appearance: none;
+}
+
+div.cardReservaLeitor button:hover{
+    color: #EA2727;
+    border-color: #EA2727;
+    background-color:#FFF;
+    box-shadow:  0px 0px 0px 3px #f8434393;
+} 
+
+
+
+
+
+
+
+
+
+
+
+div.cardReservaLeitor button.btnCancelarReserva i,
+div.cardReservaLeitor button.btnTituloRetirado i
+{
+    font-size: 30px;
+}
+
+button.btnCancelarReserva{
+    background-color: #FFE3E3 !important;
+    border: 2px solid #EA2727 !important;
+    color: #EA2727 !important;
+}
+div.cardReservaLeitor button.btnCancelarReserva:hover{
+
+    background-color: #EA2727 !important;
+    border: 2px solid #FFE3E3 !important;
+    color: #FFE3E3 !important;
+} 
+
+
+button.btnTituloRetirado{
+    background-color: #D6EDBD !important;
+    border: 2px solid #055904 !important;
+    color: #055904 !important;
+}
+div.cardReservaLeitor button.btnTituloRetirado:hover{
+
+    background-color: #055904 !important;
+    border: 2px solid #D6EDBD !important;
+    color: #D6EDBD !important;
+    box-shadow:  0px 0px 0px 3px #056c0370;
+}
+
+
+
+
+/*********************************************************/
+
+
+@media (max-width: 780px) {
+    div.cardReservaLeitor span{
+        flex-wrap: wrap;
+        gap: 20px;
+    }  
+}
+
+@media (max-width: 765px) {
+    div.cardReservaLeitor h2{
+        font-size: 25px;
+    }
+    div.cardReservaLeitor p{
+       font-size: 20px;
+    }
+    div.cardReservaLeitor button i{
+        font-size: 25px !important;
+    }
+}
+
+@media (max-width: 380px) {
+    div.cardReservaLeitor h2{
+        font-size: 20px;
+    }
+    div.cardReservaLeitor p{
+       font-size: 15px;
+    }
+    div.cardReservaLeitor button i{
+        font-size: 20px !important;
+    }
+}
+
+
+@media (max-width: 340px) {
+    div.cardReservaLeitor h2{
+        font-size: 18px;
+    }
+    div.cardReservaLeitor p{
+       font-size: 13px;
+    }
+    div.cardReservaLeitor button i{
+        font-size: 13px !important;
+    }
+}

@@ -57,7 +57,7 @@ const App = () => {
         <Routes>       
           {/* Rotas Privadas */}
           <Route path="/settings" element={<Settings/>}/>
-          <Route path="/bookingDetails" element={<DetalhesReserva/>}/>
+          <Route path="/bookingDetails" element={<DetalhesReserva books={books}/>}/>
           <Route path="/maintainCollection" element={<ManterAcervo/>}/>
 
           {/* Rotas Públicas */}

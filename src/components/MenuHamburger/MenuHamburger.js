@@ -6,7 +6,7 @@ import LogoutButton from '../Auth0/LogoutButton';
 import Profile from '../Auth0/Profile';
 import SettingsButton from './SettingsButton';
 import DetalhesReservaButton from './DetalhesReservaButton';
-import ManterAcervoButton from './ManterAcervoButton';
+// import ManterAcervoButton from './ManterAcervoButton';
 import { Link } from 'react-router-dom';
 
 // CSS scoped
@@ -14,12 +14,12 @@ import styles from './styles/MenuHamburger.module.css';
 
 // hooks
 import { useState } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth0 } from '@auth0/auth0-react';
 
 const MenuHamburger = () => {
   const [visibleRight, setVisibleRight] = useState(false);
 
-  const {user} = useAuth0();
+  // const {user} = useAuth0();
 
   return (
     <>
@@ -50,7 +50,7 @@ const MenuHamburger = () => {
           </div>
         </div>
 
-        {/* Ajustar usando a requisição da role*/}
+        {/* Ajustar usando a requisição da role
         {
          user.picture 
           ? (
@@ -61,7 +61,7 @@ const MenuHamburger = () => {
               </div>
             ) 
           : (<div></div>)
-        }
+        } */}
       </Sidebar>
     </>
   );
