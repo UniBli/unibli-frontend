@@ -29,7 +29,7 @@ const ReservarTitulos = () => {
 
     //custom hook
     
-    const origin = process.env.REACT_APP_UNIBLI_SERVER_HTTP;
+    const origin = process.env.REACT_APP_UNIBLI_SERVER_HEROKU_HTTPS;
     const url = `${origin}/unibli/acervo`;
     const {data: books, loading, error} = useFetch(url,bookId,origin)     
 
