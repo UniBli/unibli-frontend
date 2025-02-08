@@ -67,11 +67,13 @@ const ReservarTitulos = () => {
         )
     } else {
         const { 
-            imageLinks: srcImg, 
-            quantidadeLivros: qtd,
-            quantidadeDisponivel: disponibilidade,
-            titulo: nome,
-            descricao
+            titulo,
+            descricao,
+            imageLinks: srcImgA,
+            imagem_link: srcImgB, 
+            quantidadeLivros: qtdA,
+            quantidade_livro:qtdB,
+            quantidadeDisponivel: disponibilidadeA,
         } = books ?? {};
 
         return (
@@ -81,9 +83,9 @@ const ReservarTitulos = () => {
                 <div className={styles.div_bookButton}>
                     <form onSubmit={handleReservation}>
                         <div className={styles.book}>
-                            <CardBook disponibilidade={disponibilidade}
-                                qtd={qtd}
-                                img={srcImg} nome={nome}
+                            <CardBook disponibilidade={disponibilidadeA ?? 1}
+                                qtd={(qtdA || qtdB) ?? 1}
+                                img={srcImgA || srcImgB} nome={titulo} exibirTitulo={false}
                                 />
                         </div>
 
@@ -101,7 +103,7 @@ const ReservarTitulos = () => {
 
                 <div className={styles.div_informationsBook}>
                     <div className={styles.div_resume}>
-                        <h1>{nome}</h1>
+                        <h1>{titulo}</h1>
                         
                         <h2>Resumo</h2>
                         <div className={styles.div_resumeTxt} style={checked ? { 'height': '15rem', overflowY:'auto' } : { 'height': '6em' }}>
