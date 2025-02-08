@@ -29,6 +29,7 @@ import { useFetch } from '../../hooks/useFetch';
     const {data: books, loading, error} = useFetch(url,null,origin)   
     console.log('ORIGIN: ', origin)
 
+
     // Swiper ----------------------------------
     const breakpoints = {
       280: {
@@ -114,12 +115,10 @@ import { useFetch } from '../../hooks/useFetch';
                 : books && books.map((book) => (
                     <SwiperSlide key={book._id || book.livro_id}>
                       <Link to={`/reserveTitles/${book._id || book.livro_id}`}>
-                        <CardBook disponibilidade={book.quantidadeDisponivel ?? 0}
-                          qtd={
-                            (book.quantidadeLivros || book.quantidade_livros) ?? 0
-                          } img={
-                            (book.imageLinks && book.imageLinks) ||
-                            (book.image_link && book.image_link)} nome={book.titulo}
+                        <CardBook 
+                          disponibilidade={book.quantidadeDisponivel ?? 1}
+                          qtd={(book.quantidadeLivros || book.quantidade_livro) ?? 1} 
+                          img={(book?.imageLinks || book?.image_link)} nome={book.titulo}
                         />
                       </Link>
                     </SwiperSlide>
