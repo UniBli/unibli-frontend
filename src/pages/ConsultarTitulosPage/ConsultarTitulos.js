@@ -15,20 +15,34 @@ import 'swiper/css/pagination';
 // import required modules
 import { Navigation, Pagination } from 'swiper/modules';
 //import {useState, useEffect} from 'react';
+import { useEffect, useState } from 'react';
 
+import axios from 'axios';
 
+//import { useFetch } from '../../hooks/useFetch';  
 
-// custom hook
-import { useFetch } from '../../hooks/useFetch';  
+  const ConsultarTitulos = ({origin}) => {
+    //const {data: books, loading, error} = useFetch(`${origin}/unibli/acervo`,null,origin)
 
-  const ConsultarTitulos = () => {
+    const [books, setBooks] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
 
+    useEffect(()=>{
+      setLoading(true)
 
-    const origin = process.env.REACT_APP_UNIBLI_SERVER_HEROKU_HTTPS;
-    const url = `${origin}/unibli/acervo`; 
-    const {data: books, loading, error} = useFetch(url,null,origin)   
-    console.log('ORIGIN: ', origin)
+      axios.get(`${origin}/unibli/acervo`)
+      .then((resp) => {
+        //console.log(resp.data)
+        setBooks(resp.data)
+      }).catch((error) => {
+        //console.error( error);
+        setError(error)
+      });
+      setLoading(false)
+    },[origin])
 
+    
 
     // Swiper ----------------------------------
     const breakpoints = {
@@ -118,7 +132,8 @@ import { useFetch } from '../../hooks/useFetch';
                         <CardBook 
                           disponibilidade={book.quantidadeDisponivel ?? 1}
                           qtd={(book.quantidadeLivros || book.quantidade_livro) ?? 1} 
-                          img={(book?.imageLinks || book?.image_link)} nome={book.titulo}
+                          img={(book?.imageLinks || book?.image_link)} nome={book.titulo}                        
+                          exibirAdds={true}
                         />
                       </Link>
                     </SwiperSlide>

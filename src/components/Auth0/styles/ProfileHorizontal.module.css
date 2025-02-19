@@ -23,3 +23,8 @@
     color: #055904 !important;
     text-align: left;
 }
+
+
+.profileContainer div > small{
+    color: #0559043d !important;
+}

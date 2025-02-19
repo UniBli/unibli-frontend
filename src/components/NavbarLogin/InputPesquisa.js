@@ -1,24 +1,18 @@
 // components
 import { InputText } from 'primereact/inputtext';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // hooks
 import { useState } from 'react';
 // CSS scoped
 import styles from './styles/InputPesquisa.module.css';
 
 const InputPesquisa = () => {
-
-    // gerenciando estados
+    const navigate = useNavigate();
     const [search, setSearch] = useState('');
     
-    const handleSearch = (e) => {
-        setSearch(e.target.value);
-    }
-
-    // função que bloqueia o carregamento da página após o envio do formulário
     const handleSubmit = (e) => {
         e.preventDefault();
-        setSearch('');
+        navigate("/consultTitles?titulo="+search)
     }
 
     return (
@@ -30,18 +24,16 @@ const InputPesquisa = () => {
                     placeholder='Pesquise o título desejado' 
                     className={styles.inputPesquisa}
                     name='search'
-                    onChange={handleSearch}
+                    onChange={(e)=> setSearch(e.target.value)}
                     value={search}
                     required
                 />
-                <Link to={search.trim() !== '' ? `/consultTitles/${search}` : '#'}>
-                    <button
-                        type='submit'
-                        className={styles.buttonPesquisa}
-                    >
-                        <i className='pi pi-search'></i>
-                    </button>
-                </Link>
+                <button
+                    type='submit'
+                    className={styles.buttonPesquisa}
+                >
+                    <i className='pi pi-search'></i>
+                </button>
 
             </form>
         </div>      

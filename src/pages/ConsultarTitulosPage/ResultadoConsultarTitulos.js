@@ -1,6 +1,6 @@
 // components
 import CardBook from '../../components/CardBook/CardBook';
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { DataScroller } from 'primereact/datascroller';
 import { Button } from 'primereact/button';
 
@@ -12,40 +12,62 @@ import styles from './styles/ResultadoConsultarTitulos.module.css'
 // hooks
 import { useRef } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-const ResultadoConsultarTitulos = ({ books }) => {
+import axios from 'axios';
+
+
+const ResultadoConsultarTitulos = ({origin}) => {
 
    //DataScroller
   const ds = useRef(null);
 
-  const { titleBook } = useParams();
+  const [ searchParams ] = useSearchParams();
+
+  const [books, setBooks] = useState('')
+
+  const url = `${origin}/unibli/acervo?${searchParams}`
+  console.log('url',url)
+  console.log('searchParams', searchParams)
 
 
-  let resultadoDaPesquisa = books.filter(book =>  book.nome.toLowerCase().includes(titleBook.toLowerCase()));
+  useEffect(()=>{
+    axios.get(url)
+    .then((resp) => {
+      console.log('resp.data', resp.data)
+      setBooks(resp.data)
+    }).catch((error) => {
+      console.error( error);
+    });
+  },[url])
+
 
   //Cards
   const itemTemplate = (book) => {
     return (
-        <Link key={book.id} to={`/reserveTitles/${book.id}`}>
-          <CardBook disponibilidade={book.disponibilidade}
-            qtd={book.qtd} img={book.img} nome={book.nome}
-            />
+        <Link key={book.id} to={`/reserveTitles/${book.id || book._id}`}>
+          <CardBook 
+            disponibilidade={book.quantidadeDisponivel ?? 1}
+            qtd={(book.quantidadeLivros || book.quantidade_livro) ?? 1} 
+            img={(book?.imageLinks || book?.image_link)} nome={book.titulo}
+          />
         </Link>
     )}
 
-    const footer = (<Button 
-                      type="text" icon="pi pi-plus" label="Ver Mais" 
-                      onClick={() => ds.current.load()}
-                    />);
+    const footer = (
+        <Button 
+          type="text" icon="pi pi-plus" label="Ver Mais" 
+          onClick={() => ds.current.load()}
+        />
+      );
   
 
   return (
       <section className={styles.section_books}>
         <div id="div_booksID" className={styles.div_books}>
-          <h2 >{resultadoDaPesquisa.length} livro(s) encontrado(s):</h2>
+          <h2 >{books.length} livro(s) encontrado(s):</h2>
           {
-            resultadoDaPesquisa.length === 0
+            books.length === 0
               ?(
                 <div className={styles.div_NotResults}>
                   <img src='../imgStatus/peopleSearch-bro.svg' alt='Ilustração de um detetive' />
@@ -53,7 +75,7 @@ const ResultadoConsultarTitulos = ({ books }) => {
               )
               :(
                 <div className={styles.div_results}>
-                 <DataScroller ref={ds} value={resultadoDaPesquisa} itemTemplate={itemTemplate} rows={5} loader footer={footer} />
+                 <DataScroller ref={ds} value={books} itemTemplate={itemTemplate} rows={5} loader footer={footer} />
                 </div>
               )         
           }

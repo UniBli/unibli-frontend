@@ -14,12 +14,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from 'react-router-dom';
 
+import axios from 'axios';
 
 // custom hook
-import { useFetch } from '../../hooks/useFetch';  
+//import { useFetch } from '../../hooks/useFetch';  
 
 
-const ReservarTitulos = () => {
+const ReservarTitulos = ({origin}) => {
     
     const { bookId } = useParams();
     const { isAuthenticated } = useAuth0();
@@ -27,12 +28,22 @@ const ReservarTitulos = () => {
     const [toastVisible, setToastVisible] = useState(false);
     const toast = useRef(null);
 
-    //custom hook
-    
-    const origin = process.env.REACT_APP_UNIBLI_SERVER_HEROKU_HTTPS;
-    const url = `${origin}/unibli/acervo`;
-    const {data: books, loading, error} = useFetch(url,bookId,origin)     
+    const [books, setBooks] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
 
+    useEffect(()=>{
+        setLoading(true)
+        axios.get(`${origin}/unibli/acervo/${bookId}`)
+        .then((resp) => {
+          console.log(resp.data)
+          setBooks(resp.data)
+        }).catch((error) => {
+          //console.error( error);
+          setError(error)
+        });
+        setLoading(false)
+      },[origin, bookId])  
     
     // Para a página sempre recarregar mostrando o topo primeiro
     useEffect(() => {
@@ -76,6 +87,8 @@ const ReservarTitulos = () => {
             quantidadeDisponivel: disponibilidadeA,
         } = books ?? {};
 
+        console.log(books)
+
         return (
             <>
             <section className={styles.section_bookInformationReservation}>
@@ -85,7 +98,7 @@ const ReservarTitulos = () => {
                         <div className={styles.book}>
                             <CardBook disponibilidade={disponibilidadeA ?? 1}
                                 qtd={(qtdA || qtdB) ?? 1}
-                                img={srcImgA || srcImgB} nome={titulo} exibirTitulo={false}
+                                img={srcImgA || srcImgB} nome={titulo} exibirAdds={false}
                                 />
                         </div>
 
@@ -95,7 +108,7 @@ const ReservarTitulos = () => {
                                     type="submit"
                                     label="RESERVAR"
                                     size="large"
-                                    className={!isAuthenticated && styles.disabledButton}
+                                    className={`${!isAuthenticated ? styles.disabledButton : ''} ${styles.btnReservar}`}
                                 />
                             </div>
                     </form>
