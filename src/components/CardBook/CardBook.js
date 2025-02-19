@@ -1,12 +1,18 @@
 import styles from './styles/CardBook.module.css'
+import { Tooltip } from 'primereact/tooltip';
 
-const CardBook = ({disponibilidade, qtd, img, nome, exibirTitulo=true}) => {
+const CardBook = ({disponibilidade, qtd, img, nome, exibirAdds=true}) => {
         
-
-    const titulo = nome.length >= 20 ? nome.slice(0, 15) + "..." : nome;
+    // controlle para padronizar os tamanhos dos titulos
+    const titulo = String(nome).length >= 20 ? String(nome).slice(0, 15) + "..." : String(nome);
 
     return (
-        <div className={styles.container} title={nome}>
+        <>
+        <div className={`${styles.container}`}>
+
+            {exibirAdds && (  
+                <Tooltip target=".custom-target-icon" mouseTrack />
+            )}
             <div className={styles.book}>
                 <div  className={styles.divBookBorder} >
                     { typeof img === "string" && img.includes("http") 
@@ -16,19 +22,22 @@ const CardBook = ({disponibilidade, qtd, img, nome, exibirTitulo=true}) => {
                 </div>
             </div>
             <div className={styles.details}>
-                <span> 
-                    {exibirTitulo && (
-                        <p
-                            className={styles.title}
-                        >
-                            {titulo}
-                            </p>
+                <span 
+                    className={`${exibirAdds ? 'exibir-adds custom-target-icon ' : ''}`}
+                    data-pr-tooltip={exibirAdds ? nome : ''}
+                    data-pr-position={exibirAdds ? 'right' : ''}
+                    data-pr-at={exibirAdds ? 'right+5 top' : ''}
+                    data-pr-my={exibirAdds ? 'left center-2' : ''}
+                > 
+                    {exibirAdds && (
+                        <p className={styles.title}>{titulo}</p>
                     )}
                 </span> 
                 <p>Disponibilidade: {disponibilidade}</p>
                 <p>Quantidade: {qtd}</p>
             </div>
         </div>
+    </>
     );
 };
 

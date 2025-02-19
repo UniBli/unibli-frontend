@@ -2,12 +2,12 @@ import styles from './DetalhesReserva.module.css'
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Redirect from '../RedirectPage/Redirect';
 
-import CardReservaLeitor from '../../components/CardReserva/CardReservaLeitor'
+//import CardReservaLeitor from '../../components/CardReserva/CardReservaLeitor'
 
 import { useAuth0 } from '@auth0/auth0-react';
 
 
-const DetalhesReserva = ({books}) => {
+const DetalhesReserva = () => {
 
   const {user} = useAuth0();
 
@@ -21,11 +21,11 @@ const DetalhesReserva = ({books}) => {
   return (
     <div className={styles.main}>
       <div className={styles.listBooksReservation}>
-        {
+        {/* {
           books && books.slice(0,10).map((book) => (
             <CardReservaLeitor key={book.id} book={book}/>
           ))
-        }
+        } */}
       </div>
 
       <div className={styles.legendas}>

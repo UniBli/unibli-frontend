@@ -92,6 +92,17 @@ div.div_bookButton {
         align-items: center;
         width: 100%;
     }
+
+    .btnReservar {
+        background: #055904 !important;
+        border: 1px solid #055904 !important;
+        transition: 0.5s;
+      }
+      .btnReservar:hover{
+         background: #055804da !important;
+         border: solid 5px #055804ef !important;
+      }
+
     .div_bookButton .disabledButton {
         opacity: 0.5; /* Reduz a opacidade para indicar que está desativado */
         cursor: not-allowed;

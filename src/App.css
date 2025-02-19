@@ -44,8 +44,8 @@ italic{
 
 /*Definição GLOBAL - Componente Button - PRIMEREACT*/
  .p-button {
-    background: #055904 !important;
-    border: 1px solid #055904 !important;
+    background: #055904;
+    border: 1px solid #055904;
   }
   .p-button:focus {
     outline: 0 none;

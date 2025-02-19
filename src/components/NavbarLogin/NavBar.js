@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 // CSS scoped
 import styles from './styles/NavBar.module.css';
 
-const NavBar = ({ books, isAuthenticated  }) => {
+const NavBar = ({isAuthenticated, origin}) => {
 
 
 
@@ -23,8 +23,8 @@ const NavBar = ({ books, isAuthenticated  }) => {
                         />
                     </Navbar.Brand>
                 </Link>    
-                <InputPesquisa books={books} className={styles.search}/>
-                {isAuthenticated ? <MenuHamburger/> : <LoginButton className={styles.loginButton}/>  }              
+                <InputPesquisa className={styles.search}/>
+                {isAuthenticated ? <MenuHamburger origin={origin}/> : <LoginButton className={styles.loginButton}/>  }              
             </Navbar>
     );
 };

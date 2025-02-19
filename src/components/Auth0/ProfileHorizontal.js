@@ -15,7 +15,7 @@ const ProfileHorizontal = () => {
   if (isLoading) {
     return <div>Loading ...</div>;
   }
-
+  //console.log(user)
   return (
     isAuthenticated && (
       <div className={styles.profileContainer}>
@@ -25,6 +25,7 @@ const ProfileHorizontal = () => {
         <div>
           <h3>{user.name}</h3>
           <p>{user.email}</p>
+          <small>{user.sub}</small>
         </div>
       </div>
     )

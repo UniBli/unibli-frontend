@@ -13,3 +13,29 @@
     background-color: #ffffff !important;
     color: #055904 !important;
 }
+
+
+button.naoIntegrado {
+    margin-top: 10px;
+    color: #ffffff;
+    font-size: large;
+    font-weight: 500;
+    background-color: #055904 !important;
+    border: 1px solid #FFC107 !important;
+    display: flex;
+    flex-direction: row-reverse;
+    gap:7px;
+}
+button.naoIntegrado:hover {
+    background-color: #ffffff !important;
+    color: #055904 !important;
+}
+
+button.naoIntegrado .customIcon{
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}

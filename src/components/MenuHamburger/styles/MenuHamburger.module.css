@@ -28,3 +28,12 @@
     background-color: #ffffff !important;
     color: #055904 !important;
 }
+
+.hamburgerButton  .customIcon{
+    min-width: 1.5rem !important;
+    height: 1.5rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px !important;
+}

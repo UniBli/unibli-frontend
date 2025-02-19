@@ -4,7 +4,7 @@ import { Dialog } from 'primereact/dialog';
 
 import { useState } from 'react';
 
-const DeletarConta = () => {
+const DeletarConta = ({origin}) => {
 
 
     const [visible, setVisible] = useState(false);
