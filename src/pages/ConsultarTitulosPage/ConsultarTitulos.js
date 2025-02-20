@@ -38,6 +38,7 @@ import axios from 'axios';
       }).catch((error) => {
         //console.error( error);
         setError(error)
+        setBooks({erro: error})
       });
       setLoading(false)
     },[origin])
