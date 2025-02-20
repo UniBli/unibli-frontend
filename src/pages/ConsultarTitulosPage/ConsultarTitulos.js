@@ -38,7 +38,6 @@ import axios from 'axios';
       }).catch((error) => {
         //console.error( error);
         setError(error)
-        setBooks({erro: error})
       });
       setLoading(false)
     },[origin])
@@ -120,20 +119,20 @@ import axios from 'axios';
             >
               { 
                 loading
-                ? booksLoading.map((book) => (
-                    <SwiperSlide key={book.id}>
+                ? booksLoading?.map((book) => (
+                    <SwiperSlide key={book?.id}>
                       <div style={divSkeleton}>
-                          {book.component}
+                          {book?.component}
                       </div>
                     </SwiperSlide>
                 ))
-                : books && books.map((book) => (
-                    <SwiperSlide key={book._id || book.livro_id}>
-                      <Link to={`/reserveTitles/${book._id || book.livro_id}`}>
+                : books && books?.map((book) => (
+                    <SwiperSlide key={book?._id || book?.livro_id}>
+                      <Link to={`/reserveTitles/${book?._id || book?.livro_id}`}>
                         <CardBook 
-                          disponibilidade={book.quantidadeDisponivel ?? 1}
-                          qtd={(book.quantidadeLivros || book.quantidade_livro) ?? 1} 
-                          img={(book?.imageLinks || book?.image_link)} nome={book.titulo}                        
+                          disponibilidade={book?.quantidadeDisponivel ?? 1}
+                          qtd={(book?.quantidadeLivros || book?.quantidade_livro) ?? 1} 
+                          img={(book?.imageLinks || book?.image_link)} nome={book?.titulo}                        
                           exibirAdds={true}
                         />
                       </Link>
