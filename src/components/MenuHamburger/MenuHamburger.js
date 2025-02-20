@@ -16,34 +16,18 @@ import styles from './styles/MenuHamburger.module.css';
 
 // hooks
 import { useState } from 'react';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
-import axios from 'axios';
-import { useAuth0 } from '@auth0/auth0-react';
+// import axios from 'axios';
+// import { useAuth0 } from '@auth0/auth0-react';
 
-const MenuHamburger = ({origin}) => {
+const MenuHamburger = ({origin, integrado2}) => {
   const [visibleRight, setVisibleRight] = useState(false);
-
-  const {user} = useAuth0();
-
-
-  useEffect(() => {
-    axios.get(`${origin}/usuarios/user/${user.sub}`)
-    .then((resp) => {
-      //console.log(resp.data.usuario);
-    })
-    .catch((error) => {
-      console.error('Erro ao buscar usuário:', error);
-    });
-    
-  }, [origin, user.sub])
-
-
 
   return (
     <>
 
-    { true ? (
+    { !integrado2 ? (
         <Button 
           className={styles.hamburgerButton}
           icon='pi pi-bars'
@@ -75,7 +59,7 @@ const MenuHamburger = ({origin}) => {
           <div className={styles.usersActions}>
             <LogoutButton/>
             <Link to="/settings">
-              <SettingsButton />
+              <SettingsButton integrado2={integrado2}/>
             </Link>
             <Link to="/bookingDetails">
               <DetalhesReservaButton/>
