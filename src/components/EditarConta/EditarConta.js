@@ -4,15 +4,13 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 import { Toast } from 'primereact/toast';
 
-
-
-import { useState, useEffect, useRef  } from 'react';
+import { useState, useRef  } from 'react';
 
 import axios from 'axios';
 
-const EditarConta = ({auth0Domain, origin}) => {
-
-  const toast = useRef(null);
+const EditarConta = ({auth0Domain, origin, integrado2, setIntegrado2,  usuario}) => {
+  
+    const toast = useRef(null);
 
     const showSuccess = () => {
         toast.current.show({severity:'success', summary: 'Success', detail:'Usuário cadastrado!', life: 3000});
@@ -20,62 +18,25 @@ const EditarConta = ({auth0Domain, origin}) => {
     const showError = () => {
       toast.current.show({severity:'error', summary: 'Error', detail:'Usuário não cadastrado!', life: 3000});
     }
-    
 
-  const {user} = useAuth0();
-  //console.log(user);
-  //email_verified:false
+    const {user} = useAuth0();
 
-  const [nome, setNome] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
-  const [cpf, setCpf] = useState('')
-  const [rg, setRg] = useState('')
-  const [ra, setRa] = useState('')
-  const [tel, setTel] = useState('')
-  const [cep, setCep] = useState('')
-  const [endereco, setEndereco] = useState('')
-  const [numResidencial, setNumResidencial] = useState('')
-  const [complemento, setComplemento] = useState('')
-  const [matricula, setMatricula] = useState('')
-  const [unidadePolo, setUnidadePolo] = useState('')
+
+  const [nome, setNome] = useState(user?.name ? user?.name : '');
+  const [email, setEmail] = useState(user?.email ? user?.email : '');
+  const [cpf, setCpf] = useState(usuario?.cpf ? usuario?.cpf : '')
+  const [rg, setRg] = useState(usuario?.rg ? usuario?.rg : '')
+  const [ra, setRa] = useState(usuario?.ra ? usuario?.ra : '')
+  const [tel, setTel] = useState(usuario?.telefone ? usuario?.telefone : '')
+  const [cep, setCep] = useState(usuario?.cep ? usuario?.cep : '')
+  const [endereco, setEndereco] = useState(usuario?.endereco ? usuario?.endereco : '')
+  const [numResidencial, setNumResidencial] = useState(usuario?.numResidencia ? usuario?.numResidencia : '')
+  const [complemento, setComplemento] = useState(usuario?.complemento ? usuario?.complemento : '')
+  const [matricula, setMatricula] = useState(usuario?.matricula ? usuario?.matricula : '') 
+  const [unidadePolo, setUnidadePolo] = useState(usuario?.FatecId ? usuario?.FatecId : '')
   
 
   const [loading, setLoading] = useState(false);
-  const [integrado, setIntegrado] = useState(false)
-
-
-  useEffect(() => {
-    axios.get(`${origin}/usuarios/user/${user.sub}`)
-  .then((resp) => {
-    const user = resp.data.usuario
-    //console.log(user);
-    
-    if(user !== null){
-      setNome(user.nome || '')
-      setEmail(user.email || '')
-      setCpf(user.cpf || '')
-      setRg(user.rg || '')
-      setRa(user.ra || '')
-      setTel(user.telefone || '')
-      setCep(user.cep || '')
-      setEndereco(user.endereco || '')
-      setNumResidencial(user.numResidencia || '')
-      setComplemento(user.complemento || '')
-      setMatricula(user.matricula || '')
-      setUnidadePolo(user.FatecId || '') 
-      setIntegrado(true)
-    }else{
-      setIntegrado(false)
-    }
-  })
-  .catch((error) => {
-    console.error('Erro ao buscar usuário:', error);
-    //se deu erro significa que o usuário não está integrado
-    setIntegrado(false);
-  });
-    
-  }, [origin, user.sub, integrado])
-
 
 
   const cadastrar = () => {
@@ -99,11 +60,9 @@ const EditarConta = ({auth0Domain, origin}) => {
       })
       .then(response => {
         console.log('Usuário atualizado com sucesso:', response.data);
-        setIntegrado(true)
       })
       .catch(error => {
         console.error('Erro ao atualizar o usuário:', error.response ? error.response.data : error.message);
-        setIntegrado(false);
       });
 
       //Create no UniBli - Aiven
@@ -124,13 +83,13 @@ const EditarConta = ({auth0Domain, origin}) => {
         unidadePolo,
       })
       .then(function (response) {
-        console.log(response);// 
-        setIntegrado(true); // Forçando a atualização após o submit
+        console.log(response);
+        setIntegrado2(true); 
         showSuccess();
       })
       .catch(function (error) {
-        console.error(error);
-        setIntegrado(false);
+        console.error(error)
+        setIntegrado2(false);
         showError();
       });
       setLoading(false)
@@ -300,9 +259,8 @@ const EditarConta = ({auth0Domain, origin}) => {
         )
       }
 
-      
       {
-        !integrado
+        !integrado2
         ? loading
             ? (<button disabled>Carregando...</button>)
             : (<button>Cadastrar</button>)    

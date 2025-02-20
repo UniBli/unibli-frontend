@@ -5,11 +5,11 @@ import { Badge } from 'primereact/badge';
 // CSS scoped
 import styles from './styles/SettingsButton.module.css';
 
-const SettingsButton = () => {
+const SettingsButton = ({integrado2}) => {
 
   return (
     <div className={styles.containerSettingsButton}>
-      {true ? (
+      {!integrado2 ? (
         <Button
           label="Configurações" 
           icon="pi pi-cog" 
