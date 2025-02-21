@@ -12,7 +12,7 @@ import EditarConta from '../../components/EditarConta/EditarConta.js'
 
 import { useAuth0 } from '@auth0/auth0-react';
 
-const Settings = ({auth0Domain, origin, integrado2, setIntegrado2, usuario}) => {
+const Settings = ({auth0Domain, origin, integrado, setIntegrado, usuario}) => {
   
   const {isAuthenticated, isLoading } = useAuth0();
 
@@ -25,14 +25,14 @@ const Settings = ({auth0Domain, origin, integrado2, setIntegrado2, usuario}) => 
       <div className={styles.main}>
         <ProfileHorizontal/>
         <TabView>
-          { !integrado2 ? (
+          { !integrado ? (
             <TabPanel leftIcon="pi pi-user-edit" header="Completar cadastro">
               <Badge className={styles.customIcon} value="!" size="large" severity="warning"></Badge>
-              <EditarConta auth0Domain={auth0Domain} origin={origin} integrado2={integrado2} setIntegrado2={setIntegrado2} usuario={usuario}/>
+              <EditarConta auth0Domain={auth0Domain} origin={origin} integrado={integrado} setIntegrado={setIntegrado} usuario={usuario}/>
             </TabPanel> 
           ):(
             <TabPanel leftIcon="pi pi-user-edit" header="Editar conta">
-              <EditarConta auth0Domain={auth0Domain} origin={origin} integrado2={integrado2} setIntegrado2={setIntegrado2} usuario={usuario}/>
+              <EditarConta auth0Domain={auth0Domain} origin={origin} integrado={integrado} setIntegrado={setIntegrado} usuario={usuario}/>
             </TabPanel>
           )}
           <TabPanel leftIcon="pi pi-trash" header="Deletar conta">

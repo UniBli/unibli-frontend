@@ -20,7 +20,7 @@ import axios from 'axios';
 //import { useFetch } from '../../hooks/useFetch';  
 
 
-const ReservarTitulos = ({origin}) => {
+const ReservarTitulos = ({origin, integrado}) => {
     
     const { bookId } = useParams();
     const { isAuthenticated } = useAuth0();
@@ -28,7 +28,7 @@ const ReservarTitulos = ({origin}) => {
     const [toastVisible, setToastVisible] = useState(false);
     const toast = useRef(null);
 
-    const [books, setBooks] = useState('')
+    const [books, setBooks] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
@@ -36,13 +36,15 @@ const ReservarTitulos = ({origin}) => {
         setLoading(true)
         axios.get(`${origin}/unibli/acervo/${bookId}`)
         .then((resp) => {
-          console.log(resp.data)
+         //console.log(resp.data)
           setBooks(resp.data)
+          setLoading(false)
         }).catch((error) => {
-          //console.error( error);
-          setError(error)
+            //console.error('Deu erro (error):', error);
+            setError(error);
+            setBooks([]); // Defina como array vazio em caso de erro
+            setLoading(false);    
         });
-        setLoading(false)
       },[origin, bookId])  
     
     // Para a página sempre recarregar mostrando o topo primeiro
@@ -58,11 +60,20 @@ const ReservarTitulos = ({origin}) => {
     const handleReservation = (e) => {
         e.preventDefault();
         if (isAuthenticated && !toastVisible) {
-            toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Reserva efetuada!' });
-            setToastVisible(true);
-            setTimeout(() => {
-                setToastVisible(false);
-            }, 3000); // Tempo em milissegundos para ocultar o toast
+            if(integrado){
+                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Reserva efetuada!' });
+                setToastVisible(true);
+                setTimeout(() => {
+                    setToastVisible(false);
+                }, 3000); // Tempo em milissegundos para ocultar o toast
+            }else if(!integrado){
+                toast.current.show({ severity: 'warn', summary: 'Aviso', detail: 'Conclua seu cadastro para efetuar reservas!' });
+                setToastVisible(true);
+                setTimeout(() => {
+                    setToastVisible(false);
+                }, 3000); // Tempo em milissegundos para ocultar o toast
+            }
+           
         } else if (!isAuthenticated && !toastVisible) {
             toast.current.show({ severity: 'info', summary: 'Info', detail: 'Para efetuar a reserva é necessário fazer login!' });
             setToastVisible(true);
@@ -106,9 +117,19 @@ const ReservarTitulos = ({origin}) => {
                         <div className={styles.button}>
                                 <Button
                                     type="submit"
-                                    label="RESERVAR"
+                                    icon={(isAuthenticated && !integrado) && "pi pi-exclamation-triangle"}
+                                    label={     
+                                        ((!isAuthenticated) || (isAuthenticated && integrado)) 
+                                         && "RESERVAR"
+                                    }
                                     size="large"
-                                    className={`${!isAuthenticated ? styles.disabledButton : ''} ${styles.btnReservar}`}
+                                    className={
+                                        isAuthenticated 
+                                            ? !integrado 
+                                                ? styles.btnReservarNaoItegrado // NÃO integrado 
+                                                : styles.btnReservar // Integrado
+                                            :  styles.disabledButton //precisa logar primeiro
+                                    }
                                 />
                             </div>
                     </form>

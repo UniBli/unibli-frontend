@@ -34,18 +34,18 @@ const App = () => {
   const serverOrigin = env === "development" ? local : prod 
     
   //const [callFetch, setCallFetch] = useState();
-  const [integrado2, setIntegrado2] = useState();
+  const [integrado, setIntegrado] = useState();
   const [unibliUser, setUnibliUser] = useState();
 
   
   useEffect(() => {
-    console.log('integrado2', integrado2);
+    console.log('integrado', integrado);
     
     if(user?.sub){
       axios
-        .get(`${serverOrigin}/usuarios/user/${user.sub}`)
+        .get(`${serverOrigin}/usuarios/user/${user?.sub}`)
         .then((resp) => {     
-          setUnibliUser(resp.data.usuario)
+          setUnibliUser(resp?.data?.usuario)
         })
         .catch((error) => {
           console.error('Erro ao buscar usuário:', error);
@@ -55,23 +55,16 @@ const App = () => {
   },[
     serverOrigin,
     user?.sub, 
-    integrado2])
+    integrado])
 
   useEffect(()=>{
     console.log('Entrou no useEffect - unibliUser:', unibliUser);
     
     if(unibliUser?.erro){
-      setIntegrado2(false)     
+      setIntegrado(false)     
     }else if(unibliUser){
-      setIntegrado2(true)     
+      setIntegrado(true)     
     }
-
-    // if(!unibliUser){
-    //   setIntegrado2(false)     
-    // }else{
-    //   setIntegrado2(true)     
-    // }
-
   },[unibliUser])  
 
 
@@ -80,18 +73,18 @@ const App = () => {
   return (
     <>
       <BrowserRouter>    
-        <NavBar isAuthenticated={isAuthenticated} origin={serverOrigin} integrado2={integrado2}/>
+        <NavBar isAuthenticated={isAuthenticated} origin={serverOrigin} integrado={integrado}/>
         
         <Routes>       
           {/* Rotas Privadas */}
-          <Route path="/settings" element={<Settings auth0Domain={auth0Domain} origin={serverOrigin} integrado2={integrado2} setIntegrado2={setIntegrado2} usuario={unibliUser}/>}/>
-          <Route path="/bookingDetails" element={<DetalhesReserva />}/>
+          <Route path="/settings" element={<Settings auth0Domain={auth0Domain} origin={serverOrigin} integrado={integrado} setIntegrado={setIntegrado} usuario={unibliUser}/>}/>
+          <Route path="/detalhes/reserva" element={<DetalhesReserva />}/>
           <Route path="/maintainCollection" element={<ManterAcervo/>}/>
 
           {/* Rotas Públicas */}
           <Route path="/" element={<ConsultarTitulos origin={serverOrigin}/>}/>
-          <Route path="/reserveTitles/:bookId" element={<ReservarTitulos origin={serverOrigin}/>}/>
-          <Route path="/consultTitles/" element={<ResultadoConsultarTitulos origin={serverOrigin}/>}/>
+          <Route path="/reservar/livro/:bookId" element={<ReservarTitulos origin={serverOrigin} integrado={integrado} />}/>
+          <Route path="/acervo/consultar" element={<ResultadoConsultarTitulos origin={serverOrigin}/>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>    
         <FooterPage/>

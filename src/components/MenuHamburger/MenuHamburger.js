@@ -21,13 +21,13 @@ import { useState } from 'react';
 // import axios from 'axios';
 // import { useAuth0 } from '@auth0/auth0-react';
 
-const MenuHamburger = ({origin, integrado2}) => {
+const MenuHamburger = ({origin, integrado}) => {
   const [visibleRight, setVisibleRight] = useState(false);
 
   return (
     <>
 
-    { !integrado2 ? (
+    { !integrado ? (
         <Button 
           className={styles.hamburgerButton}
           icon='pi pi-bars'
@@ -59,9 +59,9 @@ const MenuHamburger = ({origin, integrado2}) => {
           <div className={styles.usersActions}>
             <LogoutButton/>
             <Link to="/settings">
-              <SettingsButton integrado2={integrado2}/>
+              <SettingsButton integrado={integrado}/>
             </Link>
-            <Link to="/bookingDetails">
+            <Link to="/detalhes/reserva">
               <DetalhesReservaButton/>
             </Link>
           </div>
