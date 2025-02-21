@@ -30,8 +30,6 @@ const ResultadoConsultarTitulos = ({origin}) => {
   const [books, setBooks] = useState('')
 
   const url = `${origin}/unibli/acervo?${searchParams}`
-  //console.log('url',url)
-  //console.log('searchParams', searchParams)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -41,7 +39,6 @@ const ResultadoConsultarTitulos = ({origin}) => {
     setLoading(true)
     axios.get(url)
     .then((resp) => {
-      console.log('resp.data',resp.data)
       setBooks(resp.data)
       setLoading(false)
     }).catch((error) => {

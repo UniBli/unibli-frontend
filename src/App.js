@@ -23,7 +23,6 @@ import axios from 'axios';
 const App = () => {
   // hook do auth0
   const {user, isAuthenticated} = useAuth0();
-  //console.log(user);
   
 
   //variaveis de ambiente configuradas no .env
@@ -35,21 +34,19 @@ const App = () => {
     
   //const [callFetch, setCallFetch] = useState();
   const [integrado, setIntegrado] = useState();
-  const [unibliUser, setUnibliUser] = useState();
+  const [usuarioUnibliBd, setUsuarioUnibliBd] = useState();
 
   
-  useEffect(() => {
-    console.log('integrado', integrado);
-    
+  useEffect(() => {    
     if(user?.sub){
       axios
         .get(`${serverOrigin}/usuarios/user/${user?.sub}`)
         .then((resp) => {     
-          setUnibliUser(resp?.data?.usuario)
+          setUsuarioUnibliBd(resp?.data?.usuario)          
         })
         .catch((error) => {
           console.error('Erro ao buscar usuário:', error);
-          setUnibliUser({erro: error})
+          setUsuarioUnibliBd({erro: error})
         });
     }
   },[
@@ -58,14 +55,14 @@ const App = () => {
     integrado])
 
   useEffect(()=>{
-    console.log('Entrou no useEffect - unibliUser:', unibliUser);
+    console.log('Entrou no useEffect - unibliUser:', usuarioUnibliBd);
     
-    if(unibliUser?.erro){
+    if(usuarioUnibliBd?.erro){
       setIntegrado(false)     
-    }else if(unibliUser){
+    }else if(usuarioUnibliBd){
       setIntegrado(true)     
     }
-  },[unibliUser])  
+  },[usuarioUnibliBd])  
 
 
 
@@ -77,7 +74,7 @@ const App = () => {
         
         <Routes>       
           {/* Rotas Privadas */}
-          <Route path="/settings" element={<Settings auth0Domain={auth0Domain} origin={serverOrigin} integrado={integrado} setIntegrado={setIntegrado} usuario={unibliUser}/>}/>
+          <Route path="/settings" element={<Settings auth0Domain={auth0Domain} origin={serverOrigin} integrado={integrado} setIntegrado={setIntegrado} usuarioUnibliBd={usuarioUnibliBd}/>}/>
           <Route path="/detalhes/reserva" element={<DetalhesReserva />}/>
           <Route path="/maintainCollection" element={<ManterAcervo/>}/>
 
