@@ -4,37 +4,52 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 import { Toast } from 'primereact/toast';
 
-import { useState, useRef  } from 'react';
+import { useState, useRef, useEffect  } from 'react';
 
 import axios from 'axios';
 
-const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuario}) => {
+const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuarioUnibliBd}) => {
   
-    const toast = useRef(null);
+  const toast = useRef(null);
 
-    const showSuccess = () => {
-        toast.current.show({severity:'success', summary: 'Success', detail:'Usuário cadastrado!', life: 3000});
+  const showSuccess = () => {
+      toast.current.show({severity:'success', summary: 'Success', detail:'Message Content', life: 3000});
+  }
+
+  const showError = () => {
+    toast.current.show({severity:'error', summary: 'Error', detail:'Message Content', life: 3000});
+  }
+
+  const {user} = useAuth0();
+
+  const [nome, setNome] = useState(user?.name ?? '');
+  const [email, setEmail] = useState(user?.email ?? '');
+  const [cpf, setCpf] = useState('')
+  const [rg, setRg] = useState('')
+  const [ra, setRa] = useState('')
+  const [tel, setTel] = useState('')
+  const [cep, setCep] = useState('')
+  const [endereco, setEndereco] = useState('')
+  const [numResidencial, setNumResidencial] = useState('')
+  const [complemento, setComplemento] = useState('')
+  const [matricula, setMatricula] = useState('') 
+  const [unidadePolo, setUnidadePolo] = useState('')
+    
+  useEffect(() => {
+    if (usuarioUnibliBd) {
+      setCpf(usuarioUnibliBd?.cpf ?? '');
+      setRg(usuarioUnibliBd?.rg ?? '');
+      setRa(usuarioUnibliBd?.ra ?? '');
+      setTel(usuarioUnibliBd?.telefone ?? '');
+      setCep(usuarioUnibliBd?.cep ?? '');
+      setEndereco(usuarioUnibliBd?.endereco ?? '');
+      setNumResidencial(usuarioUnibliBd?.numResidencia ?? '');
+      setComplemento(usuarioUnibliBd?.complemento ?? '');
+      setMatricula(usuarioUnibliBd?.matricula ?? '');
+      setUnidadePolo(usuarioUnibliBd?.fk_id_fatec ?? '');
     }
-    const showError = () => {
-      toast.current.show({severity:'error', summary: 'Error', detail:'Usuário não cadastrado!', life: 3000});
-    }
+  }, [usuarioUnibliBd]);
 
-    const {user} = useAuth0();
-
-
-  const [nome, setNome] = useState(user?.name ? user?.name : '');
-  const [email, setEmail] = useState(user?.email ? user?.email : '');
-  const [cpf, setCpf] = useState(usuario?.cpf ? usuario?.cpf : '')
-  const [rg, setRg] = useState(usuario?.rg ? usuario?.rg : '')
-  const [ra, setRa] = useState(usuario?.ra ? usuario?.ra : '')
-  const [tel, setTel] = useState(usuario?.telefone ? usuario?.telefone : '')
-  const [cep, setCep] = useState(usuario?.cep ? usuario?.cep : '')
-  const [endereco, setEndereco] = useState(usuario?.endereco ? usuario?.endereco : '')
-  const [numResidencial, setNumResidencial] = useState(usuario?.numResidencia ? usuario?.numResidencia : '')
-  const [complemento, setComplemento] = useState(usuario?.complemento ? usuario?.complemento : '')
-  const [matricula, setMatricula] = useState(usuario?.matricula ? usuario?.matricula : '') 
-  const [unidadePolo, setUnidadePolo] = useState(usuario?.fk_id_fatec ? usuario?.fk_id_fatec : '')
-  
 
   const [loading, setLoading] = useState(false);
 
@@ -52,14 +67,14 @@ const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuario}) =
         email,
         name: nome
       };
-      await axios.patch(`https://${auth0Domain}/api/v2/users/${user.sub}`, data, {
+      await axios.patch(`https://${auth0Domain}/api/v2/users/${user?.sub}`, data, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       })
       .then(response => {
-        console.log('Usuário atualizado com sucesso:', response.data);
+        console.log('Usuário atualizado auth0!');
       })
       .catch(error => {
         console.error('Erro ao atualizar o usuário:', error.response ? error.response.data : error.message);
@@ -77,22 +92,26 @@ const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuario}) =
         email, 
         ra, 
         matricula, 
-        'tipoBibliotecario':null,
-        "auth0UserId": user.sub,
+        "tipoBibliotecario":null,
+        "auth0UserId": user?.sub,
         rg,
-        unidadePolo,
+        "unidadePolo":null,
       })
       .then(function (response) {
-        console.log(response);
-        setIntegrado(true); 
-        showSuccess();
+        console.log('Antes do showSuccess');
+        showSuccess();        
+        console.log('Depois do showSuccess');
+        setIntegrado(true);
+        //-------------------------
+        setLoading(false)
       })
       .catch(function (error) {
-        console.error(error)
-        setIntegrado(false);
+        console.error('Error:', error)
         showError();
+        setIntegrado(false);
+        //-------------------------
+        setLoading(false)
       });
-      setLoading(false)
     })();
   }
 
@@ -260,11 +279,9 @@ const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuario}) =
       }
 
       {
-        !integrado
-        ? loading
+          loading
             ? (<button disabled>Carregando...</button>)
-            : (<button>Cadastrar</button>)    
-        :(<button>Atualizar</button>)     
+            : (<button>{integrado ? 'Atualizar' : 'Cadastrar'}</button>)      
       }
 
     </form>

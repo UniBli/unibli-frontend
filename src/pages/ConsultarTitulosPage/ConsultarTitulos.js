@@ -29,13 +29,10 @@ import axios from 'axios';
     const [error, setError] = useState('')
 
     useEffect(()=>{
-      setLoading(true)
-      console.log('origin', origin);
-      
+      setLoading(true)      
 
       axios.get(`${origin}/unibli/acervo`)
       .then((resp) => {
-        console.log('resp.data',resp.data)
         setBooks(resp.data)
         setLoading(false)
       }).catch((error) => {
@@ -44,9 +41,7 @@ import axios from 'axios';
         setBooks([]); // Defina como array vazio em caso de erro
         setLoading(false);
       });
-    },[origin])
-    console.log('books:',books);
-    
+    },[origin])    
     
 
     // Swiper ----------------------------------

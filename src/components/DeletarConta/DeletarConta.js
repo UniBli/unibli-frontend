@@ -15,10 +15,10 @@ const DeletarConta = ({origin}) => {
       e.preventDefault();
       
       if (excluir === 'Excluir conta') {
-        console.log('conta excluída');
+        console.log('Conta excluída');
         setVisible(false);
       } else {
-        console.log('conta NÃO excluída');
+        console.log('Conta NÃO excluída');
       }
   
       setExcluir('');

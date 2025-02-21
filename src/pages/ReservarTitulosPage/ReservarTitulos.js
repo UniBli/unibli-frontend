@@ -36,7 +36,6 @@ const ReservarTitulos = ({origin, integrado}) => {
         setLoading(true)
         axios.get(`${origin}/unibli/acervo/${bookId}`)
         .then((resp) => {
-         //console.log(resp.data)
           setBooks(resp.data)
           setLoading(false)
         }).catch((error) => {
@@ -97,8 +96,6 @@ const ReservarTitulos = ({origin, integrado}) => {
             quantidade_livro:qtdB,
             quantidadeDisponivel: disponibilidadeA,
         } = books ?? {};
-
-        console.log(books)
 
         return (
             <>
