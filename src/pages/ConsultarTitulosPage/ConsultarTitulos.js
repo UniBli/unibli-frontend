@@ -24,24 +24,29 @@ import axios from 'axios';
   const ConsultarTitulos = ({origin}) => {
     //const {data: books, loading, error} = useFetch(`${origin}/unibli/acervo`,null,origin)
 
-    const [books, setBooks] = useState('')
+    const [books, setBooks] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     useEffect(()=>{
       setLoading(true)
+      console.log('origin', origin);
+      
 
       axios.get(`${origin}/unibli/acervo`)
       .then((resp) => {
-        //console.log(resp.data)
+        console.log('resp.data',resp.data)
         setBooks(resp.data)
+        setLoading(false)
       }).catch((error) => {
-        //console.error( error);
-        setError(error)
+        console.error('Deu erro (error):', error);
+        setError(error);
+        setBooks([]); // Defina como array vazio em caso de erro
+        setLoading(false);
       });
-      setLoading(false)
     },[origin])
-
+    console.log('books:',books);
+    
     
 
     // Swiper ----------------------------------
@@ -105,7 +110,7 @@ import axios from 'axios';
 
           <div className={styles.containerBooks}>
             <h2>Análise e Desenvolvimento de Sistemas:</h2>
-            {error && <p>{error}</p>}
+            {error && <p>{error.message}</p>}
             <Swiper
               slidesPerView={3}
               spaceBetween={30}
@@ -117,27 +122,28 @@ import axios from 'axios';
               breakpoints={breakpoints}
               modules={[Navigation, Pagination]}
             >
-              { 
+              {
                 loading
-                ? booksLoading?.map((book) => (
-                    <SwiperSlide key={book?.id}>
-                      <div style={divSkeleton}>
+                  ? booksLoading?.map((book) => (
+                      <SwiperSlide key={book?.id}>
+                        <div style={divSkeleton}>
                           {book?.component}
-                      </div>
-                    </SwiperSlide>
-                ))
-                : books && books?.map((book) => (
-                    <SwiperSlide key={book?._id || book?.livro_id}>
-                      <Link to={`/reserveTitles/${book?._id || book?.livro_id}`}>
-                        <CardBook 
-                          disponibilidade={book?.quantidadeDisponivel ?? 1}
-                          qtd={(book?.quantidadeLivros || book?.quantidade_livro) ?? 1} 
-                          img={(book?.imageLinks || book?.image_link)} nome={book?.titulo}                        
-                          exibirAdds={true}
-                        />
-                      </Link>
-                    </SwiperSlide>
-                ))
+                        </div>
+                      </SwiperSlide>
+                    ))
+                  : Array.isArray(books) && books.map((book) => (
+                      <SwiperSlide key={book?._id || book?.livro_id}>
+                        <Link to={`/reservar/livro/${book?._id || book?.livro_id}`}>
+                          <CardBook 
+                            disponibilidade={book?.quantidadeDisponivel ?? 1}
+                            qtd={(book?.quantidadeLivros || book?.quantidade_livro) ?? 1} 
+                            img={(book?.imageLinks || book?.image_link)} 
+                            nome={book?.titulo}                        
+                            exibirAdds={true}
+                          />
+                        </Link>
+                      </SwiperSlide>
+                    ))
               }
             </Swiper>
           </div>
@@ -159,7 +165,7 @@ import axios from 'axios';
             >
               {books.map((book) => (
                 <SwiperSlide key={book.id}>
-                  <Link to={`/reserveTitles/${book.id}`}>
+                  <Link to={`/reservar/livro/${book.id}`}>
                     <CardBook disponibilidade={book.disponibilidade}
                       qtd={book.qtd} img={book.img} nome={book.nome}
                     />
@@ -184,7 +190,7 @@ import axios from 'axios';
             >
               {books.map((book) => (
                 <SwiperSlide key={book.id}>
-                  <Link to={`/reserveTitles/${book.id}`}>
+                  <Link to={`/reservar/livro/${book.id}`}>
                     <CardBook disponibilidade={book.disponibilidade}
                       qtd={book.qtd} img={book.img} nome={book.nome}
                     />

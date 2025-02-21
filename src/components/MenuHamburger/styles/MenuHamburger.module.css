@@ -37,3 +37,9 @@
     justify-content: center;
     font-size: 13px !important;
 }
+
+.p-button.p-component.p-button-text:focus{
+   background-color: red !important;
+
+}
+

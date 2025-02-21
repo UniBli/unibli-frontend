@@ -12,7 +12,7 @@ const InputPesquisa = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate("/consultTitles?titulo="+search)
+        navigate("/acervo/consultar?titulo="+search)
     }
 
     return (

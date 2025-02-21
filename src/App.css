@@ -114,7 +114,7 @@ span.p-button-icon.p-c.pi.pi-bars {
 
 /*controlla a sombra e borda do botão*/
 .p-button.p-button-icon-only:focus {
-    box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, 0.5)  !important;
+    box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, 0.5);
 }
 
 /*controla o tamanho do botão*/

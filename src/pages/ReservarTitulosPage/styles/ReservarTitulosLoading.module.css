@@ -83,6 +83,8 @@ div.div_bookButton {
 .div_bookButton .disabledButton {
     opacity: 0.5; /* Reduz a opacidade para indicar que está desativado */
     cursor: not-allowed;
+    background: #055904 !important;
+    border: 1px solid #055904 !important;
 }
 /*------*/
 

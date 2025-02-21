@@ -8,7 +8,7 @@ import { useState, useRef  } from 'react';
 
 import axios from 'axios';
 
-const EditarConta = ({auth0Domain, origin, integrado2, setIntegrado2,  usuario}) => {
+const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuario}) => {
   
     const toast = useRef(null);
 
@@ -33,7 +33,7 @@ const EditarConta = ({auth0Domain, origin, integrado2, setIntegrado2,  usuario})
   const [numResidencial, setNumResidencial] = useState(usuario?.numResidencia ? usuario?.numResidencia : '')
   const [complemento, setComplemento] = useState(usuario?.complemento ? usuario?.complemento : '')
   const [matricula, setMatricula] = useState(usuario?.matricula ? usuario?.matricula : '') 
-  const [unidadePolo, setUnidadePolo] = useState(usuario?.FatecId ? usuario?.FatecId : '')
+  const [unidadePolo, setUnidadePolo] = useState(usuario?.fk_id_fatec ? usuario?.fk_id_fatec : '')
   
 
   const [loading, setLoading] = useState(false);
@@ -84,12 +84,12 @@ const EditarConta = ({auth0Domain, origin, integrado2, setIntegrado2,  usuario})
       })
       .then(function (response) {
         console.log(response);
-        setIntegrado2(true); 
+        setIntegrado(true); 
         showSuccess();
       })
       .catch(function (error) {
         console.error(error)
-        setIntegrado2(false);
+        setIntegrado(false);
         showError();
       });
       setLoading(false)
@@ -260,7 +260,7 @@ const EditarConta = ({auth0Domain, origin, integrado2, setIntegrado2,  usuario})
       }
 
       {
-        !integrado2
+        !integrado
         ? loading
             ? (<button disabled>Carregando...</button>)
             : (<button>Cadastrar</button>)    
