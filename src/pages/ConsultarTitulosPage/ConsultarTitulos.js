@@ -22,7 +22,7 @@ import axios from 'axios';
 //import { useFetch } from '../../hooks/useFetch';  
 
   const ConsultarTitulos = ({origin}) => {
-    //const {data: books, loading, error} = useFetch(`${origin}/unibli/acervo`,null,origin)
+    //const {data: books, loading, error} = useFetch(`${origin}/acervo/livros`,null,origin)
 
     const [books, setBooks] = useState([])
     const [loading, setLoading] = useState(false)
@@ -31,7 +31,7 @@ import axios from 'axios';
     useEffect(()=>{
       setLoading(true)      
 
-      axios.get(`${origin}/unibli/acervo`)
+      axios.get(`${origin}/acervo/livros`)
       .then((resp) => {
         setBooks(resp.data)
         setLoading(false)
@@ -42,6 +42,9 @@ import axios from 'axios';
         setLoading(false);
       });
     },[origin])    
+
+    //console.log('books', books);
+    
     
 
     // Swiper ----------------------------------
@@ -127,13 +130,13 @@ import axios from 'axios';
                       </SwiperSlide>
                     ))
                   : Array.isArray(books) && books.map((book) => (
-                      <SwiperSlide key={book?._id || book?.livro_id}>
-                        <Link to={`/reservar/livro/${book?._id || book?.livro_id}`}>
+                      <SwiperSlide key={book?.id_livro}>
+                        <Link to={`/reservar/livro/${book?.id_livro}`}>
                           <CardBook 
-                            disponibilidade={book?.quantidadeDisponivel ?? 1}
-                            qtd={(book?.quantidadeLivros || book?.quantidade_livro) ?? 1} 
-                            img={(book?.imageLinks || book?.image_link)} 
-                            nome={book?.titulo}                        
+                            disponibilidade={book?.disponibilidadeLivro ? book?.disponibilidadeLivro : book?.quantidadeLivro}
+                            qtd={book?.quantidadeLivro}
+                            img={book?.imagem}
+                            nome={book?.titulo}            
                             exibirAdds={true}
                           />
                         </Link>

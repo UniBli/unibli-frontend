@@ -4,22 +4,22 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 import { Toast } from 'primereact/toast';
 
-import { useState, useRef, useEffect  } from 'react';
+import { useState, useRef, useEffect} from 'react';
 
 import axios from 'axios';
 
 const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuarioUnibliBd}) => {
   
   const toast = useRef(null);
-
+  
   const showSuccess = () => {
-      toast.current.show({severity:'success', summary: 'Success', detail:'Message Content', life: 3000});
+    toast?.current?.show({severity:'success', summary: 'Success', detail:'Message Content', life: 5000});
   }
-
+  
   const showError = () => {
-    toast.current.show({severity:'error', summary: 'Error', detail:'Message Content', life: 3000});
+    toast?.current.show({severity:'error', summary: 'Error', detail:'Message Content', life: 3000});
   }
-
+  
   const {user} = useAuth0();
 
   const [nome, setNome] = useState(user?.name ?? '');
@@ -97,12 +97,11 @@ const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuarioUnib
         rg,
         "unidadePolo":null,
       })
-      .then(function (response) {
-        console.log('Antes do showSuccess');
-        showSuccess();        
+      .then((response) => {
+        console.log('Antes do showSuccess', response);
         console.log('Depois do showSuccess');
-        setIntegrado(true);
-        //-------------------------
+        showSuccess()        //-------------------------
+        setTimeout(()=> setIntegrado(true), 1500);
         setLoading(false)
       })
       .catch(function (error) {
@@ -118,13 +117,19 @@ const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuarioUnib
   const handleSubmit = (event) => {
     event.preventDefault();
       cadastrar();
-    
-}
+  }
+
+//  if(integrado){
+//   showSuccess();
+//  }else{
+//   showError();
+//  }
 
 
   return (   
   <div className={styles.divEditarconta}>
     <Toast ref={toast} />
+
     <form onSubmit={handleSubmit}>
       
       <section className={styles.dadosPessoais}>

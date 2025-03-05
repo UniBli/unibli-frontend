@@ -28,20 +28,20 @@ const ReservarTitulos = ({origin, integrado}) => {
     const [toastVisible, setToastVisible] = useState(false);
     const toast = useRef(null);
 
-    const [books, setBooks] = useState([])
+    const [book, setBook] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     useEffect(()=>{
         setLoading(true)
-        axios.get(`${origin}/unibli/acervo/${bookId}`)
+        axios.get(`${origin}/acervo/livro/${bookId}`)
         .then((resp) => {
-          setBooks(resp.data)
+          setBook(resp?.data?.livro)
           setLoading(false)
         }).catch((error) => {
             //console.error('Deu erro (error):', error);
             setError(error);
-            setBooks([]); // Defina como array vazio em caso de erro
+            setBook([]); // Defina como array vazio em caso de erro
             setLoading(false);    
         });
       },[origin, bookId])  
@@ -50,6 +50,8 @@ const ReservarTitulos = ({origin, integrado}) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    console.log('book', book);
 
     // Função para lidar com a mudança do estado de checked
     const handleCheckedChange = (e) => {
@@ -87,16 +89,6 @@ const ReservarTitulos = ({origin, integrado}) => {
             <ReservarTitulosLoading/>
         )
     } else {
-        const { 
-            titulo,
-            descricao,
-            imageLinks: srcImgA,
-            imagem_link: srcImgB, 
-            quantidadeLivros: qtdA,
-            quantidade_livro:qtdB,
-            quantidadeDisponivel: disponibilidadeA,
-        } = books ?? {};
-
         return (
             <>
             <section className={styles.section_bookInformationReservation}>
@@ -104,10 +96,14 @@ const ReservarTitulos = ({origin, integrado}) => {
                 <div className={styles.div_bookButton}>
                     <form onSubmit={handleReservation}>
                         <div className={styles.book}>
-                            <CardBook disponibilidade={disponibilidadeA ?? 1}
-                                qtd={(qtdA || qtdB) ?? 1}
-                                img={srcImgA || srcImgB} nome={titulo} exibirAdds={false}
-                                />
+                            <CardBook 
+                                disponibilidade={book?.disponibilidadeLivro ? book?.disponibilidadeLivro : book?.quantidadeLivro}
+                                
+                                qtd={book?.quantidadeLivro}
+                                img={book?.imagem}
+                                nome={book?.titulo}
+                                exibirAdds={false}
+                            />
                         </div>
 
                         <Toast ref={toast} onClose={() => setToastVisible(false)} />           
@@ -134,14 +130,12 @@ const ReservarTitulos = ({origin, integrado}) => {
 
                 <div className={styles.div_informationsBook}>
                     <div className={styles.div_resume}>
-                        <h1>{titulo}</h1>
+                        <h1>{book?.titulo}</h1>
                         
                         <h2>Resumo</h2>
                         <div className={styles.div_resumeTxt} style={checked ? { 'height': '15rem', overflowY:'auto' } : { 'height': '6em' }}>
                                 <p className={styles.descricaoLivro}> 
-                                    {descricao}. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Excepturi vel tempora sint assumenda vero sit cupiditate? Quidem ratione nesciunt ad natusdasdasd neqweqwisi nihilasdasd Praesentium voluptas fugiat cumque ipdasdasdasdsasum autem quis!fsdfsd
-                                    Harum rerum repellat quod velit nulla, omnis repellendus ratione animi error optio perferendis. Rerum rem facere dolores nostrum doloribus eligendi, perferendis praesentium voluptatum in recusandae officiis quasi sequi aliquam ex.
-                                    Quos debitis soluta nam, quisquam saepe voluptates tenetur deleniti assumenda ullam cum. Commodi quod voluptatibus laboriosam accusantium, molestias ad ipsum ex unde, optio alias ipsam maxime dolores, saepe ab minima?
+                                    {book?.descricao}
                                 </p>
                             <p className={styles.moreDescription}
                             style={checked ? { 'display': 'none' } : { 'display': 'flex' }}>...</p>
@@ -158,9 +152,20 @@ const ReservarTitulos = ({origin, integrado}) => {
                         <Divider type="solid" />
                     </div>
                     <div className={styles.div_details}>
+                        <ul>
+
+                            {book?.edicao && (<li>Edição: {book?.edicao}</li>)}
+                            {book?.editora && (<li>Editora: {book?.editora}</li>)}
+                            {book?.genero && (<li>Gênero: {book?.genero}</li>)}
+                            {book?.idioma && (<li>Idioma: {book?.idioma}</li>)}
+                            {book?.isbn10 && (<li>ISBN10: {book?.isbn10}</li>)}
+                            {book?.isbn13 && (<li>ISBN13: {book?.isbn13}</li>)}
+                            {book?.quantidadePaginas && (<li>Nº de Páginas: {book?.quantidadePaginas}</li>)}
+                        </ul>
                     </div>
                     <div className={styles.div_autor}>
                         <h2>Autora(s)/Autor(es)</h2>
+                        <p>{book?.autor}</p>
                     </div>
                     <div className={styles.div_ondeEncontrar}>
                         <h2>Onde encontrar</h2>

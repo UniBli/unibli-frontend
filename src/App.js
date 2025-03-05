@@ -38,11 +38,12 @@ const App = () => {
 
   
   useEffect(() => {    
+    console.log("useEffect do Integrado (A)", integrado)
     if(user?.sub){
       axios
         .get(`${serverOrigin}/usuarios/user/${user?.sub}`)
         .then((resp) => {     
-          setUsuarioUnibliBd(resp?.data?.usuario)          
+          setUsuarioUnibliBd(resp?.data.usuario)          
         })
         .catch((error) => {
           console.error('Erro ao buscar usuário:', error);

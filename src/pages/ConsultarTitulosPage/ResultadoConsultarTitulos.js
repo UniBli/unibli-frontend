@@ -29,7 +29,7 @@ const ResultadoConsultarTitulos = ({origin}) => {
 
   const [books, setBooks] = useState('')
 
-  const url = `${origin}/unibli/acervo?${searchParams}`
+  const url = `${origin}/acervo/livros?${searchParams}`
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -53,11 +53,12 @@ const ResultadoConsultarTitulos = ({origin}) => {
   //Cards
   const itemTemplate = (book) => {
     return (
-        <Link key={book.id} to={`/reservar/livro/${book.id || book._id}`}>
+        <Link key={book?.id_livro} to={`/reservar/livro/${book?.id_livro}`}>
           <CardBook 
-            disponibilidade={book.quantidadeDisponivel ?? 1}
-            qtd={(book.quantidadeLivros || book.quantidade_livro) ?? 1} 
-            img={(book?.imageLinks || book?.image_link)} nome={book.titulo}
+            disponibilidade={book?.disponibilidadeLivro ? book?.disponibilidadeLivro : book?.quantidadeLivro}
+            qtd={book?.quantidadeLivro}
+            img={book?.imagem}
+            nome={book?.titulo}
           />
         </Link>
     )}
