@@ -81,7 +81,7 @@ const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuarioUnib
       });
 
       //Create no UniBli - Aiven
-      await axios.post(`${origin}/usuarios/cadastrar/user`, {
+      await axios.post(`${origin}/usuarios/usuario/cadastrar`, {
         nome, 
         cpf, 
         endereco, 
@@ -101,7 +101,7 @@ const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuarioUnib
         console.log('Antes do showSuccess', response);
         console.log('Depois do showSuccess');
         showSuccess()        //-------------------------
-        setTimeout(()=> setIntegrado(true), 1500);
+        setTimeout(()=> setIntegrado(response.data), 1500);
         setLoading(false)
       })
       .catch(function (error) {

@@ -19,95 +19,122 @@ import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 
-//import { useFetch } from '../../hooks/useFetch';  
+const ConsultarTitulos = ({origin}) => {
 
-  const ConsultarTitulos = ({origin}) => {
-    //const {data: books, loading, error} = useFetch(`${origin}/acervo/livros`,null,origin)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-    const [books, setBooks] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
+  const [cursosComLivros, setCursosComLivros] = useState([]);
 
-    useEffect(()=>{
-      setLoading(true)      
 
-      axios.get(`${origin}/acervo/livros`)
-      .then((resp) => {
-        setBooks(resp.data)
-        setLoading(false)
-      }).catch((error) => {
-        console.error('Deu erro (error):', error);
+
+  useEffect(()=>{
+      setLoading(true);
+      const fetchData = async () => {
+      try {
+        const [respCursos, respLivrosCursos] = await Promise.all([
+          axios.get(`${origin}/cursos`),
+          axios.get(`${origin}/acervo/livros/cursos`)
+        ]);
+
+        const cursos = respCursos.data || [];
+        const livrosCursos = respLivrosCursos.data || [];
+
+        // Normaliza [{ "1": [...] }, { "2": [...] }] -> { "1": [...], "2": [...] }
+        const livrosMap = {};
+        livrosCursos.forEach(item => {
+          const [idCurso, livros] = Object.entries(item)[0];
+          livrosMap[idCurso.toString()] = livros;
+        });
+        //console.log("✅ Normaliza:", livrosMap);
+
+
+        // Combina cursos + livros
+        const combinados = cursos.map(curso => ({
+          ...curso,
+          livros: livrosMap[curso.id_curso.toString()].slice(0, 7) || []
+        }));
+
+        console.log("✅ Cursos com livros combinados:", combinados);
+        setCursosComLivros(combinados);
+      } catch (error) {
+        //console.error("❌ Erro ao carregar cursos/livros:", error);
         setError(error);
-        setBooks([]); // Defina como array vazio em caso de erro
+      } finally {
         setLoading(false);
-      });
-    },[origin])    
+      }
+    };
+    fetchData();
+  },[origin])    
+  
 
-    //console.log('books', books);
-    
-    
-
-    // Swiper ----------------------------------
-    const breakpoints = {
-      280: {
-        slidesPerView: 1,
-        spaceBetween: 10,
-      },
-      360: {
-        slidesPerView: 1,
-        spaceBetween: 10,
-      },
-      640: {
-        slidesPerView: 2,
-        spaceBetween: 20,
-      },
-      768: {
-        slidesPerView: 3,
-        spaceBetween: -30,
-      },
-      1024: {
-        slidesPerView: 4,
-        spaceBetween: -40,
-      },
-      1360: {
-        slidesPerView: 5,
-        spaceBetween: -50,
-      },
-    }
-    //------------------------------------------
+  // Swiper ----------------------------------
+  const breakpoints = {
+    280: {
+      slidesPerView: 1,
+      spaceBetween: 10,
+    },
+    360: {
+      slidesPerView: 1,
+      spaceBetween: 10,
+    },
+    640: {
+      slidesPerView: 2,
+      spaceBetween: 20,
+    },
+    768: {
+      slidesPerView: 3,
+      spaceBetween: -30,
+    },
+    1024: {
+      slidesPerView: 4,
+      spaceBetween: -40,
+    },
+    1360: {
+      slidesPerView: 5,
+      spaceBetween: -50,
+    },
+  }
+  //------------------------------------------
 
 
-    /****************** PARA LOADING DO BOOOK ******************/
-    const booksLoading =[
-      {id:1, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-      {id:2, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-      {id:3, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-      {id:4, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-      {id:5, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-      {id:6, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-      {id:7, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)}
-    ]
+  /****************** PARA LOADING DO BOOOK ******************/
+  const booksLoading =[
+    {id:1, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
+    {id:2, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
+    {id:3, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
+    {id:4, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
+    {id:5, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
+    {id:6, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
+    {id:7, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)}
+  ]
 
-    const divSkeleton = {display:'flex', justifyContent:'center', alignItems:'center', margin:'3rem'};
-    /*********************************************************/
-    
-    return (
-      <main>
-        <section className={styles.banner}>
-          <img className={styles.imgBanner} src="img_banner.png" alt="Menina lendo um livro na biblioteca" />
-          <div className={styles.txtBanner}>
-            <p>O sistema <span>UniBli</span> veio</p>
-            <p>para facilitar a vida do</p>
-            <p>leitor Fatecano, que</p>
-            <p>mora longe da sua</p>
-            <p>unidade!</p>
-          </div>
-        </section>
+  const divSkeleton = {display:'flex', justifyContent:'center', alignItems:'center', margin:'3rem'};
+  /*********************************************************/
+  
+  return (
+    <main>
+      <section className={styles.banner}>
+        <img className={styles.imgBanner} src="img_banner.png" alt="Menina lendo um livro na biblioteca" />
+        <div className={styles.txtBanner}>
+          <p>O sistema <span>UniBli</span> veio</p>
+          <p>para facilitar a vida do</p>
+          <p>leitor Fatecano, que</p>
+          <p>mora longe da sua</p>
+          <p>unidade!</p>
+        </div>
+      </section>
 
-        <section className={styles.books}>
-
-          <div className={styles.containerBooks}>
-            <h2>Análise e Desenvolvimento de Sistemas:</h2>
+      <section className={styles.books}>
+        {cursosComLivros.map(curso => (
+          <div key={curso.id_curso} className={styles.containerBooks}>
+            <Link 
+              className={styles.txtNomeCurso}
+              title="Clique para consultar os livros deste curso!" 
+              to={`/acervo/consultar`}
+            >
+              <h2>{curso.nome}:</h2>
+            </Link>
             {error && <p>{error.message}</p>}
             <Swiper
               slidesPerView={3}
@@ -120,90 +147,36 @@ import axios from 'axios';
               breakpoints={breakpoints}
               modules={[Navigation, Pagination]}
             >
-              {
-                loading
-                  ? booksLoading?.map((book) => (
-                      <SwiperSlide key={book?.id}>
-                        <div style={divSkeleton}>
-                          {book?.component}
-                        </div>
-                      </SwiperSlide>
-                    ))
-                  : Array.isArray(books) && books.map((book) => (
-                      <SwiperSlide key={book?.id_livro}>
-                        <Link to={`/reservar/livro/${book?.id_livro}`}>
-                          <CardBook 
-                            disponibilidade={book?.disponibilidadeLivro ? book?.disponibilidadeLivro : book?.quantidadeLivro}
-                            qtd={book?.quantidadeLivro}
-                            img={book?.imagem}
-                            nome={book?.titulo}            
-                            exibirAdds={true}
-                          />
-                        </Link>
-                      </SwiperSlide>
-                    ))
-              }
-            </Swiper>
-          </div>
-
-        {/*
-
-          <div className={styles.containerBooks}>
-            <h2>Gestão de Recursos Humanos:</h2>
-            <Swiper
-              slidesPerView={3}
-              spaceBetween={30}
-              navigation={true}
-              pagination={{
-                dynamicBullets:true,
-                clickable: true,
-              }}
-              breakpoints={breakpoints}
-              modules={[Navigation, Pagination]}
-            >
-              {books.map((book) => (
-                <SwiperSlide key={book.id}>
-                  <Link to={`/reservar/livro/${book.id}`}>
-                    <CardBook disponibilidade={book.disponibilidade}
-                      qtd={book.qtd} img={book.img} nome={book.nome}
+            {
+              loading
+                ? booksLoading.map((book) => (
+                  <SwiperSlide key={book?.id}>
+                    <div style={divSkeleton}>
+                      {book?.component}
+                    </div>
+                  </SwiperSlide>
+                ))
+                : Array.isArray(curso.livros) && curso.livros.map((book) => (
+                  <SwiperSlide key={book?.id_livro}>
+                    <Link to={`/reservar/livro/${book?.id_livro}`}>
+                    <CardBook 
+                      disponibilidade={book?.disponibilidadeLivro ? book?.disponibilidadeLivro : book?.quantidadeLivro}
+                      qtd={book?.quantidadeLivro}
+                      img={book?.imagem}
+                      nome={book?.titulo}            
+                      exibirAdds={true}
                     />
-                  </Link>
-                </SwiperSlide>
-              ))}
+                    </Link>
+                  </SwiperSlide>
+                ))
+            }
             </Swiper>
-          </div>
+          </div> 
+        ))}
+      </section>
 
-          <div className={styles.containerBooks}>
-            <h2>Gestão Comercial:</h2>
-            <Swiper
-              slidesPerView={3}
-              spaceBetween={30}
-              navigation={true}
-              pagination={{
-                dynamicBullets:true,
-                clickable: true,
-              }}
-              breakpoints={breakpoints}
-              modules={[Navigation, Pagination]}
-            >
-              {books.map((book) => (
-                <SwiperSlide key={book.id}>
-                  <Link to={`/reservar/livro/${book.id}`}>
-                    <CardBook disponibilidade={book.disponibilidade}
-                      qtd={book.qtd} img={book.img} nome={book.nome}
-                    />
-                  </Link>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        
-        */}
+    </main>
+  );
+}
 
-        </section>
-
-      </main>
-    );
-  }
-
-  export default ConsultarTitulos;
+export default ConsultarTitulos;

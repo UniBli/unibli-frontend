@@ -41,7 +41,38 @@
    text-align: justify;
 }
 
-.books h2 {
+.books .txtNomeCurso {
+    all: unset;
+    display: block;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.books .txtNomeCurso h2 {
+    all: unset;
+    display: block;
+    font: inherit; /* mantém o estilo do h2 */
+    color: inherit;
+}
+
+.txtNomeCurso {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+}
+
+.txtNomeCurso:hover{
+    text-decoration: underline;
+    text-decoration-thickness: 5px; /* Espessura da linha */
+    
+}
+
+.books .txtNomeCurso h2 {
     margin-bottom: 30px;
     color: #055904;
     /* font-size: 35px; */
@@ -135,7 +166,7 @@
     .banner {
         height: 70vh;   
     }    
-    .books h2 {
+    .books .txtNomeCurso h2 {
         font-size: 1.5rem;
         margin-right: 20px;
     }

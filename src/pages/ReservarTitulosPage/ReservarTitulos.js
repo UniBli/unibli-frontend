@@ -34,13 +34,13 @@ const ReservarTitulos = ({origin, integrado}) => {
 
     useEffect(()=>{
         setLoading(true)
-        axios.get(`${origin}/acervo/livro/${bookId}`)
+        axios.get(`${origin}/acervo/livros/${bookId}`)
         .then((resp) => {
           setBook(resp?.data?.livro)
           setLoading(false)
         }).catch((error) => {
             //console.error('Deu erro (error):', error);
-            setError(error);
+            setError(error.message);
             setBook([]); // Defina como array vazio em caso de erro
             setLoading(false);    
         });

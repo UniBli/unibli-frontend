@@ -22,8 +22,13 @@ const NavBar = ({isAuthenticated, origin, integrado}) => {
                         alt='Logo UniBli'
                         />
                     </Navbar.Brand>
-                </Link>    
+                </Link>
                 <InputPesquisa className={styles.search}/>
+                <Link 
+                    to={`/acervo/consultar`}
+                >
+                    <p className={styles.verAcervoCompleto}>Ver acervo completo</p>
+                </Link>    
                 {isAuthenticated ? <MenuHamburger origin={origin} integrado={integrado}/> : <LoginButton className={styles.loginButton}/>  }              
             </Navbar>
     );

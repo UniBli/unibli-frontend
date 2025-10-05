@@ -34,7 +34,15 @@
   justify-content: center;
 }
 
-  
+.verAcervoCompleto{
+  color:#055904;
+  text-align: center;
+}
+.verAcervoCompleto:hover{
+  text-decoration: underline;
+  text-decoration-thickness: 2px; /* Espessura da linha */
+
+}
 
 /*Media queries*/
 /*usando max-width se lê: 569px é o seu máximo, passou aplica outro style*/

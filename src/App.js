@@ -41,7 +41,7 @@ const App = () => {
     console.log("useEffect do Integrado (A)", integrado)
     if(user?.sub){
       axios
-        .get(`${serverOrigin}/usuarios/user/${user?.sub}`)
+        .get(`${serverOrigin}/usuarios/usuario/${user?.sub}`)
         .then((resp) => {     
           setUsuarioUnibliBd(resp?.data.usuario)          
         })
