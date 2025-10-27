@@ -37,6 +37,7 @@
 .verAcervoCompleto{
   color:#055904;
   text-align: center;
+  margin-right: 15px;
 }
 .verAcervoCompleto:hover{
   text-decoration: underline;

@@ -2,6 +2,8 @@
 import CardBook from '../../components/CardBook/CardBook';
 import { Link } from 'react-router-dom';
 import { Skeleton } from 'primereact/skeleton';
+import { ScrollTop } from 'primereact/scrolltop';
+
 
 // CSS scoped
 import styles from './styles/ConsultarTitulos.module.css';
@@ -126,6 +128,8 @@ const ConsultarTitulos = ({origin}) => {
       </section>
 
       <section className={styles.books}>
+        <ScrollTop />
+
         {cursosComLivros.map(curso => (
           <div key={curso.id_curso} className={styles.containerBooks}>
             <Link 

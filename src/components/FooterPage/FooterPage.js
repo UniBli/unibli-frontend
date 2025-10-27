@@ -2,7 +2,7 @@
 import styles from './styles/FooterPage.module.css';
 import { Link } from 'react-router-dom';
 
-const FooterPage = () => {
+const FooterPage = ({logo}) => {
   return (
     <>
       <section id={styles.footer}>
@@ -10,7 +10,7 @@ const FooterPage = () => {
           <Link to="/">
 
           <img
-            src='https://raw.githubusercontent.com/UniBli/unibli-frontend/main/public/img/logoUniBliTexto_F_Negativo.svg'
+            src={logo}
             className='d-inline-block align-top'
             alt='Logo UniBli'
             />

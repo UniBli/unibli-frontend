@@ -1,0 +1,57 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 5px;
+}
+.container > h3{
+    margin-bottom: 10px;
+}
+
+.divCardFiltro{
+    height: 15vh;
+    overflow-y: scroll;
+}
+
+.container:last-of-type .divCardFiltro {
+  height: auto;
+}
+
+.cardFiltroContent{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    font-size: 10px;
+    gap: 5px;
+}
+
+.lblCheckbox{
+    display: flex;
+    gap: 5px;
+}
+
+
+/*Media queries*/
+@media (max-width:1140px){
+
+    .container{
+        align-items: center;
+        width: 15vw;
+    }
+
+    .cardFiltroContent{
+        gap: 15px;
+    }
+
+}
+
+@media (max-width:500px){
+
+     .container{
+        align-items: flex-start;
+        width:100%;
+    }
+
+    
+}

@@ -1,10 +1,11 @@
 // components
 import CardBook from '../../components/CardBook/CardBook';
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { DataScroller } from 'primereact/datascroller';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
-
+import FiltroLivro from '../../components/FiltroLivro/FiltroLivro'
+import { ScrollTop } from 'primereact/scrolltop';
 
 // css scoped
 import styles from './styles/ResultadoConsultarTitulos.module.css'
@@ -22,33 +23,69 @@ import axios from 'axios';
 
 const ResultadoConsultarTitulos = ({origin}) => {
 
-   //DataScroller
+  //DataScroller
   const ds = useRef(null);
 
+  const navigate = useNavigate();
   const [ searchParams ] = useSearchParams();
 
-  const [books, setBooks] = useState('')
 
-  const url = `${origin}/acervo/livros?${searchParams}`
+  const [books, setBooks] = useState([])
+  
+  const [fatecs, setFatecs] = useState([])
+  const [cursos, setCursos] = useState([])
+  const [autores, setAutores] = useState([])  
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
 
+  const urlTitulos = `${origin}/acervo/livros?${searchParams}`
+  const urlFatecs = `${origin}/fatecs`
+  const urlCursos = `${origin}/cursos`
+  
 
-  useEffect(()=>{
-    setLoading(true)
-    axios.get(url)
-    .then((resp) => {
-      setBooks(resp.data)
-      setLoading(false)
-    }).catch((error) => {
-      console.error('Deu erro (error):', error);
-      setError(error);
-      setBooks([]); // Defina como array vazio em caso de erro
-      setLoading(false);
-    });
-  },[url])
 
+  useEffect(() => {
+    setLoading(true);
+
+    // Faz todas as requisições ao mesmo tempo
+    Promise.all([
+      axios.get(urlTitulos),
+      axios.get(urlFatecs),
+      axios.get(urlCursos)
+    ])
+      .then(([respBooks, respFatecs, respCursos]) => {
+        // Popula os estados
+        setBooks(respBooks.data || []);
+        setFatecs(respFatecs.data.fatecs || []);
+        setCursos(respCursos.data || []);
+
+        // Extrai os autores únicos dos livros
+        const autoresUnicos = [
+          ...new Set(
+            (respBooks.data || [])
+              .map((book) => book.autor)
+              .filter((autor) => !!autor) // ignora nulos/undefined
+          )
+        ];
+        setAutores(autoresUnicos);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+        setError("Erro ao buscar dados do servidor.");
+        setBooks([]);
+        setFatecs([]);
+        setCursos([]);
+        setAutores([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [urlTitulos, urlFatecs, urlCursos]);
+
+   const voltar = () => {
+    navigate('/acervo/consultar'); // Volta para a página sem filtros
+  };
 
   //Cards
   const itemTemplate = (book) => {
@@ -69,21 +106,6 @@ const ResultadoConsultarTitulos = ({origin}) => {
           onClick={() => ds.current.load()}
         />
       );
-  
-
-
-
-  //  /****************** PARA LOADING DO BOOOK ******************/
-  //     const booksLoading =[
-  //       {id:1, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-  //       {id:2, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-  //       {id:3, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-     
-  //     ]
-  
-  //     const divSkeleton = {display:'flex', justifyContent:'center', alignItems:'center', margin:'3rem'};
-  //     /*********************************************************/    
-
 
       
   return (
@@ -95,25 +117,62 @@ const ResultadoConsultarTitulos = ({origin}) => {
             : loading
                 ?(<>
                   <h2>Buscando livro(s) ...</h2>
-                  <div style={{display:'flex', justifyContent:'start', alignItems:'center', flexDirection:'column-reverse', height:'90vh', paddingTop:'20vh'}}>
-                   
-                        <ProgressSpinner style={{width: '100px', height: '100px', display:'flex',}} strokeWidth="4" />  
-                    {/* <div style={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'row', flexWrap:'wrap'}}>
-                      {
-                        booksLoading?.map((book) => (
-                          <div key={book?.id} style={divSkeleton}>
-                            {book?.component}
-                          </div>
-                      ))
-                      }
-                    </div> */}
+                  <div 
+                    style={{
+                        display:'flex', justifyContent:'start', 
+                        alignItems:'center', flexDirection:'column-reverse', 
+                        height:'90vh', paddingTop:'20vh'
+                    }}
+                  >
+                    <ProgressSpinner 
+                      style={{
+                        width: '100px', 
+                        height: '100px', 
+                        display:'flex'
+                      }} 
+                      strokeWidth="4" 
+                    />  
                   </div>
 
                   </>
                 )
                 : ( 
                   <>
-                    <h2 >{books.length} livro(s) encontrado(s):</h2>
+                    <div style={{ 
+                        display: 'flex', 
+                        justifyItems:'center',
+                        alignItems: 'center',
+                        marginBottom: '20px',
+                        flexWrap:'wrap',
+                        gap:'20px'
+                    }}>
+                      {books.length === 0 && (
+                            <Button 
+                              title='Voltar'
+                              style={{
+                                backgroundColor:'#055904',
+                                color:'#FFF', 
+                                border:'0px', 
+                                marginLeft:'30px',
+                                width:'50px',
+                                height:'50px',
+                                borderRadius:'50%'
+                              }}    
+                              icon="pi pi-arrow-left" 
+                              aria-label="Filter" 
+                              onClick={voltar}
+                            />
+                        )}
+                      <h2 style={{ 
+                        width:'50%',
+                        height:'50px',
+                        padding:'0px 20px'
+                    }}>
+                        {books.length} livro(s) encontrado(s):
+                    </h2>
+                    </div>
+                    <ScrollTop />
+
                     {
                       Array.isArray(books) && books.length === 0
                         ?(
@@ -122,8 +181,21 @@ const ResultadoConsultarTitulos = ({origin}) => {
                           </div>
                         )
                         :(
-                          <div className={styles.div_results}>
-                          <DataScroller ref={ds} value={books} itemTemplate={itemTemplate} rows={5} loader footer={footer} />
+                          <div 
+                            className={styles.div_results}
+                          >
+                            <FiltroLivro cursos={cursos} autores={autores} fatecs={fatecs} />
+
+                          
+                            <DataScroller 
+                              className={styles.dataScrollerUniBli}
+                              ref={ds} 
+                              value={books} 
+                              itemTemplate={itemTemplate} 
+                              rows={5} 
+                              loader 
+                              footer={footer} 
+                            />
                           </div>
                         )         
                     }

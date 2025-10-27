@@ -3,9 +3,10 @@
 #0.062cc -> #0.55904
 
 r.gba(38, 143, 255, 0.5) -> r.gba(72, 180, 97, 0.5) 
-
-
 */
+
+
+
 
 
 .p-toast .p-toast-message {
@@ -138,7 +139,7 @@ span.p-button-icon.p-c.pi.pi-bars {
 .p-datascroller-list {
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 ul.p-datascroller-list li {
@@ -455,3 +456,30 @@ ul.p-datascroller-list li {
   border-style: none !important;
 }
 
+
+
+.p-datascroller .p-datascroller-content {
+    padding: 0 !important;
+}
+
+
+
+.p-datascroller.p-component {
+    width: 75%;
+    margin: 0 20px;
+}
+
+
+.pi.pi-eraser{
+  font-size: 1.5rem !important;
+}
+
+
+.pi.pi-filter, .pi.pi-filter-slash{
+    font-size: 1.3rem !important;
+}
+
+.pi.pi-arrow-left{
+    font-size: 1.5rem !important;
+    font-weight: 900;
+}

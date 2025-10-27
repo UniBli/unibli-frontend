@@ -21,6 +21,10 @@ import './App.css'
 import axios from 'axios';
 
 const App = () => {
+
+  const logoUniBliNavFPositivo = process.env.PUBLIC_URL + "/img/logoUniBliNav_F_Positivo.svg";
+  const logoUniBliTextoFNegativo = process.env.PUBLIC_URL + "/img/logoUniBliTexto_F_Negativo.svg";
+  const imgNotFoundPath = process.env.PUBLIC_URL + "/imgStatus/404-bro.svg"; 
   // hook do auth0
   const {user, isAuthenticated} = useAuth0();
   
@@ -71,7 +75,7 @@ const App = () => {
   return (
     <>
       <BrowserRouter>    
-        <NavBar isAuthenticated={isAuthenticated} origin={serverOrigin} integrado={integrado}/>
+        <NavBar logo={logoUniBliNavFPositivo} isAuthenticated={isAuthenticated} origin={serverOrigin} integrado={integrado}/>
         
         <Routes>       
           {/* Rotas Privadas */}
@@ -83,9 +87,9 @@ const App = () => {
           <Route path="/" element={<ConsultarTitulos origin={serverOrigin}/>}/>
           <Route path="/reservar/livro/:bookId" element={<ReservarTitulos origin={serverOrigin} integrado={integrado} />}/>
           <Route path="/acervo/consultar" element={<ResultadoConsultarTitulos origin={serverOrigin}/>}/>
-          <Route path="*" element={<NotFound/>}/>
+          <Route path="*" element={<NotFound statusImg={imgNotFoundPath}/>}/>
         </Routes>    
-        <FooterPage/>
+        <FooterPage logo={logoUniBliTextoFNegativo}/>
       </BrowserRouter>
 
      
