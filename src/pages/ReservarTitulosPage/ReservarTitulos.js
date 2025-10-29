@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { ToggleButton } from 'primereact/togglebutton';
 import { Divider } from 'primereact/divider';
+import { Avatar } from 'primereact/avatar';
 
 
 import styles from './styles/ReservarTitulos.module.css';
@@ -29,23 +30,37 @@ const ReservarTitulos = ({origin, integrado}) => {
     const toast = useRef(null);
 
     const [book, setBook] = useState([])
+    const [fatecs, setFatecs] = useState([])
+
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
+    const urlTitulo = `${origin}/acervo/livros/${bookId}`
+    const urlFatecs = `${origin}/fatecs?livroId=${bookId}`
+
     useEffect(()=>{
         setLoading(true)
-        axios.get(`${origin}/acervo/livros/${bookId}`)
-        .then((resp) => {
-          setBook(resp?.data?.livro)
-          setLoading(false)
+
+        Promise.all([
+            axios.get(urlTitulo),
+            axios.get(urlFatecs)
+        ])
+        .then(([respBook, respFatecs]) => {
+        // Popula os estados
+            setBook(respBook?.data?.livro || []);
+            setFatecs(respFatecs?.data?.fatecs || []);
+            setLoading(false)
         }).catch((error) => {
             //console.error('Deu erro (error):', error);
             setError(error.message);
-            setBook([]); // Defina como array vazio em caso de erro
+            setBook([]);
+            setFatecs([]);
             setLoading(false);    
         });
-      },[origin, bookId])  
-    
+       
+
+      },[urlTitulo, urlFatecs])  
+
     // Para a página sempre recarregar mostrando o topo primeiro
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -84,6 +99,7 @@ const ReservarTitulos = ({origin, integrado}) => {
         }
     };
 
+    
     if(loading){
         return(
             <ReservarTitulosLoading/>
@@ -151,24 +167,72 @@ const ReservarTitulos = ({origin, integrado}) => {
 
                         <Divider type="solid" />
                     </div>
+
                     <div className={styles.div_details}>
                         <ul>
-
-                            {book?.edicao && (<li>Edição: {book?.edicao}</li>)}
+                            {book?.quantidadePaginas && (<li>Número de páginas: {book?.quantidadePaginas}</li>)}
+                            {book?.idioma && (<li>idioma: {book?.idioma}</li>)}
                             {book?.editora && (<li>Editora: {book?.editora}</li>)}
+                            {book?.edicao && (<li>Edição: {book?.edicao}</li>)}
                             {book?.genero && (<li>Gênero: {book?.genero}</li>)}
-                            {book?.idioma && (<li>Idioma: {book?.idioma}</li>)}
-                            {book?.isbn10 && (<li>ISBN10: {book?.isbn10}</li>)}
-                            {book?.isbn13 && (<li>ISBN13: {book?.isbn13}</li>)}
-                            {book?.quantidadePaginas && (<li>Nº de Páginas: {book?.quantidadePaginas}</li>)}
+                            {book?.isbn10 && book?.isbn13  
+                                ? (<li>ISBN10/ISBN13: {book?.isbn10}/{book?.isbn13}</li>)
+                                : book?.isbn10 
+                                    ?(<li>ISBN: {book?.isbn10}</li>)
+                                    : book?.isbn13 && (<li>ISBN: {book?.isbn13}</li>)
+                            }
                         </ul>
                     </div>
                     <div className={styles.div_autor}>
-                        <h2>Autora(s)/Autor(es)</h2>
-                        <p>{book?.autor}</p>
+                        <h2>Autora(s)/Autor(es)</h2>        
+                        <div className={styles.autorInformation}>
+                            <div className={styles.div_autorIcon}>
+                                {book?.autor?.split(',').map((autor,i) => {
+                                    const randomLightColor = () => {
+                                        const r = Math.floor(120 + Math.random() * 135); // de 120 a 255
+                                        const g = Math.floor(120 + Math.random() * 135);
+                                        const b = Math.floor(120 + Math.random() * 135);
+                                        return `rgb(${r}, ${g}, ${b})`;
+                                    };
+
+
+                                    return (
+                                        <Avatar 
+                                            key={`${autor}_${i}`}
+                                            className={styles.div_autorProfile}
+                                            style={{
+                                                backgroundColor:randomLightColor(),
+                                                color: '#ffffff'
+                                            }}
+                                            icon="pi pi-user" 
+                                            size="xlarge" 
+                                            shape="circle" />
+                        
+                                    )
+                                })}
+                            </div>
+                            <div className={styles.div_autorProfileTxt}>
+                                {book?.autor?.split(',').map((autor, i, arr ) => (
+                                    <p key={i}>
+                                        {autor.trim()}{i < arr.length - 1 && ','}
+                                    </p>
+                                ))}
+                            </div>
+                            
+
+                        </div>
                     </div>
                     <div className={styles.div_ondeEncontrar}>
                         <h2>Onde encontrar</h2>
+                        <div className={styles.div_fatecs}>
+                            {fatecs.map((fatec) => (
+                            <div key={fatec.id_fatec}>
+                                <p>{fatec.nome}</p>
+                            </div>
+                            ))}
+                            
+                        </div>
+
                     </div>
                 </div>
 

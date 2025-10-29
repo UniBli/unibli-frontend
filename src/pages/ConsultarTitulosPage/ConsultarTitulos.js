@@ -130,51 +130,146 @@ const ConsultarTitulos = ({origin}) => {
       <section className={styles.books}>
         <ScrollTop />
 
-        {cursosComLivros.map(curso => (
+
+        {
+          loading 
+            ? (
+              <>
+                <Swiper
+                  slidesPerView={3}
+                  spaceBetween={30}
+                  navigation={true}
+                  pagination={{
+                    dynamicBullets:true,
+                    clickable: true,
+                  }}
+                  breakpoints={breakpoints}
+                  modules={[Navigation, Pagination]}
+                > 
+                {
+                  booksLoading.map((book) => (
+                    <SwiperSlide key={book?.id}>
+                      <div style={divSkeleton}>
+                        {book?.component}
+                      </div>
+                    </SwiperSlide>
+                  ))
+                }
+                </Swiper>
+                <Swiper
+                  slidesPerView={3}
+                  spaceBetween={30}
+                  navigation={true}
+                  pagination={{
+                    dynamicBullets:true,
+                    clickable: true,
+                  }}
+                  breakpoints={breakpoints}
+                  modules={[Navigation, Pagination]}
+                > 
+                {
+                  booksLoading.map((book) => (
+                    <SwiperSlide key={book?.id}>
+                      <div style={divSkeleton}>
+                        {book?.component}
+                      </div>
+                    </SwiperSlide>
+                  ))
+                }
+                </Swiper>
+                <Swiper
+                  slidesPerView={3}
+                  spaceBetween={30}
+                  navigation={true}
+                  pagination={{
+                    dynamicBullets:true,
+                    clickable: true,
+                  }}
+                  breakpoints={breakpoints}
+                  modules={[Navigation, Pagination]}
+                > 
+                {
+                  booksLoading.map((book) => (
+                    <SwiperSlide key={book?.id}>
+                      <div style={divSkeleton}>
+                        {book?.component}
+                      </div>
+                    </SwiperSlide>
+                  ))
+                }
+                </Swiper>
+                <Swiper
+                  slidesPerView={3}
+                  spaceBetween={30}
+                  navigation={true}
+                  pagination={{
+                    dynamicBullets:true,
+                    clickable: true,
+                  }}
+                  breakpoints={breakpoints}
+                  modules={[Navigation, Pagination]}
+                > 
+                {
+                  booksLoading.map((book) => (
+                    <SwiperSlide key={book?.id}>
+                      <div style={divSkeleton}>
+                        {book?.component}
+                      </div>
+                    </SwiperSlide>
+                  ))
+                }
+                </Swiper>
+              </>
+            )
+            : 
+            cursosComLivros.map(curso => (
           <div key={curso.id_curso} className={styles.containerBooks}>
-            <Link 
-              className={styles.txtNomeCurso}
-              title="Clique para consultar os livros deste curso!" 
-              to={`/acervo/consultar`}
-            >
-              <h2>{curso.nome}:</h2>
-            </Link>
             {error && <p>{error.message}</p>}
-            <Swiper
-              slidesPerView={3}
-              spaceBetween={30}
-              navigation={true}
-              pagination={{
-                dynamicBullets:true,
-                clickable: true,
-              }}
-              breakpoints={breakpoints}
-              modules={[Navigation, Pagination]}
-            >
             {
-              loading
-                ? booksLoading.map((book) => (
-                  <SwiperSlide key={book?.id}>
-                    <div style={divSkeleton}>
-                      {book?.component}
-                    </div>
-                  </SwiperSlide>
-                ))
-                : Array.isArray(curso.livros) && curso.livros.map((book) => (
-                  <SwiperSlide key={book?.id_livro}>
-                    <Link to={`/reservar/livro/${book?.id_livro}`}>
-                    <CardBook 
-                      disponibilidade={book?.disponibilidadeLivro ? book?.disponibilidadeLivro : book?.quantidadeLivro}
-                      qtd={book?.quantidadeLivro}
-                      img={book?.imagem}
-                      nome={book?.titulo}            
-                      exibirAdds={true}
-                    />
-                    </Link>
-                  </SwiperSlide>
-                ))
-            }
-            </Swiper>
+              <>
+                <Link 
+                  className={styles.txtNomeCurso}
+                  title="Clique para consultar os livros deste curso!" 
+                  to={`/acervo/consultar`}
+                >
+                  <h2>{curso.nome}:</h2>
+                </Link>
+                <Swiper
+                  slidesPerView={3}
+                  spaceBetween={30}
+                  navigation={true}
+                  pagination={{
+                    dynamicBullets:true,
+                    clickable: true,
+                  }}
+                  breakpoints={breakpoints}
+                  modules={[Navigation, Pagination]}
+                >
+                {
+                  Array.isArray(curso.livros) && curso.livros.map((book) => (
+                    <SwiperSlide key={book?.id_livro}>
+                      <Link to={`/reservar/livro/${book?.id_livro}`}>
+                      <CardBook 
+                        disponibilidade={book?.disponibilidadeLivro ? book?.disponibilidadeLivro : book?.quantidadeLivro}
+                        qtd={book?.quantidadeLivro}
+                        img={book?.imagem}
+                        nome={book?.titulo}            
+                        exibirAdds={true}
+                      />
+                      </Link>
+                    </SwiperSlide>
+                  ))
+                }
+                </Swiper>
+              </>
+        }
+
+
+        
+
+
+            
+            
           </div> 
         ))}
       </section>

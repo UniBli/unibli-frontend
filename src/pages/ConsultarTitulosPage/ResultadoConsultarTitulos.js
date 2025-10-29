@@ -42,6 +42,7 @@ const ResultadoConsultarTitulos = ({origin}) => {
   const urlTitulos = `${origin}/acervo/livros?${searchParams}`
   const urlFatecs = `${origin}/fatecs`
   const urlCursos = `${origin}/cursos`
+  const urlAutores = `${origin}/acervo/livros/autores`
   
 
 
@@ -52,23 +53,15 @@ const ResultadoConsultarTitulos = ({origin}) => {
     Promise.all([
       axios.get(urlTitulos),
       axios.get(urlFatecs),
-      axios.get(urlCursos)
+      axios.get(urlCursos),
+      axios.get(urlAutores)
     ])
-      .then(([respBooks, respFatecs, respCursos]) => {
+      .then(([respBooks, respFatecs, respCursos, respAutores]) => {
         // Popula os estados
         setBooks(respBooks.data || []);
         setFatecs(respFatecs.data.fatecs || []);
         setCursos(respCursos.data || []);
-
-        // Extrai os autores únicos dos livros
-        const autoresUnicos = [
-          ...new Set(
-            (respBooks.data || [])
-              .map((book) => book.autor)
-              .filter((autor) => !!autor) // ignora nulos/undefined
-          )
-        ];
-        setAutores(autoresUnicos);
+        setAutores(respAutores.data || []);
       })
       .catch((error) => {
         console.error("Erro ao buscar dados:", error);
@@ -81,7 +74,7 @@ const ResultadoConsultarTitulos = ({origin}) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [urlTitulos, urlFatecs, urlCursos]);
+  }, [urlTitulos, urlFatecs, urlCursos, urlAutores]);
 
    const voltar = () => {
     navigate('/acervo/consultar'); // Volta para a página sem filtros

@@ -11,11 +11,10 @@ const FiltroLivro = ({ cursos = [], autores = [], fatecs = [] }) => {
   const [selectedAutores, setSelectedAutores] = useState([]);
   const [selectedFatecs, setSelectedFatecs] = useState([]);
 
-  
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-   // Inicializa os filtros baseados na URL atual
+  // Inicializa os filtros baseados na URL atual
   useEffect(() => {
     const cursoParam = searchParams.get('cursoId');
     const autorParam = searchParams.get('autor');
@@ -26,56 +25,88 @@ const FiltroLivro = ({ cursos = [], autores = [], fatecs = [] }) => {
     setSelectedAutores([]);
     setSelectedFatecs([]);
 
+    // Processa parâmetros que podem ser strings separadas por vírgula
+    const processParam = (param) => {
+      if (!param) return [];
+      if (Array.isArray(param)) return param;
+      return param.split(',').map(item => item.trim());
+    };
+
     // Preenche com os valores da URL
     if (cursoParam) {
-      const curso = cursos.find(c => c.id_curso == cursoParam);
-      if (curso) setSelectedCursos([curso.nome]);
+      const cursoIds = processParam(cursoParam);
+      const cursosSelecionados = cursos
+        .filter(c => cursoIds.includes(c.id_curso.toString()))
+        .map(c => c.nome);
+      setSelectedCursos(cursosSelecionados);
     }
     
     if (autorParam) {
-      setSelectedAutores([autorParam]);
+      // AGORA: autores são processados como array
+      const autoresSelecionados = processParam(autorParam);
+      setSelectedAutores(autoresSelecionados);
     }
     
     if (fatecParam) {
-      const fatec = fatecs.find(f => f.id_fatec == fatecParam);
-      if (fatec) setSelectedFatecs([fatec.nome]);
+      const fatecIds = processParam(fatecParam);
+      const fatecsSelecionadas = fatecs
+        .filter(f => fatecIds.includes(f.id_fatec.toString()))
+        .map(f => f.nome);
+      setSelectedFatecs(fatecsSelecionadas);
     }
   }, [searchParams, cursos, fatecs]);
-
 
   const aplicarFiltros = () => {
     const params = new URLSearchParams();
 
-    // Adiciona apenas o primeiro curso selecionado (ou adapte para múltiplos se necessário)
+    // Envia como string separada por vírgula
     if (selectedCursos.length > 0) {
-      const cursoSelecionado = cursos.find(curso => curso.nome === selectedCursos[0]);
-      if (cursoSelecionado) {
-        params.append('cursoId', cursoSelecionado.id_curso);
+      const cursoIds = selectedCursos
+        .map(cursoNome => {
+          const cursoSelecionado = cursos.find(curso => curso.nome === cursoNome);
+          return cursoSelecionado?.id_curso;
+        })
+        .filter(id => id !== undefined);
+      
+      if (cursoIds.length > 0) {
+        params.append('cursoId', cursoIds.join(','));
       }
     }
 
-    // Adiciona apenas o primeiro autor selecionado
+    // AGORA: autores também são enviados como string separada por vírgula
     if (selectedAutores.length > 0) {
-      params.append('autor', selectedAutores[0]);
+      params.append('autor', selectedAutores.join(','));
     }
 
-    // Adiciona apenas a primeira fatec selecionada
     if (selectedFatecs.length > 0) {
-      const fatecSelecionada = fatecs.find(fatec => fatec.nome === selectedFatecs[0]);
-      if (fatecSelecionada) {
-        params.append('fatecId', fatecSelecionada.id_fatec);
+      const fatecIds = selectedFatecs
+        .map(fatecNome => {
+          const fatecSelecionada = fatecs.find(fatec => fatec.nome === fatecNome);
+          return fatecSelecionada?.id_fatec;
+        })
+        .filter(id => id !== undefined);
+      
+      if (fatecIds.length > 0) {
+        params.append('fatecId', fatecIds.join(','));
       }
     }
 
-    // Navega para a mesma página com os novos parâmetros
-    navigate(`/acervo/consultar?${params.toString()}`);
+    const url = `/acervo/consultar?${params.toString()}`;
+    console.log('Navegando para URL:', url);
+    console.log('Parâmetros enviados:', {
+      cursos: selectedCursos,
+      autores: selectedAutores,
+      fatecs: selectedFatecs
+    });
+    
+    navigate(url);
   };
 
   const limparFiltros = () => {
     setSelectedCursos([]);
     setSelectedAutores([]);
     setSelectedFatecs([]);
-    navigate('/acervo/consultar'); // Volta para a página sem filtros
+    navigate('/acervo/consultar');
   };
 
   const hasActiveFilters = selectedCursos.length > 0 || selectedAutores.length > 0 || selectedFatecs.length > 0;
@@ -84,23 +115,22 @@ const FiltroLivro = ({ cursos = [], autores = [], fatecs = [] }) => {
     <div className={styles.containerfiltro}>
       <div id={styles.filtro}>
         <div className={styles.header}>
-          <div className={styles.filtrarIcoTxt}>
-          <Button
-            title="Filtrar"
-            style={{backgroundColor:'#055904', border:'#055904'}}
-            icon={!hasActiveFilters ? "pi pi-filter-slash" : "pi pi-filter"} 
-            onClick={aplicarFiltros}
-            disabled={!hasActiveFilters}
-          />
           <h3 className={styles.txtFiltro}>Filtro</h3>
+          <div className={styles.filtrarIcos}>
+            <Button
+              className={styles.btn_filtrar}
+              title="Filtrar"
+              icon={!hasActiveFilters ? "pi pi-filter-slash" : "pi pi-filter"} 
+              onClick={aplicarFiltros}
+              disabled={!hasActiveFilters}
+            />
+            <Button
+              className={styles.btn_limpar}
+              title="Limpar Filtro"
+              icon="pi pi-eraser" 
+              onClick={limparFiltros}
+            />
           </div>
-          <Button 
-            title="Limpar Filtro"
-            style={{backgroundColor:'#055904', border:'#055904'}}
-            icon="pi pi-eraser" 
-            onClick={limparFiltros}
-            disabled={!hasActiveFilters}
-          />
         </div>
 
         <form  onSubmit={(e) => e.preventDefault()}>

@@ -81,7 +81,7 @@ const EditarConta = ({auth0Domain, origin, integrado, setIntegrado,  usuarioUnib
       });
 
       //Create no UniBli - Aiven
-      await axios.post(`${origin}/usuarios/usuario/cadastrar`, {
+      await axios.post(`${origin}/usuarios/cadastrar/usuario`, {
         nome, 
         cpf, 
         endereco, 

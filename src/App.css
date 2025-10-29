@@ -471,12 +471,13 @@ ul.p-datascroller-list li {
 
 
 .pi.pi-eraser{
-  font-size: 1.5rem !important;
+  font-size: 0.9rem !important;
 }
 
 
 .pi.pi-filter, .pi.pi-filter-slash{
-    font-size: 1.3rem !important;
+    font-size: 0.75rem !important;
+
 }
 
 .pi.pi-arrow-left{

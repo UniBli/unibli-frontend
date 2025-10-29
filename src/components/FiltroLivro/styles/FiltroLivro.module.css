@@ -37,11 +37,31 @@
     background-color: #055904;
 }
 
-#filtro .header .filtrarIcoTxt{
+#filtro .header .filtrarIcos{
     display: flex;
     flex-direction: row;
     gap:10px;
 }
+
+.btn_filtrar, .btn_limpar{
+    color: #055904 !important;
+    background-color: #FFF !important;
+    border: #055904  !important;
+    height: 30px;
+    width: 30px !important;
+    border-radius: 50% !important;
+    transition: all 1s ease !important;
+}
+
+.btn_filtrar:hover, .btn_limpar:hover,
+.btn_filtrar:focus, .btn_limpar:focus
+{
+    color: #FFF !important;
+    background-color: #055904 !important;
+    border: #FFF  !important;
+}
+
+
 
 /*Media queries*/
 @media (max-width:1140px){
