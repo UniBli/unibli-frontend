@@ -6,7 +6,7 @@ import { Toast } from 'primereact/toast';
 import { ToggleButton } from 'primereact/togglebutton';
 import { Divider } from 'primereact/divider';
 import { Avatar } from 'primereact/avatar';
-
+import { SelectButton } from 'primereact/selectbutton';
 
 import styles from './styles/ReservarTitulos.module.css';
 
@@ -17,11 +17,7 @@ import { useParams } from 'react-router-dom';
 
 import axios from 'axios';
 
-// custom hook
-//import { useFetch } from '../../hooks/useFetch';  
-
-
-const ReservarTitulos = ({origin, integrado}) => {
+const ReservarTitulos = ({origin, integrado, usuario}) => {
     
     const { bookId } = useParams();
     const { isAuthenticated } = useAuth0();
@@ -38,6 +34,11 @@ const ReservarTitulos = ({origin, integrado}) => {
     const urlTitulo = `${origin}/acervo/livros/${bookId}`
     const urlFatecs = `${origin}/fatecs?livroId=${bookId}`
 
+    const [selectedFatecId, setSelectedFatecId] = useState(null);
+    
+    // Novo state para controlar as mensagens do toast
+    const [toastMessage, setToastMessage] = useState(null);
+
     useEffect(()=>{
         setLoading(true)
 
@@ -51,7 +52,6 @@ const ReservarTitulos = ({origin, integrado}) => {
             setFatecs(respFatecs?.data?.fatecs || []);
             setLoading(false)
         }).catch((error) => {
-            //console.error('Deu erro (error):', error);
             setError(error.message);
             setBook([]);
             setFatecs([]);
@@ -66,36 +66,101 @@ const ReservarTitulos = ({origin, integrado}) => {
         window.scrollTo(0, 0);
     }, []);
 
-    console.log('book', book);
+    // useEffect para mostrar toast quando houver mensagem
+    useEffect(() => {
+        if (toastMessage && toast.current) {
+            toast.current.show(toastMessage);
+            setToastVisible(true);
+            setTimeout(() => {
+                setToastVisible(false);
+                setToastMessage(null);
+            }, 3000);
+        }
+    }, [toastMessage]);
 
     // Função para lidar com a mudança do estado de checked
     const handleCheckedChange = (e) => {
         setChecked(e.value);
     };
     
-    const handleReservation = (e) => {
+    const handleReservation = async (e) => {
         e.preventDefault();
+        
         if (isAuthenticated && !toastVisible) {
             if(integrado){
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Reserva efetuada!' });
-                setToastVisible(true);
-                setTimeout(() => {
-                    setToastVisible(false);
-                }, 3000); // Tempo em milissegundos para ocultar o toast
-            }else if(!integrado){
-                toast.current.show({ severity: 'warn', summary: 'Aviso', detail: 'Conclua seu cadastro para efetuar reservas!' });
-                setToastVisible(true);
-                setTimeout(() => {
-                    setToastVisible(false);
-                }, 3000); // Tempo em milissegundos para ocultar o toast
+                // Verifica se uma FATEC foi selecionada
+                if (!selectedFatecId) {
+                    setToastMessage({ 
+                        severity: 'warn', 
+                        summary: 'Aviso', 
+                        detail: 'Selecione uma FATEC para efetuar a reserva!' 
+                    });
+                    return;
+                }
+
+                try {
+                    setLoading(true);
+                    
+                    // Faz a requisição POST para criar a reserva
+                    const response = await axios.post(`${origin}/reservas/reservar`, {
+                        usuarioId: usuario,
+                        livroId: parseInt(bookId),
+                        fatecId: selectedFatecId
+                    });
+
+                    // Se a requisição foi bem sucedida
+                    if (response.status === 200 || response.status === 201) {
+                        setToastMessage({ 
+                            severity: 'success', 
+                            summary: 'Sucesso', 
+                            detail: 'Reserva efetuada com sucesso!' 
+                        });
+                        setSelectedFatecId(null);
+                        // ATUALIZA A DISPONIBILIDADE DO LIVRO
+                        setBook(prevBook => ({
+                            ...prevBook,
+                            disponibilidadeLivro: prevBook.disponibilidadeLivro - 1
+                        }));
+                    }
+
+                } catch (error) {
+                    console.error('Erro ao efetuar reserva:', error);
+                    
+                    let errorMessage = 'Erro ao efetuar reserva!';
+                    
+                    if (error.response) {
+                        if (error.response.status === 400) {
+                            errorMessage = 'Dados inválidos para reserva!';
+                        } else if (error.response.status === 409) {
+                            errorMessage = 'Reserva já existente ou conflito!';
+                        } else if (error.response.status === 500) {
+                            errorMessage = 'Erro interno do servidor!';
+                        }
+                    }
+                    
+                    setToastMessage({ 
+                        severity: 'error', 
+                        summary: 'Erro', 
+                        detail: errorMessage 
+                    });
+                } finally {
+                    setLoading(false);
+                }
+
+            } else if(!integrado){
+                setToastMessage({ 
+                    severity: 'warn', 
+                    summary: 'Aviso', 
+                    detail: 'Conclua seu cadastro para efetuar reservas!' 
+                });
             }
-           
+        
         } else if (!isAuthenticated && !toastVisible) {
-            toast.current.show({ severity: 'info', summary: 'Info', detail: 'Para efetuar a reserva é necessário fazer login!' });
-            setToastVisible(true);
-            setTimeout(() => {
-                setToastVisible(false);
-            }, 3000); // Tempo em milissegundos para ocultar o toast
+            setToastMessage({ 
+                severity: 'info', 
+                summary: 'Info', 
+                detail: 'Para efetuar a reserva é necessário fazer login!' 
+            });
         }
     };
 
@@ -107,6 +172,9 @@ const ReservarTitulos = ({origin, integrado}) => {
     } else {
         return (
             <>
+            {/* Toast movido para fora de qualquer formulário */}
+            <Toast ref={toast} />
+            
             <section className={styles.section_bookInformationReservation}>
                 {error && <p>{error}</p>}
                 <div className={styles.div_bookButton}>
@@ -122,7 +190,6 @@ const ReservarTitulos = ({origin, integrado}) => {
                             />
                         </div>
 
-                        <Toast ref={toast} onClose={() => setToastVisible(false)} />           
                         <div className={styles.button}>
                                 <Button
                                     type="submit"
@@ -139,6 +206,7 @@ const ReservarTitulos = ({origin, integrado}) => {
                                                 : styles.btnReservar // Integrado
                                             :  styles.disabledButton //precisa logar primeiro
                                     }
+                                    disabled={loading} // Desabilita durante o loading
                                 />
                             </div>
                     </form>
@@ -273,15 +341,16 @@ const ReservarTitulos = ({origin, integrado}) => {
 
                         </div>
                     </div>
+
                     <div className={styles.div_ondeEncontrar}>
                         <h2>Onde encontrar</h2>
                         <div className={styles.div_fatecs}>
-                            {fatecs.map((fatec) => (
-                            <div key={fatec.id_fatec}>
-                                <p>{fatec.nome}</p>
-                            </div>
-                            ))}
-                            
+                            <SelectButton
+                                value={fatecs.find(fatec => fatec.id_fatec === selectedFatecId)}
+                                onChange={(e) => setSelectedFatecId(e.value.id_fatec)}
+                                optionLabel="nome"
+                                options={fatecs}
+                            />
                         </div>
 
                     </div>

@@ -108,9 +108,7 @@ div.div_autorIcon{
 
 
 
-div.div_informationsBook,
-div.div_ondeEncontrar
- {
+div.div_informationsBook {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -126,6 +124,20 @@ div.div_ondeEncontrar
         font-size: 30px;
 }
 
+
+
+div.div_ondeEncontrar{
+    display: flex;
+    width: 100%;
+}
+
+div.div_fatecs{
+    display: flex;
+    width: 100%;
+}
+
+
+    
 
 
 /* div_bookButton */

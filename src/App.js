@@ -85,7 +85,7 @@ const App = () => {
 
           {/* Rotas Públicas */}
           <Route path="/" element={<ConsultarTitulos origin={serverOrigin}/>}/>
-          <Route path="/reservar/livro/:bookId" element={<ReservarTitulos origin={serverOrigin} integrado={integrado} />}/>
+          <Route path="/reservar/livro/:bookId" element={<ReservarTitulos origin={serverOrigin} integrado={integrado} usuario={usuarioUnibliBd?.id_usuario}/>}/>
           <Route path="/acervo/consultar" element={<ResultadoConsultarTitulos origin={serverOrigin}/>}/>
           <Route path="*" element={<NotFound statusImg={imgNotFoundPath}/>}/>
         </Routes>    

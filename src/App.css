@@ -484,3 +484,36 @@ ul.p-datascroller-list li {
     font-size: 1.5rem !important;
     font-weight: 900;
 }
+
+/*RESERVA DE LIVRO - CAMPO: ONDE ENCONTRAR?*/
+div.p-selectbutton.p-buttonset.p-component {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 15px !important;
+}
+
+div.p-selectbutton.p-buttonset.p-component div.p-button.p-component {
+  padding: 12px 20px !important;
+  border-radius: 50px !important;
+  border: 1px solid #055904 !important;
+  color: #055904 !important;
+  background-color: #FFF !important;
+}
+
+div.p-selectbutton.p-buttonset.p-component div.p-button.p-component:hover {
+  color: #FFF !important;
+  background-color: #055904 !important;
+}
+
+/* ESTILO PARA O BOTÃO SELECIONADO */
+div.p-selectbutton.p-buttonset.p-component div.p-button.p-component.p-highlight {
+  color: #FFF !important;
+  background-color: #055904 !important;
+  border-color: #055904 !important;
+}
+
+/* Hover para o botão já selecionado */
+div.p-selectbutton.p-buttonset.p-component div.p-button.p-component.p-highlight:hover {
+  background-color: #044003 !important;
+  border-color: #044003 !important;
+}
