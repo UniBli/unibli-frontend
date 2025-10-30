@@ -9,7 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.9",
     "babel-runtime": "^6.26.0",
-    "primeicons": "^6.0.1",
+    "primeicons": "^7.0.0",
     "primereact": "^9.2.3",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",

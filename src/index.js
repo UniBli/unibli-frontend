@@ -10,6 +10,7 @@ import "primereact/resources/themes/bootstrap4-light-blue/theme.css";//theme
 import "primeicons/primeicons.css";//icons                                      
 import "primereact/resources/primereact.min.css";//core
 
+
 //variaveis de ambiente configuradas no .env
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;

@@ -12,7 +12,7 @@ const CardFiltro = ({
 }) => {
   const handleCheckboxChange = (item) => {
     const value = item[valueKey] ?? item;
-    const id = item[idKey] ?? value;
+    //const id = item[idKey] ?? value;
 
     if (selected.includes(value)) {
       setSelected(selected.filter((v) => v !== value));

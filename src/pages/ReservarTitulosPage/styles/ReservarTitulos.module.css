@@ -9,8 +9,50 @@ section.section_bookInformationReservation {
     margin: 50px;
 }
 /* ---------------------------------- */
+
+div.div_details{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 10px 0px;
+    overflow-x: auto;
+    gap: 15px;
+}
+
+div.div_details div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 15px 5px;
+    min-width: 100px; /* Largura mínima fixa */
+    max-width: 200px; /* Largura máxima */
+    flex-shrink: 0; /* Impede que as divs encolham */
+    word-wrap: break-word;
+}
+
+div.qtdPaginas,
+div.idioma,
+div.editora,
+div.edicao,
+div.genero,
+div.isbn {
+    gap: 10px;
+}
+
+div.div_details p {
+    font-size: 12px;
+    word-break: break-word; /* Quebra palavras longas */
+    overflow-wrap: break-word; /* Quebra palavras longas */
+    width: 100%; /* Garante que o texto ocupe toda a largura disponível */
+}
+div.div_details i{
+    font-size: 25px;
+}
+
+
 div.div_autor, 
-div.div_details,
 div.div_ondeEncontrar
 {
     display: flex;
@@ -19,6 +61,7 @@ div.div_ondeEncontrar
     margin: 10px 0px;
     width: 100%;
 }
+
 div.autorInformation{
     width:100%;
     display:flex;
@@ -66,7 +109,6 @@ div.div_autorIcon{
 
 
 div.div_informationsBook,
-div.div_details, 
 div.div_ondeEncontrar
  {
     display: flex;

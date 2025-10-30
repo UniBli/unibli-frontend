@@ -169,19 +169,70 @@ const ReservarTitulos = ({origin, integrado}) => {
                     </div>
 
                     <div className={styles.div_details}>
-                        <ul>
-                            {book?.quantidadePaginas && (<li>Número de páginas: {book?.quantidadePaginas}</li>)}
-                            {book?.idioma && (<li>idioma: {book?.idioma}</li>)}
-                            {book?.editora && (<li>Editora: {book?.editora}</li>)}
-                            {book?.edicao && (<li>Edição: {book?.edicao}</li>)}
-                            {book?.genero && (<li>Gênero: {book?.genero}</li>)}
-                            {book?.isbn10 && book?.isbn13  
-                                ? (<li>ISBN10/ISBN13: {book?.isbn10}/{book?.isbn13}</li>)
-                                : book?.isbn10 
-                                    ?(<li>ISBN: {book?.isbn10}</li>)
-                                    : book?.isbn13 && (<li>ISBN: {book?.isbn13}</li>)
-                            }
-                        </ul>
+
+                        {book?.quantidadePaginas && (
+                            <div className={styles.qtdPaginas}>
+                                <p>Número de páginas</p>
+                                <i className="pi pi-book"></i>
+                                <p>{book?.quantidadePaginas}</p>
+                            </div>
+                        )}
+
+                        {book?.idioma && (
+                            <div className={styles.idioma}>
+                                <p>Idioma</p>
+                                <i className="pi pi-globe"></i>
+                                <p>{book?.idioma}</p>
+                            </div>
+                        )}
+
+                        {book?.editora && (
+                            <div className={styles.editora}>
+                                <p>Editora</p>
+                                <i className="pi pi-building"></i>
+                                <p>{book?.editora}</p>
+                            </div>
+                        )}
+
+                        {book?.edicao && (
+                            <div className={styles.edicao}>
+                                <p>Edição</p>
+                                <i className="pi pi-hashtag"></i>
+                                <p>{book?.edicao}</p>
+                            </div>
+                        )}
+
+                        {book?.genero && (
+                            <div className={styles.genero}>
+                                <p>Gênero</p>
+                                <i className="pi pi-tag"></i>
+                                <p>{book?.genero}</p>
+                            </div>
+                        )}
+    
+                        {(book?.isbn10 || book?.isbn13) && (
+                            <div className={styles.isbn}>
+                                <p>
+                                {book?.isbn10 && book?.isbn13
+                                    ? "ISBN-10/ISBN-13"
+                                    : book?.isbn10
+                                        ? "ISBN-10"
+                                        : "ISBN-13"}
+                                </p>
+                                <i className="pi pi-barcode" style={{color:'#000'}}></i>
+                                {book?.isbn10 && book?.isbn13
+                                    ? (<>
+                                    <p>{book?.isbn10}</p>
+                                    <p>{book?.isbn13}</p>
+                                    </>)
+                                    : book?.isbn10
+                                        ? (<p>{book?.isbn10}</p>)
+                                        : (<p>{book?.isbn13}</p>)
+                                }
+                            </div>
+                        )}
+
+
                     </div>
                     <div className={styles.div_autor}>
                         <h2>Autora(s)/Autor(es)</h2>        
