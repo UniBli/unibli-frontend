@@ -68,8 +68,11 @@
 
 .txtNomeCurso:hover{
     text-decoration: underline;
-    text-decoration-thickness: 5px; /* Espessura da linha */
-    
+    text-decoration-skip-ink: auto;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 3px; /* Espessura da linha */
+    color: #055904;
+
 }
 
 .books .txtNomeCurso h2 {

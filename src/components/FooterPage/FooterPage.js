@@ -19,7 +19,7 @@ const FooterPage = ({logo}) => {
         </div>
 
         <small className='authors'>Feito com <span role='img' aria-label='Coração verde'>💚</span> por, Thyago, Weslley e Hélio</small>
-        <small>Orientador  Rodrigo Bossini</small>
+        <small>Andréia Cristina Grisolio Machion</small>
 
       </section>
     </>

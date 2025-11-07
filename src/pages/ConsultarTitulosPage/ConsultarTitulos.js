@@ -28,46 +28,55 @@ const ConsultarTitulos = ({origin}) => {
 
   const [cursosComLivros, setCursosComLivros] = useState([]);
 
-
-
-  useEffect(()=>{
-      setLoading(true);
-      const fetchData = async () => {
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
       try {
         const [respCursos, respLivrosCursos] = await Promise.all([
           axios.get(`${origin}/cursos`),
           axios.get(`${origin}/acervo/livros/cursos`)
         ]);
 
-        const cursos = respCursos.data || [];
-        const livrosCursos = respLivrosCursos.data || [];
+        const cursos = Array.isArray(respCursos?.data) ? respCursos.data : [];
+        const livrosCursos = Array.isArray(respLivrosCursos?.data) ? respLivrosCursos.data : [];
 
-        // Normaliza [{ "1": [...] }, { "2": [...] }] -> { "1": [...], "2": [...] }
+        // Normaliza o mapa de livros
         const livrosMap = {};
         livrosCursos.forEach(item => {
-          const [idCurso, livros] = Object.entries(item)[0];
-          livrosMap[idCurso.toString()] = livros;
+          if (item && typeof item === 'object') {
+            const entries = Object.entries(item);
+            if (entries.length > 0) {
+              const [idCurso, livros] = entries[0];
+              livrosMap[idCurso.toString()] = Array.isArray(livros) ? livros : [];
+            }
+          }
         });
-        //console.log("✅ Normaliza:", livrosMap);
-
 
         // Combina cursos + livros
-        const combinados = cursos.map(curso => ({
-          ...curso,
-          livros: livrosMap[curso.id_curso.toString()].slice(0, 7) || []
-        }));
+        const combinados = cursos.map(curso => {
+          if (!curso || typeof curso.id_curso === 'undefined') {
+            return { ...curso, livros: [] };
+          }
+          
+          const idCursoStr = curso.id_curso.toString();
+          const livrosArray = livrosMap[idCursoStr] || [];
+          
+          return {
+            ...curso,
+            livros: Array.isArray(livrosArray) ? livrosArray.slice(0, 7) : []
+          };
+        });
 
-        console.log("✅ Cursos com livros combinados:", combinados);
         setCursosComLivros(combinados);
       } catch (error) {
-        //console.error("❌ Erro ao carregar cursos/livros:", error);
+        console.error("❌ Erro ao carregar cursos/livros:", error);
         setError(error);
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  },[origin])    
+  }, [origin]);
   
 
   // Swiper ----------------------------------
@@ -132,7 +141,7 @@ const ConsultarTitulos = ({origin}) => {
 
 
         {
-          loading 
+          (loading || cursosComLivros == null)
             ? (
               <>
                 <Swiper
@@ -230,7 +239,7 @@ const ConsultarTitulos = ({origin}) => {
                 <Link 
                   className={styles.txtNomeCurso}
                   title="Clique para consultar os livros deste curso!" 
-                  to={`/acervo/consultar`}
+                  to={`/acervo/consultar?cursoId=${curso.id_curso}`}
                 >
                   <h2>{curso.nome}:</h2>
                 </Link>

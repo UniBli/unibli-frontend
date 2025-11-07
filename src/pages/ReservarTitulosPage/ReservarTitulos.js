@@ -119,7 +119,7 @@ const ReservarTitulos = ({origin, integrado, usuario}) => {
                         // ATUALIZA A DISPONIBILIDADE DO LIVRO
                         setBook(prevBook => ({
                             ...prevBook,
-                            disponibilidadeLivro: prevBook.disponibilidadeLivro - 1
+                            disponibilidadeLivro: prevBook?.disponibilidadeLivro ? prevBook?.disponibilidadeLivro - 1 : prevBook?.quantidadeLivro - 1
                         }));
                     }
 
@@ -347,7 +347,7 @@ const ReservarTitulos = ({origin, integrado, usuario}) => {
                         <div className={styles.div_fatecs}>
                             <SelectButton
                                 value={fatecs.find(fatec => fatec.id_fatec === selectedFatecId)}
-                                onChange={(e) => setSelectedFatecId(e.value.id_fatec)}
+                                onChange={(e) => setSelectedFatecId(e.value?.id_fatec)}
                                 optionLabel="nome"
                                 options={fatecs}
                             />

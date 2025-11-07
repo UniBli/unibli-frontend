@@ -80,7 +80,7 @@ const App = () => {
         <Routes>       
           {/* Rotas Privadas */}
           <Route path="/settings" element={<Settings auth0Domain={auth0Domain} origin={serverOrigin} integrado={integrado} setIntegrado={setIntegrado} usuarioUnibliBd={usuarioUnibliBd}/>}/>
-          <Route path="/detalhes/reserva" element={<DetalhesReserva />}/>
+          <Route path="/detalhes/reserva" element={<DetalhesReserva origin={serverOrigin}  usuarioUnibliBd={usuarioUnibliBd}/>}/>
           <Route path="/maintainCollection" element={<ManterAcervo/>}/>
 
           {/* Rotas Públicas */}
