@@ -485,6 +485,10 @@ ul.p-datascroller-list li {
     font-weight: 900;
 }
 
+.pi.pi-times-circle {
+    font-size: 30px;
+}
+
 /*RESERVA DE LIVRO - CAMPO: ONDE ENCONTRAR?*/
 div.p-selectbutton.p-buttonset.p-component {
     display: flex !important;

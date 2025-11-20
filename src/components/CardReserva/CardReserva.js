@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import styles from './styles/CardReserva.module.css';
-import { useAuth0 } from '@auth0/auth0-react';
+//import { useAuth0 } from '@auth0/auth0-react';
 import { Toast } from 'primereact/toast';
 import axios from 'axios';
 
-const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliotecario }) => {
-    const { user } = useAuth0();
+const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliotecario, onError }) => {
+    //const { user } = useAuth0();
     const toast = useRef(null);
 
     const handleCancelarReserva = async () => {
@@ -18,14 +18,7 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
             
             console.log('Resposta do cancelamento:', response.data);
 
-            toast.current.show({
-                severity: 'success', 
-                summary: 'Sucesso', 
-                detail: 'Reserva cancelada com sucesso!', 
-                life: 3000
-            });
-
-            // Chama a função callback para atualizar a lista
+            // Chama a função callback para atualizar a lista e mostrar sucesso
             if (onReservaCancelada) {
                 onReservaCancelada(reserva.id_reserva);
             }
@@ -35,22 +28,24 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
             
             const errorMessage = error.response?.data?.error || 'Erro ao cancelar reserva';
             
-            toast.current.show({
-                severity: 'error', 
-                summary: 'Erro', 
-                detail: errorMessage, 
-                life: 5000
-            });
+            // Chama a função de erro passada pelo pai
+            if (onError) {
+                onError(errorMessage);
+            }
         }
     }
 
     const handleTituloRetirado = () => {
-        toast.current.show({
-            severity: 'success', 
-            summary: 'Sucesso', 
-            detail: 'Livro retirado com sucesso', 
-            life: 3000
-        });
+        // Para manter compatibilidade, ainda mostra toast local se necessário
+        // Mas idealmente isso também seria movido para o pai
+        if (toast.current) {
+            toast.current.show({
+                severity: 'success', 
+                summary: 'Sucesso', 
+                detail: 'Livro retirado com sucesso', 
+                life: 3000
+            });
+        }
     }
 
     return (

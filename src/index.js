@@ -1,8 +1,9 @@
 // components
-import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Auth0Provider } from "@auth0/auth0-react"; //serviço de autenticação
+import App from './App';
+import { UserProvider } from './context/UserContext'; 
 
 // styles
 import './index.css';
@@ -25,7 +26,9 @@ root.render(
           redirect_uri: window.location.origin,
           audience:'https://unibli.us.auth0.com/api/v2/'
       }}>
+        <UserProvider>
           <App/>
+        </UserProvider>
       </Auth0Provider>
   </React.StrictMode>
 );

@@ -101,11 +101,44 @@
     justify-content: center;
     margin: 50px;
 }
-
-
 .divScrollbarBooks::-webkit-scrollbar {
     height: 0;
 }
+
+
+
+div.backendDisconnected{
+    display: flex;
+    flex-direction: column;
+    align-items: center;/*eixo y*/
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 2dvh;
+    height:110dvh;
+    gap: 15px;
+}
+div.noConnection{
+    height: 70dvh;
+}
+div.noConnection img{
+    width: 100%;
+    height: 120%;
+    position: relative;
+}
+div.backendDisconnected .txtNoConnection, div.backendDisconnected small{
+    font-family: 'Nunito', sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+}
+div.backendDisconnected .txtNoConnection{
+    color: #263238;
+    font-size: 1.5em;
+}
+div.backendDisconnected small{
+    color: #26323881;
+    font-size: 0.6em;
+}
+
 /* .divScrollbarBooks::-webkit-scrollbar-thumb {
     background-color: #05590428; /* Cor do tracinho 
     border-radius: 3px; /* Borda arredondada do tracinho 
