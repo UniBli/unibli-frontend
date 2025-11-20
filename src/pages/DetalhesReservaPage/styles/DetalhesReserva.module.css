@@ -1,8 +1,6 @@
 div.main{
     display: flex;
     align-items: flex-start;/*eixo y*/
-    justify-content: center;/*eixo x*/
-
     width: auto;
     height: auto;
     
@@ -15,6 +13,7 @@ div.main{
 div.main div.listBooksReservation{
     display: flex;
     align-items: flex-start;/*eixo y*/
+    justify-content: flex-start;/*eixo x*/
     flex-direction: column;
     width: 50%;
     height:110dvh;
@@ -70,7 +69,40 @@ div.main div.legendas p i{
 
 
 
+div.semReservas, div.loading{
+    display: flex;
+    flex-direction: column;
+    align-items: center;/*eixo y*/
+    justify-content: flex-start;
+    width: 100%;
+    height:110dvh;
+}
 
+div.loading{
+    margin-top: 35dvh;
+}
+
+div.semReservas{
+    margin-top: 2dvh;
+}
+div.noReservationsFound{
+    height: 70dvh;
+}
+div.noReservationsFound img{
+    width: 100%;
+    height: 120%;
+    position: relative;
+    top: -80px;
+}
+div.semReservas .txtNoReservationsFound, div.semReservas small{
+    font-family: 'Nunito', sans-serif;
+    color: #263238;
+    text-transform: uppercase;
+    text-align: center;
+}
+div.semReservas .txtNoReservationsFound{
+    font-size: 1.5em;
+}
 /**********************************************************************/
 
 

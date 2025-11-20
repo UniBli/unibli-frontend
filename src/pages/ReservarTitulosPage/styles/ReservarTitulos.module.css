@@ -10,10 +10,105 @@ section.section_bookInformationReservation {
 }
 /* ---------------------------------- */
 
-div.div_informationsBook,
-div.div_details, div.div_autor,
+div.div_details{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 10px 0px;
+    overflow-x: auto;
+    gap: 15px;
+}
+
+div.div_details div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 15px 5px;
+    min-width: 100px; /* Largura mínima fixa */
+    max-width: 200px; /* Largura máxima */
+    flex-shrink: 0; /* Impede que as divs encolham */
+    word-wrap: break-word;
+}
+
+div.qtdPaginas,
+div.idioma,
+div.editora,
+div.edicao,
+div.genero,
+div.isbn {
+    gap: 10px;
+}
+
+div.div_details p {
+    font-size: 12px;
+    word-break: break-word; /* Quebra palavras longas */
+    overflow-wrap: break-word; /* Quebra palavras longas */
+    width: 100%; /* Garante que o texto ocupe toda a largura disponível */
+}
+div.div_details i{
+    font-size: 25px;
+}
+
+
+div.div_autor, 
 div.div_ondeEncontrar
- {
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0px;
+    width: 100%;
+}
+
+div.autorInformation{
+    width:100%;
+    display:flex;
+    align-items: center;
+    gap:10px;
+}
+
+div.div_autorIcon{
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.div_autorIcon > .div_autorProfile {
+  position: relative;
+  margin-left: -2.0rem; /* cria a sobreposição */
+  border: 2px solid #055904; /* opcional, pra destacar os avatares */
+  border-radius: 50%; /* se forem círculos */
+  z-index: 1; /* garante que o último fica por cima */
+}
+/* o primeiro não deve se mover */
+.div_autorIcon > .div_autorProfile:first-child {
+  margin-left: 0;
+}
+
+/*para deixar o último por cima de todos */
+.div_autorIcon > .div_autorProfile:last-child {
+  z-index: 10;
+}
+.div_autorProfileTxt {
+    display: flex;
+    flex-direction: column;
+    height: 4rem;
+    overflow-y: auto;
+    padding: 10px 15px 10px 0px;
+    gap: 5px;
+    justify-content: space-around;
+
+}
+
+.div_informationsBook p{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+div.div_informationsBook {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -29,6 +124,20 @@ div.div_ondeEncontrar
         font-size: 30px;
 }
 
+
+
+div.div_ondeEncontrar{
+    display: flex;
+    width: 100%;
+}
+
+div.div_fatecs{
+    display: flex;
+    width: 100%;
+}
+
+
+    
 
 
 /* div_bookButton */

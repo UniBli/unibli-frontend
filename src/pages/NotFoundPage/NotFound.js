@@ -1,9 +1,9 @@
 import styles from './NotFound.module.css'
 
-const NotFound = () => {
+const NotFound = ({statusImg}) => {
     return (
         <section className={styles.sectionNotFound}>
-        <img src='https://raw.githubusercontent.com/UniBli/unibli-frontend/main/public/imgStatus/404-bro.svg' alt='Ilustração de página não encontrada'/>
+        <img src={statusImg} alt='Ilustração de página não encontrada'/>
         <h1 className={styles.txtNotFound}>Página não encontrada
         </h1>
         <small>:'-(</small>

@@ -1,0 +1,101 @@
+.containerfiltro{
+    color: #055904;
+    margin: 20px 20px 20px 40px;
+    width:20%;
+    
+}
+
+#filtro{
+    width:100%;
+    border: 2px solid #055904;
+    border-radius: 10px;
+
+}
+#filtro form{
+    padding: 1px 20px 20px;
+}
+
+/* #filtro h2{
+    justify-content: center;
+    width: 100%;
+    background-color: #055904;
+    color: #FFF;
+    padding: 25px 0px;
+} */
+
+#filtro .header, #filtro .header h3.txtFiltro{
+    color: #FFF ;
+}
+
+#filtro .header{
+    width: 100%;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:20px;
+    background-color: #055904;
+}
+
+#filtro .header .filtrarIcos{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+}
+
+.btn_filtrar, .btn_limpar{
+    color: #055904 !important;
+    background-color: #FFF !important;
+    border: #055904  !important;
+    height: 30px;
+    width: 30px !important;
+    border-radius: 50% !important;
+    transition: all 1s ease !important;
+}
+
+.btn_filtrar:hover, .btn_limpar:hover,
+.btn_filtrar:focus, .btn_limpar:focus
+{
+    color: #FFF !important;
+    background-color: #055904 !important;
+    border: #FFF  !important;
+}
+
+
+
+/*Media queries*/
+@media (max-width:1140px){
+    .containerfiltro{
+        display: flex;
+        margin: 20px;
+        width:75%;
+    }
+    #filtro form{
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+
+    }
+}
+
+
+@media (max-width:500px){
+    .containerfiltro{
+        width: 60%;
+    }
+    #filtro form{
+        flex-direction: column;
+        padding: 1px 20px 20px;
+
+    }
+    #filtro{
+        height: 50vh;
+        overflow-y: scroll;
+    }
+    #filtro h3.txtFiltro{
+        justify-content: center;
+        margin-right:0px
+    }
+
+}
+

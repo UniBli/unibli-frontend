@@ -1,52 +1,74 @@
 import Redirect from '../RedirectPage/Redirect';
 import styles from './styles/Settings.module.css';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
+import { withAuthenticationRequired, useAuth0 } from '@auth0/auth0-react';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Badge } from 'primereact/badge';
 
 import ProfileHorizontal from '../../components/Auth0/ProfileHorizontal.js';
+import DeletarConta from '../../components/DeletarConta/DeletarConta.js';
+import EditarConta from '../../components/EditarConta/EditarConta.js';
 
-import DeletarConta from '../../components/DeletarConta/DeletarConta.js'
+import { useUser } from '../../context/UserContext'; // 1. Importar o hook
 
-import EditarConta from '../../components/EditarConta/EditarConta.js'
-
-import { useAuth0 } from '@auth0/auth0-react';
-
-const Settings = ({auth0Domain, origin, integrado, setIntegrado, usuarioUnibliBd}) => {
+// 2. Remover as props relacionadas ao usuário
+const Settings = () => {
   
-  const {isAuthenticated, isLoading } = useAuth0();
+  // O isLoading do Auth0 ainda é útil para a página em si
+  const { isLoading: isLoadingAuth } = useAuth0();
 
-  if (isLoading) {
+  // 3. Consumir todos os dados necessários do contexto
+  const { 
+    integrado, 
+    isLoadingUser, // Usar nosso loading para a lógica de UI
+    serverOrigin, 
+    usuarioUnibliBd, 
+    setIntegrado 
+  } = useUser();
+
+  // O auth0Domain ainda é uma variável de ambiente, podemos pegá-la aqui
+  const auth0Domain = process.env.REACT_APP_AUTH0_DOMAIN;
+
+  // Mostra um loading geral enquanto o Auth0 ou nosso BD estiverem carregando
+  if (isLoadingAuth || isLoadingUser) {
     return <div>Loading ...</div>;
   }
 
   return (
-    isAuthenticated && (
-      <div className={styles.main}>
-        <ProfileHorizontal/>
-        <TabView>
-          { !integrado ? (
-            <TabPanel leftIcon="pi pi-user-edit" header="Completar cadastro">
-              <Badge className={styles.customIcon} value="!" size="large" severity="warning"></Badge>
-              <EditarConta auth0Domain={auth0Domain} origin={origin} integrado={integrado} setIntegrado={setIntegrado} usuarioUnibliBd={usuarioUnibliBd}/>
-            </TabPanel> 
-          ):(
-            <TabPanel leftIcon="pi pi-user-edit" header="Editar conta">
-              <EditarConta auth0Domain={auth0Domain} origin={origin} integrado={integrado} setIntegrado={setIntegrado} usuarioUnibliBd={usuarioUnibliBd}/>
-            </TabPanel>
-          )}
-          <TabPanel leftIcon="pi pi-trash" header="Deletar conta">
-            <DeletarConta origin={origin}/>
+    <div className={styles.main}>
+      <ProfileHorizontal/>
+      <TabView>
+        { !integrado ? (
+          <TabPanel leftIcon="pi pi-user-edit" header="Completar cadastro">
+            <Badge className={styles.customIcon} value="!" size="large" severity="warning"></Badge>
+            {/* Passa as props necessárias para o componente EditarConta */}
+            <EditarConta 
+              auth0Domain={auth0Domain} 
+              origin={serverOrigin} 
+              integrado={integrado} 
+              setIntegrado={setIntegrado} 
+              usuarioUnibliBd={usuarioUnibliBd}
+            />
+          </TabPanel> 
+        ):(
+          <TabPanel leftIcon="pi pi-user-edit" header="Editar conta">
+            <EditarConta 
+              auth0Domain={auth0Domain} 
+              origin={serverOrigin} 
+              integrado={integrado} 
+              setIntegrado={setIntegrado} 
+              usuarioUnibliBd={usuarioUnibliBd}
+            />
           </TabPanel>
-        </TabView>
-      </div>
-    )
-
-    // <div className={styles.tamanhoTela}>Settings</div>
-  )
+        )}
+        <TabPanel leftIcon="pi pi-trash" header="Deletar conta">
+          {/* Passa a origin para o componente DeletarConta */}
+          <DeletarConta origin={serverOrigin}/>
+        </TabPanel>
+      </TabView>
+    </div>
+  );
 }
 
 export default withAuthenticationRequired(Settings, {
-  // Show a message while the user waits to be redirected to the login page.
   onRedirecting: () => (<Redirect />)
 });

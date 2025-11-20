@@ -1,138 +1,103 @@
-// components
 import CardBook from '../../components/CardBook/CardBook';
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { DataScroller } from 'primereact/datascroller';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
-
-
-// css scoped
-import styles from './styles/ResultadoConsultarTitulos.module.css'
-
-// Import Swiper React components
-//import { Skeleton } from 'primereact/skeleton';
-
-// hooks
-import { useRef } from 'react';
-
-import { useEffect, useState } from 'react';
-
+import FiltroLivro from '../../components/FiltroLivro/FiltroLivro';
+import { ScrollTop } from 'primereact/scrolltop';
+import styles from './styles/ResultadoConsultarTitulos.module.css';
+import { useRef, useEffect, useState } from 'react';
+import { useUser } from '../../context/UserContext'; // 1. Importar o hook
 import axios from 'axios';
 
+// 2. Remover a prop 'origin'
+const ResultadoConsultarTitulos = () => {
+  // 3. Consumir a 'serverOrigin' do contexto
+  const { serverOrigin } = useUser();
 
-const ResultadoConsultarTitulos = ({origin}) => {
-
-   //DataScroller
   const ds = useRef(null);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [books, setBooks] = useState([]);
+  const [fatecs, setFatecs] = useState([]);
+  const [cursos, setCursos] = useState([]);
+  const [autores, setAutores] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const [ searchParams ] = useSearchParams();
+  useEffect(() => {
+    if (!serverOrigin) return; // Não faz nada se a origin ainda não foi carregada
 
-  const [books, setBooks] = useState('')
+    const urlTitulos = `${serverOrigin}/acervo/livros?${searchParams}`;
+    const urlFatecs = `${serverOrigin}/fatecs`;
+    const urlCursos = `${serverOrigin}/cursos`;
+    const urlAutores = `${serverOrigin}/acervo/livros/autores`;
 
-  const url = `${origin}/acervo/livros?${searchParams}`
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-
-
-
-  useEffect(()=>{
-    setLoading(true)
-    axios.get(url)
-    .then((resp) => {
-      setBooks(resp.data)
-      setLoading(false)
-    }).catch((error) => {
-      console.error('Deu erro (error):', error);
-      setError(error);
-      setBooks([]); // Defina como array vazio em caso de erro
+    setLoading(true);
+    Promise.all([
+      axios.get(urlTitulos),
+      axios.get(urlFatecs),
+      axios.get(urlCursos),
+      axios.get(urlAutores)
+    ])
+    .then(([respBooks, respFatecs, respCursos, respAutores]) => {
+      setBooks(respBooks.data || []);
+      setFatecs(respFatecs.data.fatecs || []);
+      setCursos(respCursos.data || []);
+      setAutores(respAutores.data || []);
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar dados:", error);
+      setError("Erro ao buscar dados do servidor.");
+    })
+    .finally(() => {
       setLoading(false);
     });
-  },[url])
+  }, [serverOrigin, searchParams]); // Adiciona serverOrigin às dependências
 
+  const voltar = () => {
+    navigate('/acervo/consultar');
+  };
 
-  //Cards
-  const itemTemplate = (book) => {
-    return (
-        <Link key={book?.id_livro} to={`/reservar/livro/${book?.id_livro}`}>
-          <CardBook 
-            disponibilidade={book?.disponibilidadeLivro ? book?.disponibilidadeLivro : book?.quantidadeLivro}
-            qtd={book?.quantidadeLivro}
-            img={book?.imagem}
-            nome={book?.titulo}
-          />
-        </Link>
-    )}
+  const itemTemplate = (book) => (
+    <Link key={book?.id_livro} to={`/reservar/livro/${book?.id_livro}`}>
+      <CardBook disponibilidade={book?.disponibilidadeLivro ?? book?.quantidadeLivro} qtd={book?.quantidadeLivro} img={book?.imagem} nome={book?.titulo} />
+    </Link>
+  );
 
-    const footer = (
-        <Button 
-          type="text" icon="pi pi-plus" label="Ver Mais" 
-          onClick={() => ds.current.load()}
-        />
-      );
-  
+  const footer = <Button type="text" icon="pi pi-plus" label="Ver Mais" onClick={() => ds.current.load()} />;
 
-
-
-  //  /****************** PARA LOADING DO BOOOK ******************/
-  //     const booksLoading =[
-  //       {id:1, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-  //       {id:2, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-  //       {id:3, component: (<Skeleton width='12.5rem' height='20.5rem' borderRadius='16px'></Skeleton>)},
-     
-  //     ]
-  
-  //     const divSkeleton = {display:'flex', justifyContent:'center', alignItems:'center', margin:'3rem'};
-  //     /*********************************************************/    
-
-
-      
+  // O resto do JSX permanece exatamente o mesmo
   return (
-      <section className={styles.section_books}>
-        <div id="div_booksID" className={styles.div_books}>
-        {
-          error 
-            ? (<p>{error.message}</p>)
-            : loading
-                ?(<>
-                  <h2>Buscando livro(s) ...</h2>
-                  <div style={{display:'flex', justifyContent:'start', alignItems:'center', flexDirection:'column-reverse', height:'90vh', paddingTop:'20vh'}}>
-                   
-                        <ProgressSpinner style={{width: '100px', height: '100px', display:'flex',}} strokeWidth="4" />  
-                    {/* <div style={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'row', flexWrap:'wrap'}}>
-                      {
-                        booksLoading?.map((book) => (
-                          <div key={book?.id} style={divSkeleton}>
-                            {book?.component}
-                          </div>
-                      ))
-                      }
-                    </div> */}
-                  </div>
-
-                  </>
-                )
-                : ( 
-                  <>
-                    <h2 >{books.length} livro(s) encontrado(s):</h2>
-                    {
-                      Array.isArray(books) && books.length === 0
-                        ?(
-                          <div className={styles.div_NotResults}>
-                            <img src='../imgStatus/peopleSearch-bro.svg' alt='Ilustração de um detetive' />
-                          </div>
-                        )
-                        :(
-                          <div className={styles.div_results}>
-                          <DataScroller ref={ds} value={books} itemTemplate={itemTemplate} rows={5} loader footer={footer} />
-                          </div>
-                        )         
-                    }
-                  </>
-                  )
-        }
-        </div>
-      </section>
-  )
+    <section className={styles.section_books}>
+      <div id="div_booksID" className={styles.div_books}>
+        {error ? (<p>{error.message}</p>) : loading ? (
+          <>
+            <h2>Buscando livro(s) ...</h2>
+            <div style={{ display:'flex', justifyContent:'start', alignItems:'center', flexDirection:'column-reverse', height:'90vh', paddingTop:'20vh' }}>
+              <ProgressSpinner style={{ width: '100px', height: '100px', display:'flex' }} strokeWidth="4" />  
+            </div>
+          </>
+        ) : ( 
+          <>
+            <div style={{ display: 'flex', justifyItems:'center', alignItems: 'center', marginBottom: '20px', flexWrap:'wrap', gap:'20px' }}>
+              {books.length === 0 && (<Button title='Voltar' style={{ backgroundColor:'#055904', color:'#FFF', border:'0px', marginLeft:'30px', width:'50px', height:'50px', borderRadius:'50%' }} icon="pi pi-arrow-left" aria-label="Filter" onClick={voltar} />)}
+              <h2 style={{ width:'50%', height:'50px', padding:'0px 20px' }}>{books.length} livro(s) encontrado(s):</h2>
+            </div>
+            <ScrollTop />
+            {Array.isArray(books) && books.length === 0 ? (
+              <div className={styles.div_NotResults}><img src='../imgStatus/peopleSearch-bro.svg' alt='Ilustração de um detetive' /></div>
+            ) : (
+              <div className={styles.div_results}>
+                <FiltroLivro cursos={cursos} autores={autores} fatecs={fatecs} />
+                <DataScroller className={styles.dataScrollerUniBli} ref={ds} value={books} itemTemplate={itemTemplate} rows={5} loader footer={footer} />
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  );
 }
 
-export default ResultadoConsultarTitulos
+export default ResultadoConsultarTitulos;

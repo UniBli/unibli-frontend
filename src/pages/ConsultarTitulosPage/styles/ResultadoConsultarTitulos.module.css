@@ -41,7 +41,6 @@
     padding: 40px 0;
 } 
 .div_results{
-    gap: 10px;
     height: 100%;
 }
 .div_NotResults{
@@ -54,10 +53,20 @@
     top: -80px;
 }
 
+
+
 /*Media queries*/
 @media (max-width:570px){
     div.div_books h2 {
         font-size: 1.5rem;
         margin-right: 20px;
+    }
+}
+
+@media (max-width:1140px){
+    .div_results{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
