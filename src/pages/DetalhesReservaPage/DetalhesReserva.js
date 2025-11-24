@@ -5,49 +5,125 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 // Componentes, Contexto e UI
 import Redirect from '../RedirectPage/Redirect';
 import CardReserva from '../../components/CardReserva/CardReserva';
+import FiltroReservas from '../../components/FiltroReservas/FiltroReservas';
 import { useUser } from '../../context/UserContext';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Toast } from 'primereact/toast';
+
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+
 
 // Estilos
 import styles from './styles/DetalhesReserva.module.css';
 
 const DetalhesReserva = () => {
-  // 1. Consumir os dados do contexto.
-  // O LayoutAutenticado garante que, quando este componente renderiza,
-  // os carregamentos de autenticação e usuário já terminaram.
-  // Por isso, não precisamos mais de `isLoadingUser` para a lógica de renderização inicial.
-  const { usuarioUnibliBd, serverOrigin } = useUser();
-
-  // 2. Estados específicos para este componente.
-  // Renomeado de 'loading' para 'loadingReservas' para maior clareza.
+  const { usuarioUnibliBd, serverOrigin, bibliotecario, fatecs } = useUser();
   const [loadingReservas, setLoadingReservas] = useState(true);
   const [reservas, setReservas] = useState([]);
+  const [reservasFiltradas, setReservasFiltradas] = useState([]);
   const [error, setError] = useState(null);
-  
-  // 3. Referência para o Toast
   const toast = useRef(null);
 
-  // 4. Efeito para buscar os dados específicos desta página (as reservas).
+  const [visible, setVisible] = useState(false);
+  const [position, setPosition] = useState('right');
+  const show = (position) => {
+        setPosition(position);
+        setVisible(true);
+    };
+
+
+  // Função para aplicar filtros (agora pode ser usada em múltiplos lugares)
+  const aplicarFiltros = (todasReservas, filtros) => {
+    let reservasFiltradas = todasReservas;
+
+    // Aplicar filtros sequencialmente
+    if (filtros.ra) {
+      reservasFiltradas = reservasFiltradas.filter(reserva => 
+        reserva.Usuario?.ra?.toLowerCase().includes(filtros.ra.toLowerCase())
+      );
+    }
+
+    if (filtros.nomeUsuario) {
+      reservasFiltradas = reservasFiltradas.filter(reserva => 
+        reserva.Usuario?.nome?.toLowerCase().includes(filtros.nomeUsuario.toLowerCase())
+      );
+    }
+
+    if (filtros.fatec) {
+      reservasFiltradas = reservasFiltradas.filter(reserva => 
+        reserva.Fatec?.nome === filtros.fatec
+      );
+    }
+
+    if (filtros.tituloLivro) {
+      reservasFiltradas = reservasFiltradas.filter(reserva => 
+        reserva.Livro?.titulo?.toLowerCase().includes(filtros.tituloLivro.toLowerCase())
+      );
+    }
+
+    if (filtros.idReserva) {
+      reservasFiltradas = reservasFiltradas.filter(reserva => 
+        reserva.id_reserva.toString().includes(filtros.idReserva)
+      );
+    }
+
+    if (filtros.status) {
+      reservasFiltradas = reservasFiltradas.filter(reserva => 
+        reserva.status === filtros.status
+      );
+    }
+
+    if (filtros.dataReserva) {
+      reservasFiltradas = reservasFiltradas.filter(reserva => {
+        const dataReserva = new Date(reserva.dataDaReserva).toISOString().split('T')[0];
+        return dataReserva === filtros.dataReserva;
+      });
+    }
+
+    if (filtros.dataExpiracao) {
+      reservasFiltradas = reservasFiltradas.filter(reserva => {
+        const dataExpiracao = new Date(reserva.dataExpiracao).toISOString().split('T')[0];
+        return dataExpiracao === filtros.dataExpiracao;
+      });
+    }
+
+    return reservasFiltradas;
+  };
+
+  // 4. Efeito para buscar os dados especificos desta pagina (as reservas).
   useEffect(() => {
-    // Condição de guarda: se não há um usuário do nosso BD, não há reservas para buscar.
     if (!usuarioUnibliBd?.id_usuario) {
-      setLoadingReservas(false); // Finaliza o carregamento, pois não há nada a fazer.
+      setLoadingReservas(false);
       return;
     }
 
-    // Se temos um usuário, buscamos suas reservas.
     const carregarReservas = async () => {
-      setLoadingReservas(true); // Garante que o spinner desta página seja exibido.
+      setLoadingReservas(true);
       try {
-        const response = await axios.get(`${serverOrigin}/reservas/usuario/${usuarioUnibliBd.id_usuario}`);
-        setReservas(response.data.reservas || []);
-        setError(null); // Limpa qualquer erro anterior em caso de sucesso.
+        let uri = 
+          bibliotecario 
+            ? `${serverOrigin}/reservas` 
+            : `${serverOrigin}/reservas/usuario/${usuarioUnibliBd.id_usuario}`
+
+        const response = await axios.get(uri);
+        const todasReservas = response.data.reservas || [];
+        setReservas(todasReservas);
+        
+        // Se for bibliotecário, aplica o filtro padrão (status "ativa")
+        if (bibliotecario) {
+          const filtrosPadrao = { status: 'ativa' };
+          const reservasFiltradasInicial = aplicarFiltros(todasReservas, filtrosPadrao);
+          setReservasFiltradas(reservasFiltradasInicial);
+        } else {
+          // Para usuários normais, mostra apenas as ativas (comportamento original)
+          setReservasFiltradas(todasReservas.filter(reserva => reserva.status === 'ativa'));
+        }
+        
+        setError(null);
       } catch (err) {
         console.error('Erro ao carregar reservas:', err);
         setError('Erro ao carregar as reservas.');
-        
-        // Mostrar toast de erro
         toast.current.show({
           severity: 'error',
           summary: 'Erro',
@@ -55,18 +131,29 @@ const DetalhesReserva = () => {
           life: 5000
         });
       } finally {
-        setLoadingReservas(false); // Finaliza o carregamento das reservas.
+        setLoadingReservas(false);
       }
     };
 
     carregarReservas();
-    
-  }, [usuarioUnibliBd, serverOrigin]); // O useEffect agora depende apenas dos dados que realmente iniciam a busca.
+  }, [usuarioUnibliBd, serverOrigin, bibliotecario]);
 
-  // 5. Funções auxiliares do componente.
+  // Função para lidar com mudanças nos filtros
+  const handleFiltroChange = (filtros) => {
+    const reservasFiltradas = aplicarFiltros(reservas, filtros);
+    setReservasFiltradas(reservasFiltradas);
+  };
+
+  // Funções auxiliares (mantidas do código original)
   const handleReservaCancelada = (reservaId) => {
-    setReservas(prevReservas => prevReservas.filter(reserva => reserva.id_reserva !== reservaId));
-    // Mostrar toast de sucesso
+    const novasReservas = reservas.filter(reserva => reserva.id_reserva !== reservaId);
+    setReservas(novasReservas);
+    
+    // Reaplica os filtros atuais
+    const filtrosAtuais = { status: 'ativa' }; // Ou você pode manter o estado dos filtros atuais
+    const novasReservasFiltradas = aplicarFiltros(novasReservas, filtrosAtuais);
+    setReservasFiltradas(novasReservasFiltradas);
+    
     toast.current.show({
       severity: 'success', 
       summary: 'Sucesso', 
@@ -75,8 +162,24 @@ const DetalhesReserva = () => {
     });
   };
 
+  const handleReservaFinalizada = (reservaId) => {
+    const novasReservas = reservas.filter(reserva => reserva.id_reserva !== reservaId);
+    setReservas(novasReservas);
+    
+    // Reaplica os filtros atuais
+    const filtrosAtuais = { status: 'ativa' };
+    const novasReservasFiltradas = aplicarFiltros(novasReservas, filtrosAtuais);
+    setReservasFiltradas(novasReservasFiltradas);
+    
+    toast.current.show({
+      severity: 'success', 
+      summary: 'Sucesso', 
+      detail: 'Reserva finalizada!', 
+      life: 3000
+    });
+  };
+
   const handleError = (errorMessage) => {
-    // Mostrar toast de erro
     toast.current.show({
       severity: 'error', 
       summary: 'Erro', 
@@ -93,19 +196,14 @@ const DetalhesReserva = () => {
     return `${day}/${month}/${year}`;
   };
 
-  // --- LÓGICA DE RENDERIZAÇÃO DA PÁGINA ---
-  // O LayoutAutenticado já nos protegeu dos "pisca-piscas" iniciais.
-  // Agora, gerenciamos os estados internos desta página.
-
-  // ESTADO 1: Usuário autenticado, mas sem cadastro no nosso banco de dados.
-  // Esta verificação agora é segura e não vai piscar na tela.
+  // Renderização condicional
   if (!usuarioUnibliBd) {
     return (
       <div className={styles.semReservas}>
          <div className={styles.noReservationsFound}>
             <img 
               src='../imgStatus/mail-bro.svg' 
-              alt='Ilustração de um detetive' 
+              alt='Ilustracao de um detetive' 
             />
           </div>
           <h1 className={styles.txtNoReservationsFound}>
@@ -115,8 +213,6 @@ const DetalhesReserva = () => {
     ); 
   }
 
-  // ESTADO 2: Carregando os dados específicos desta página (as reservas).
-  // Usamos o estilo de carregamento local que você definiu.
   if (loadingReservas) {
     return (
       <div className={styles.loading}>
@@ -125,7 +221,6 @@ const DetalhesReserva = () => {
     );
   }
 
-  // ESTADO 3: Erro ao buscar as reservas.
   if (error) {
     return (
       <>
@@ -134,62 +229,74 @@ const DetalhesReserva = () => {
       </>
     );
   }
-  
-  // ESTADO 4: Renderização de sucesso.
-  // Exibe a lista de reservas ou a mensagem de "nenhuma reserva encontrada".
-  return (
-    <div className={styles.main}>
-      {/* Toast centralizado no componente pai */}
+
+  return (<>
+
+    <div className={styles.main}
+      style={!!bibliotecario ? { justifyContent: 'flex-start' } : null}
+    >
       <Toast ref={toast} />
-      
-      {reservas.filter(reserva => reserva.status === 'ativa').length > 0 ? (
+      {/* Componente de Filtro - apenas para bibliotecários */}
+      {bibliotecario && (
+            <Dialog header={(<h3>Filtro de Reservas</h3>)} visible={visible} position={position} style={{ width: '50vw' }} onHide={() => {if (!visible) return; setVisible(false); }} modal={false}  draggable={false} resizable={false}>
+                 <FiltroReservas
+                    reservas={reservas}
+                    onFiltroChange={handleFiltroChange}
+                    fatecs={fatecs}
+                  />
+            </Dialog>        
+      )}
+
+      {/* Lista de reservas - agora mostra todas as reservas filtradas (sem filtrar por ativa) */}
+      {reservasFiltradas.length > 0 ? (
         <div className={styles.listBooksReservation}>
-          {
-            reservas
-              .filter(reserva => reserva.status === 'ativa')
-              .map((reserva) => (
-                <CardReserva 
-                  key={reserva.id_reserva} 
-                  reserva={reserva}
-                  formatDate={formatDate}
-                  onReservaCancelada={handleReservaCancelada}
-                  onError={handleError}
-                  origin={serverOrigin}
-                  bibliotecario={usuarioUnibliBd?.tipoBibliotecario}
-                />
-              ))
-          }
+          {reservasFiltradas.map((reserva) => (
+            <CardReserva 
+              key={reserva.id_reserva} 
+              reserva={reserva}
+              formatDate={formatDate}
+              onReservaCancelada={handleReservaCancelada}
+              onReservaFinalizada={handleReservaFinalizada}
+              onError={handleError}
+              origin={serverOrigin}
+              bibliotecario={usuarioUnibliBd?.tipoBibliotecario}
+            />
+          ))}
         </div>
       ) : (
         <div className={styles.semReservas}>
           <div className={styles.noReservationsFound}>
             <img 
               src='../imgStatus/fileSearching-bro.svg' 
-              alt='Ilustração de um detetive' 
+              alt='Ilustracao de um detetive' 
             />
           </div>
           <h1 className={styles.txtNoReservationsFound}>
-            Nenhuma reserva ativa encontrada
+            {bibliotecario && reservas.length > 0 
+              ? 'Nenhuma reserva encontrada com os filtros aplicados'
+              : 'Nenhuma reserva encontrada'
+            }
           </h1>
           <small>:'-(</small>
         </div>
       )}
       
-      {/* Renderiza a legenda apenas se o usuário for um bibliotecário */}
-      {!!usuarioUnibliBd?.tipoBibliotecario && (
+      {bibliotecario && (
         <div className={styles.legendas}>
           <h2>Legendas</h2>
           <span>
             <p><i className="pi pi-times-circle"></i>: Cancelar Reserva</p>
-            <p><i className="pi pi-check-circle"></i>: Título Retirado</p>
+            <p><i className="pi pi-check-circle"></i>: Titulo Retirado</p>
           </span>
+          <div className={styles.divContainerBtnFiltrar}>
+            <Button label="Filtrar" icon="pi pi-filter-fill" onClick={() => show('right')} className="p-button-success" style={{borderRadius:'16px'}}/>
+          </div>
         </div>
       )}
     </div>
-  );
+  </>);
 }
 
-// A exportação com o HOC do Auth0 permanece inalterada.
 export default withAuthenticationRequired(DetalhesReserva, {
   onRedirecting: () => (<Redirect/>)
 });

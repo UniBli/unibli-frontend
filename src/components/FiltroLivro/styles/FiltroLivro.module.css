@@ -9,8 +9,13 @@
     width:100%;
     border: 2px solid #055904;
     border-radius: 10px;
+    box-shadow: 
+      2px 2px 5px rgba(0, 0, 0, 0.2),
+      2px 2px 5px rgba(0, 0, 0, 0.14),
+      2px 2px 10px rgba(0, 0, 0, 0.12);
 
 }
+
 #filtro form{
     padding: 1px 20px 20px;
 }
@@ -28,6 +33,7 @@
 }
 
 #filtro .header{
+    border-radius: 5px 5px 0 0;
     width: 100%;
     padding: 15px 20px;
     display: flex;
@@ -51,6 +57,10 @@
     width: 30px !important;
     border-radius: 50% !important;
     transition: all 1s ease !important;
+    box-shadow: 
+      0 2px 5px rgba(0, 0, 0, 0.2),
+      0 2px 10px rgba(0, 0, 0, 0.14),
+      0 2px 20px rgba(0, 0, 0, 0.12); 
 }
 
 .btn_filtrar:hover, .btn_limpar:hover,

@@ -1,12 +1,12 @@
 div.main{
     display: flex;
     align-items: flex-start;/*eixo y*/
+    justify-content: flex-end;
     width: auto;
-    height: auto;
+    height: 90vh;
     
     margin: 40px;
-
-    /* background-color: rgb(255, 196, 0); */
+    /* background-color: rgb(255, 196, 0);  */
 }
 
 
@@ -15,14 +15,14 @@ div.main div.listBooksReservation{
     align-items: flex-start;/*eixo y*/
     justify-content: flex-start;/*eixo x*/
     flex-direction: column;
-    width: 50%;
-    height:110dvh;
+    width: 70%;
+    height:65dvh;
 
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: 30px;
 
-    /* background-color: red; */
+    /* background-color: red;  */
 }
 
 
@@ -31,13 +31,10 @@ div.main div.legendas{
     align-items: flex-end;/*eixo x*/
     flex-direction: column;
     gap: 20px;
-
-    width: 50%;
-    height:100%;
-
+    width: 30%;
     position: relative;
  
-    /* background-color: rgb(0, 255, 4); */
+    /* background-color: rgb(0, 255, 4);  */
 }
 
 div.main div.legendas h2 {
@@ -103,26 +100,59 @@ div.semReservas .txtNoReservationsFound, div.semReservas small{
 div.semReservas .txtNoReservationsFound{
     font-size: 1.5em;
 }
+
+/* Adicione estas regras ao arquivo CSS existente */
+
+/* Estilo para quando há filtro (bibliotecário) */
+div.main.comFiltro {
+  height: auto;
+  min-height: 210vh;
+}
+
+/* Ajuste para a lista de reservas quando há filtro */
+div.main.comFiltro div.listBooksReservation {
+  height: auto;
+  min-height: 150dvh;
+}
+
+/* Mensagem de nenhum resultado */
+.semResultados {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+
+div.divContainerBtnFiltrar{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
 /**********************************************************************/
 
-
-@media (max-width: 720px) {
+@media (max-width: 1120px) {
 
     div.main{
         display: flex;       
         flex-direction: column-reverse;
         width: auto;
+        height: 200dvh;
     }    
 
     div.main div.listBooksReservation{
         overflow-y: auto;
         overflow-x: hidden;
         padding-right: 20px;
+        height: 150dvh;
     }
 
+    div.divContainerBtnFiltrar{
+        justify-content: flex-start;
+    }
     div.main div.legendas{
         align-items: flex-start;
-        width: 98%;
+        width: 100%;
         margin-bottom: 50px;
         padding: 20px;
         border-radius: 16px;
@@ -175,5 +205,11 @@ div.semReservas .txtNoReservationsFound{
 
 
 
+/* Responsividade para o filtro */
+@media (max-width: 1120px) {
+  div.main.comFiltro {
+    flex-direction: column;
+  }
+}
 
 

@@ -1,0 +1,110 @@
+.filtroContainer {
+  background-color: #05590413;
+  border: 1px solid #055904;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+}
+
+.gridFiltros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.grupoFiltro {
+  display: flex;
+  flex-direction: column;
+}
+
+.grupoFiltro label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #055904;
+  font-size: 0.9em;
+}
+
+.input {
+  padding: 8px 12px;
+  border: 1px solid #055904;
+  border-radius: 16px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+  background-color: white;
+  color: #055904;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #055904;
+  box-shadow: 0 0 0 0.2rem rgba(157, 249, 151, 0.592);
+}
+
+/* ESTILOS PARA O DROPDOWN DO PRIMEREACT */
+.dropdown {
+  width: 100%;
+}
+
+/* Personalizando o Dropdown do PrimeReact */
+.p-dropdown {
+  border: 1px solid #055904 !important;
+  border-radius: 16px !important;
+  background: white !important;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  box-shadow: 0 0 0 0.2rem rgba(157, 249, 151, 0.592) !important;
+  border-color: #055904 !important;
+}
+
+.p-dropdown-panel {
+  border: 1px solid #055904 !important;
+  border-radius: 8px !important;
+}
+
+.p-dropdown-item {
+  color: #055904 !important;
+}
+
+.p-dropdown-item.p-highlight {
+  background-color: #055904 !important;
+  color: white !important;
+}
+
+.p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+  background-color: #05590420 !important;
+  color: #055904 !important;
+}
+
+.botaoLimpar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  background-color: #055904;
+  color: #fff;
+  border: 2px solid #055904;
+  border-radius: 16px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.botaoLimpar:hover {
+  cursor: pointer;
+  background-color: #fff;
+  color: #055904;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .gridFiltros {
+    grid-template-columns: 1fr;
+  }
+  
+  .filtroContainer {
+    padding: 15px;
+  }
+}

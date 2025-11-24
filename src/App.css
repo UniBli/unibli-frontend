@@ -422,8 +422,11 @@ ul.p-datascroller-list li {
 .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
   box-shadow: none !important;
 }
-.pi.pi-user-edit, .pi.pi-trash {
-  font-size: 20px;
+.pi.pi-user-edit, .pi.pi-trash,.pi.pi-users {
+  font-size: 20px !important;
+}
+.pi.pi-id-card{
+  font-size: 20px !important;
 }
 /*CONFIGURAÇÃO PAINEL*/
 
@@ -521,3 +524,165 @@ div.p-selectbutton.p-buttonset.p-component div.p-button.p-component.p-highlight:
   background-color: #044003 !important;
   border-color: #044003 !important;
 }
+
+div.p-dropdown.p-component.p-inputwrapper{
+    border: 1px solid #055904;
+    caret-color: #055904;
+    border-radius: 16px;   
+}
+div.p-dropdown.p-component.p-inputwrapper.p-disabled.p-inputwrapper-filled{
+    background-color: #0559044d;
+}
+
+div.p-dropdown.p-component.p-inputwrapper.p-inputwrapper-filled.p-inputwrapper-focus{
+    box-shadow: 0px 0px 0px 3px rgba(157, 249, 151, 0.592) !important;
+}
+
+
+
+div.p-inputswitch .p-inputswitch-slider{
+    border-radius: 16px;
+}
+div.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+    background: #055904;
+    border-radius: 16px;
+}
+div.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:hover{
+    background: #055904 !important;
+
+}
+.p-inputswitch.p-focus .p-inputswitch-slider {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem rgba(72, 180, 97, 0.5) !important;
+}
+
+.p-inputswitch .p-inputswitch-slider:before{
+    width: 1.0rem !important;
+    height: 1.0rem !important;
+    left: 0.25rem !important;
+    margin-top: -0.5rem !important;
+    border-radius: 50px !important;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+    color: #6c758d !important;
+    font-size: 13px;
+    font-weight:  500px !important;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+.p-dropdown-items-wrapper {
+    font-size: 13px;
+    font-weight:  500px !important;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+.p-dropdown .p-dropdown-label{
+    color: #000 !important;
+    font-size: 13px;
+    font-weight:  500px !important;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0px 0px 0px 3px rgba(157, 249, 151, 0.592) !important;
+  border-color: #055904 !important;
+}
+
+
+/**************CARD DO Validar usuarios**************/
+div div.p-card.p-component {
+  width: fit-content;
+  border: 1px solid #055904;
+  border-radius: 16px;
+  padding: 15px;
+  background: white;
+  overflow: hidden; /* <- CORTE DA SOMBRA */
+  box-shadow: 
+      2px 2px 5px rgba(0, 0, 0, 0.2),
+      2px 2px 5px rgba(0, 0, 0, 0.14),
+      2px 2px 10px rgba(0, 0, 0, 0.12);
+  gap:10px;
+  margin: 0 15px 15px 0;
+}
+/* div div.p-card.p-component div.p-card-header{
+background-color: #ffa4a4;
+} */
+
+div div.p-card.p-component div.p-card-body{
+  padding: 0rem;
+}
+div div.p-card.p-component div.p-card-body div.p-card-content{
+      padding: 0rem 0;
+}
+div div.p-card.p-component div.p-card-body div.p-card-content div{
+      display: flex;
+      flex-direction: column;
+      gap:5px;
+      margin: 0px 0 10px 0;
+}
+
+div div.p-card.p-component div.p-card-body div.p-card-content div p{
+  color: #000000;
+  display: flex;
+  gap: 5px;
+}
+div div.p-card.p-component div.p-card-body div.p-card-content div strong{
+  color: #055904;
+}
+
+
+
+.p-inputtext:enabled:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem rgba(157, 249, 151, 0.592) !important;
+  border-color: #055904 !important;
+}
+
+div.p-dialog.p-component.p-dialog-default{
+box-shadow: 
+      2px 2px 5px rgba(0, 0, 0, 0.2),
+      2px 2px 5px rgba(0, 0, 0, 0.14),
+      2px 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+div input.p-inputtext.p-component{
+  border: 1px solid #055904;
+  border-radius: 16px;
+}
+.p-inputtext:enabled:hover {
+  border-color: #055904 !important;
+}
+
+
+
+@media (max-width: 1040px) {
+
+  div.p-dialog.p-component.p-dialog-default{
+    width: 100% !important;
+  }
+   .p-dialog-mask{
+        height: 70% !important;
+  }
+  .p-dialog .p-dialog-header .p-dialog-title{
+    font-size: 1rem !important;
+  }
+  .p-dialog-header{
+    padding: 0.5rem 1rem !important;
+  }
+}
+
+@media (max-width: 502px) {
+   .p-dialog-mask{
+        height: 50% !important;
+  }
+  .p-dialog .p-dialog-header .p-dialog-title{
+    font-size: 1rem !important;
+  }
+
+}
+
+
