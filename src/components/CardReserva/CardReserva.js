@@ -113,7 +113,7 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
                 {!!bibliotecario && (<>
                         <Badge 
                         style={{borderRadius:'16px', height:'auto'}} 
-                        value={`RA/Nome: ${reserva.Usuario?.ra}`} 
+                        value={`RA: ${reserva.Usuario?.ra}`} 
                         severity="success"
                         ></Badge>
                         <Badge 

@@ -642,6 +642,12 @@ div div.p-card.p-component div.p-card-body div.p-card-content div strong{
   border-color: #055904 !important;
 }
 
+div.p-dialog.p-component.p-dialog-default{
+box-shadow: 
+      2px 2px 5px rgba(0, 0, 0, 0.2),
+      2px 2px 5px rgba(0, 0, 0, 0.14),
+      2px 2px 10px rgba(0, 0, 0, 0.12);
+}
 
 div input.p-inputtext.p-component{
   border: 1px solid #055904;
@@ -650,3 +656,33 @@ div input.p-inputtext.p-component{
 .p-inputtext:enabled:hover {
   border-color: #055904 !important;
 }
+
+
+
+@media (max-width: 1040px) {
+
+  div.p-dialog.p-component.p-dialog-default{
+    width: 100% !important;
+  }
+   .p-dialog-mask{
+        height: 70% !important;
+  }
+  .p-dialog .p-dialog-header .p-dialog-title{
+    font-size: 1rem !important;
+  }
+  .p-dialog-header{
+    padding: 0.5rem 1rem !important;
+  }
+}
+
+@media (max-width: 502px) {
+   .p-dialog-mask{
+        height: 50% !important;
+  }
+  .p-dialog .p-dialog-header .p-dialog-title{
+    font-size: 1rem !important;
+  }
+
+}
+
+
