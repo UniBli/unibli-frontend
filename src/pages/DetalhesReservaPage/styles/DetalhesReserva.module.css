@@ -2,10 +2,8 @@ div.main{
     display: flex;
     align-items: flex-start;/*eixo y*/
     justify-content: flex-end;
-    width: auto;
-    height: 90vh;
-    
-    margin: 40px;
+    width: auto;    
+    margin: 40px 40px 300px 40px;
     /* background-color: rgb(255, 196, 0);  */
 }
 
@@ -15,11 +13,7 @@ div.main div.listBooksReservation{
     align-items: flex-start;/*eixo y*/
     justify-content: flex-start;/*eixo x*/
     flex-direction: column;
-    width: 70%;
-    height:65dvh;
-
-    overflow-y: auto;
-    overflow-x: hidden;
+    
     padding-right: 30px;
 
     /* background-color: red;  */
@@ -137,14 +131,15 @@ div.divContainerBtnFiltrar{
         display: flex;       
         flex-direction: column-reverse;
         width: auto;
-        height: 200dvh;
     }    
 
     div.main div.listBooksReservation{
         overflow-y: auto;
         overflow-x: hidden;
         padding-right: 20px;
-        height: 150dvh;
+        height: 150dvh !important;
+        width: 100% !important;
+        margin-bottom: 200px;
     }
 
     div.divContainerBtnFiltrar{
@@ -153,15 +148,11 @@ div.divContainerBtnFiltrar{
     div.main div.legendas{
         align-items: flex-start;
         width: 100%;
-        margin-bottom: 50px;
+        margin-bottom: 30px;
         padding: 20px;
         border-radius: 16px;
         background-color: #05590416;
-    } 
-
-    div.main div.listBooksReservation{
-        width: 100%;
-    }    
+    }
 
 }
 

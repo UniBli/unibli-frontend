@@ -35,28 +35,32 @@ div.cardReservaLeitor p {
 }
 div.cardReservaLeitor h2{
   display: inline-block;
-  max-width: 300px; /* Ajuste conforme necessidade */
+  max-width: 200px; /* Ajuste conforme necessidade */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: help;
 }
 
+
 div.cardReservaLeitor span.spanLivro,
-div.cardReservaLeitor span.spanReserva {
+div.cardReservaLeitor span.spanReserva
+{
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between; /* Isso vai colocar o badge na direita */
     align-items: flex-start;
     width: 100%; /* Importante para ocupar toda a largura */
+    width: max-content;
 }
+/* div.cardReservaLeitor span.spanUnidadePolo{
 
+} */
 
 
 
 div.cardReservaLeitor h2{
     font-size: 30px;
-
 }
 div.cardReservaLeitor p{
    font-size: 25px;
@@ -150,7 +154,14 @@ div.cardReservaLeitor button.btnTituloRetirado:hover{
     div.cardReservaLeitor span{
         flex-wrap: wrap;
         gap: 20px;
+        width: 100%;
     }  
+    div.cardReservaLeitor h2{
+        width: max-content;
+    }
+
+
+
 }
 
 @media (max-width: 765px) {
@@ -169,6 +180,10 @@ div.cardReservaLeitor button.btnTituloRetirado:hover{
     div.cardReservaLeitor{
         width: 100%;
     }  
+
+    div.cardReservaLeitor span.spanReserva{
+        width: auto;
+    }
 }
 
 

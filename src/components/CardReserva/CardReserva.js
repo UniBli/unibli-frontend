@@ -80,14 +80,14 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
             <Toast ref={toast} />
             <div className={styles.cardReservaLeitor}>
 
+                {!!bibliotecario && reserva.Livro?.titulo && (
+                    <Badge 
+                    style={{borderRadius:'16px', height:'auto'}} 
+                    value={`ID do Livro: ${reserva.Livro?.id_livro}`} 
+                    severity="success"
+                    ></Badge>
+                )}
                 <span className={styles.spanLivro}>
-                    {!!bibliotecario && reserva.Livro?.titulo && (
-                        <Badge 
-                        style={{borderRadius:'16px', height:'auto'}} 
-                        value={`ID do Livro: ${reserva.Livro?.id_livro}`} 
-                        severity="success"
-                        ></Badge>
-                    )}
                     <h2 title={reserva.Livro?.titulo || 'Nome não encontrado'}>
                         Livro: {reserva.Livro?.titulo || 'Nome não encontrado'}
                     </h2>
@@ -103,12 +103,18 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
                         Reservado: {formatDate(reserva.dataDaReserva)}
                     </p>
                 </span>
+               
                 <Badge 
                 style={{borderRadius:'16px', height:'auto'}} 
                 value={`Data de Expiração: ${reserva.dataExpiracao}`} 
                 severity="success"
                 ></Badge>
-                <p>Unidade/Polo: {reserva.Fatec?.nome || 'Fatec não encontrada'}</p>
+
+                <span className={styles.spanUnidadePolo}>
+                    <p className={styles.unidadePolo}>
+                        Unidade/Polo: {reserva.Fatec?.nome || 'Fatec não encontrada'}
+                    </p>
+                </span>
                 
                 {!!bibliotecario && (<>
                         <Badge 
