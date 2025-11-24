@@ -164,7 +164,9 @@ const DetalhesReserva = () => {
       <Toast ref={toast} />
       
       {reservas.filter(reserva => reserva.status === 'ativa').length > 0 ? (
-        <div className={styles.listBooksReservation}>
+        <div 
+          className={styles.listBooksReservation} 
+        >
           {
             reservas
               .filter(reserva => reserva.status === 'ativa')

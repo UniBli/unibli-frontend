@@ -2,18 +2,13 @@
     display: flex;
 }
 
-
-
-
-
-
-
 div.cardReservaLeitor{
     display: flex;
     align-items: flex-start;/*eixo y*/
     justify-content: center;/*eixo x*/
     flex-direction: column;
-    width:70%;
+    /* width:70%; */
+    width: fit-content;
     height: auto;
 
     color: #055904;
@@ -37,6 +32,14 @@ div.cardReservaLeitor p {
     align-items: flex-start;
     text-align: left;
     width: 200%;
+}
+div.cardReservaLeitor h2{
+  display: inline-block;
+  max-width: 300px; /* Ajuste conforme necessidade */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: help;
 }
 
 div.cardReservaLeitor span.spanLivro,

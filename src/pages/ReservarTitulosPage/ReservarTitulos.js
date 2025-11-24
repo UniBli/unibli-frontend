@@ -147,7 +147,13 @@ const ReservarTitulos = () => {
                                             // O ícone só aparece se autenticado E não integrado (e não carregando)
                                             icon={(isAuthenticated && !integrado) ? "pi pi-exclamation-triangle" : undefined}
                                             // O label muda dependendo do estado
-                                            label={(!isAuthenticated || integrado) ? "RESERVAR" : ""}
+                                            label={
+                                                loading 
+                                                    ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
+                                                    : (!isAuthenticated || integrado) 
+                                                        ? "RESERVAR" 
+                                                        : ""
+                                            }
                                             size="large"
                                             style={{
                                                 boxShadow:

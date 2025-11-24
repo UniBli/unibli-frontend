@@ -11,10 +11,7 @@ import { useUser } from '../../context/UserContext';
 const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliotecario, onError, onReservaFinalizada }) => {
     //const { user } = useAuth0();
     const toast = useRef(null);
-    const { finalizarReserva } = useUser();
-
-    console.log('CardReserva', reserva);
-    
+    const { finalizarReserva } = useUser();    
 
     const handleCancelarReserva = async () => {
         try {
@@ -84,28 +81,45 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
             <div className={styles.cardReservaLeitor}>
 
                 <span className={styles.spanLivro}>
-                    {reserva.Livro?.titulo && (
+                    {!!bibliotecario && reserva.Livro?.titulo && (
                         <Badge 
                         style={{borderRadius:'16px', height:'auto'}} 
                         value={`ID do Livro: ${reserva.Livro?.id_livro}`} 
                         severity="success"
                         ></Badge>
                     )}
-                    <h2>
+                    <h2 title={reserva.Livro?.titulo || 'Nome não encontrado'}>
                         Livro: {reserva.Livro?.titulo || 'Nome não encontrado'}
                     </h2>
                 </span>
                 <span className={styles.spanReserva}>
-                    <Badge 
-                    style={{borderRadius:'16px', height:'auto'}} 
-                    value={`ID da Reserva: ${reserva.id_reserva}`} 
-                    severity="success"
-                    ></Badge>
+                    {!!bibliotecario && (
+                        <Badge 
+                        style={{borderRadius:'16px', height:'auto'}} 
+                        value={`ID da Reserva: ${reserva.id_reserva}`} 
+                        severity="success"
+                        ></Badge>
+                    )}
                     <p>
                         Reservado: {formatDate(reserva.dataDaReserva)}
                     </p>
                 </span>
                 <p>Unidade/Polo: {reserva.Fatec?.nome || 'Fatec não encontrada'}</p>
+                
+
+                {!!bibliotecario && (<>
+                        <Badge 
+                        style={{borderRadius:'16px', height:'auto'}} 
+                        value={`RA: ${reserva.Usuario?.ra}`} 
+                        severity="success"
+                        ></Badge>
+                        <Badge 
+                        style={{borderRadius:'16px', height:'auto'}} 
+                        value={`Nome: ${reserva.Usuario?.nome}`} 
+                        severity="success"
+                        ></Badge>
+                </>)}                
+
                 <span>
                     <button 
                         onClick={handleCancelarReserva} 
