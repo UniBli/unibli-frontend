@@ -88,6 +88,21 @@ export const UserProvider = ({ children }) => {
       fetchFatecs();
     }
   }, [serverOrigin]);
+
+  // Função para finalizar uma reserva
+  const finalizarReserva = useCallback(async (reservaId) => {
+    if (!serverOrigin) {
+      throw new Error('Servidor não configurado');
+    }
+
+    try {
+      const response = await axios.patch(`${serverOrigin}/reservas/${reservaId}/finalizar`);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao finalizar reserva:', error);
+      throw error;
+    }
+  }, [serverOrigin]);
   
   // 'integrado' é um valor derivado diretamente do estado 'usuarioUnibliBd'.
   const value = {
@@ -101,7 +116,8 @@ export const UserProvider = ({ children }) => {
     bibliotecario: !!bibliotecario,
     fatecs, // Expondo a lista de Fatecs
     usuariosNaoValidados, // Expondo a lista de usuários não validados
-    fetchUsuariosNaoValidados // Expondo a função para re-buscar a lista
+    fetchUsuariosNaoValidados, // Expondo a função para re-buscar a lista
+    finalizarReserva // Expondo a função para finalizar uma reserva
   };
 
   // O console.log de diagnóstico foi removido daqui.

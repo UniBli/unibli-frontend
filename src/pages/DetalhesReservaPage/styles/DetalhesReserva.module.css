@@ -6,7 +6,7 @@ div.main{
     
     margin: 40px;
 
-    /* background-color: rgb(255, 196, 0); */
+    /* background-color: rgb(255, 196, 0);  */
 }
 
 
@@ -22,7 +22,7 @@ div.main div.listBooksReservation{
     overflow-x: hidden;
     padding-right: 30px;
 
-    /* background-color: red; */
+    /* background-color: red;  */
 }
 
 
@@ -37,7 +37,7 @@ div.main div.legendas{
 
     position: relative;
  
-    /* background-color: rgb(0, 255, 4); */
+    /* background-color: rgb(0, 255, 4);  */
 }
 
 div.main div.legendas h2 {
@@ -105,8 +105,7 @@ div.semReservas .txtNoReservationsFound{
 }
 /**********************************************************************/
 
-
-@media (max-width: 720px) {
+@media (max-width: 1120px) {
 
     div.main{
         display: flex;       
@@ -122,7 +121,7 @@ div.semReservas .txtNoReservationsFound{
 
     div.main div.legendas{
         align-items: flex-start;
-        width: 98%;
+        width: 100%;
         margin-bottom: 50px;
         padding: 20px;
         border-radius: 16px;

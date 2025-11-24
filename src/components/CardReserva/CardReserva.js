@@ -3,10 +3,18 @@ import styles from './styles/CardReserva.module.css';
 //import { useAuth0 } from '@auth0/auth0-react';
 import { Toast } from 'primereact/toast';
 import axios from 'axios';
+import { Badge } from 'primereact/badge';
+import { useUser } from '../../context/UserContext';
 
-const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliotecario, onError }) => {
+
+
+const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliotecario, onError, onReservaFinalizada }) => {
     //const { user } = useAuth0();
     const toast = useRef(null);
+    const { finalizarReserva } = useUser();
+
+    console.log('CardReserva', reserva);
+    
 
     const handleCancelarReserva = async () => {
         try {
@@ -35,16 +43,38 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
         }
     }
 
-    const handleTituloRetirado = () => {
-        // Para manter compatibilidade, ainda mostra toast local se necessário
-        // Mas idealmente isso também seria movido para o pai
-        if (toast.current) {
-            toast.current.show({
-                severity: 'success', 
-                summary: 'Sucesso', 
-                detail: 'Livro retirado com sucesso', 
-                life: 3000
-            });
+    const handleTituloFinalizada = async () => {
+        try {
+            console.log('Finalizando reserva ID:', reserva.id_reserva);
+            
+            // Chama a funcao do contexto para finalizar a reserva
+            const response = await finalizarReserva(reserva.id_reserva);
+            
+            console.log('Resposta da finalizacao:', response);
+
+            // Chama a funcao callback para atualizar a lista
+            if (onReservaFinalizada) {
+                onReservaFinalizada(reserva.id_reserva);
+            }
+
+            // Mostra toast de sucesso
+            if (toast.current) {
+                toast.current.show({
+                    severity: 'success', 
+                    summary: 'Sucesso', 
+                    detail: 'Livro retirado com sucesso', 
+                    life: 3000
+                });
+            }
+        } catch (error) {
+            console.error('Erro ao finalizar reserva:', error);
+            
+            const errorMessage = error.response?.data?.error || 'Erro ao finalizar reserva';
+            
+            // Chama a funcao de erro passada pelo pai
+            if (onError) {
+                onError(errorMessage);
+            }
         }
     }
 
@@ -52,10 +82,30 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
         <>
             <Toast ref={toast} />
             <div className={styles.cardReservaLeitor}>
-                <h2>Livro: {reserva.Livro?.titulo || 'Nome não encontrado'}</h2>
-                <p>Reservado: {formatDate(reserva.dataDaReserva)}</p>
+
+                <span className={styles.spanLivro}>
+                    {reserva.Livro?.titulo && (
+                        <Badge 
+                        style={{borderRadius:'16px', height:'auto'}} 
+                        value={`ID do Livro: ${reserva.Livro?.id_livro}`} 
+                        severity="success"
+                        ></Badge>
+                    )}
+                    <h2>
+                        Livro: {reserva.Livro?.titulo || 'Nome não encontrado'}
+                    </h2>
+                </span>
+                <span className={styles.spanReserva}>
+                    <Badge 
+                    style={{borderRadius:'16px', height:'auto'}} 
+                    value={`ID da Reserva: ${reserva.id_reserva}`} 
+                    severity="success"
+                    ></Badge>
+                    <p>
+                        Reservado: {formatDate(reserva.dataDaReserva)}
+                    </p>
+                </span>
                 <p>Unidade/Polo: {reserva.Fatec?.nome || 'Fatec não encontrada'}</p>
-                <p>ID da Reserva: {reserva.id_reserva}</p>
                 <span>
                     <button 
                         onClick={handleCancelarReserva} 
@@ -70,9 +120,9 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
                     </button>
                     {bibliotecario ? (
                         <button 
-                            onClick={handleTituloRetirado} 
+                            onClick={handleTituloFinalizada} 
                             className={styles.btnTituloRetirado}
-                            title="Marcar como retirado"
+                            title="Marcar como finalizada"
                         >
                             <i className="pi pi-check-circle" style={{fontSize:'20px'}}></i>
                         </button>

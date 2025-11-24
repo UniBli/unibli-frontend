@@ -628,3 +628,21 @@ div div.p-card.p-component div.p-card-body div.p-card-content div p{
 div div.p-card.p-component div.p-card-body div.p-card-content div strong{
   color: #055904;
 }
+
+
+
+.p-inputtext:enabled:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem rgba(157, 249, 151, 0.592) !important;
+  border-color: #055904 !important;
+}
+
+
+div input.p-inputtext.p-component{
+  border: 1px solid #055904;
+  border-radius: 16px;
+}
+.p-inputtext:enabled:hover {
+  border-color: #055904 !important;
+}

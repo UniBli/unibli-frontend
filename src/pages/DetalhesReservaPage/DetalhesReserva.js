@@ -15,32 +15,42 @@ import styles from './styles/DetalhesReserva.module.css';
 const DetalhesReserva = () => {
   // 1. Consumir os dados do contexto.
   // O LayoutAutenticado garante que, quando este componente renderiza,
-  // os carregamentos de autenticação e usuário já terminaram.
-  // Por isso, não precisamos mais de `isLoadingUser` para a lógica de renderização inicial.
-  const { usuarioUnibliBd, serverOrigin } = useUser();
+  // os carregamentos de autenticacao e usuario ja terminaram.
+  // Por isso, nao precisamos mais de `isLoadingUser` para a logica de renderizacao inicial.
+  const { usuarioUnibliBd, serverOrigin, bibliotecario } = useUser();
 
-  // 2. Estados específicos para este componente.
+  // 2. Estados especificos para este componente.
   // Renomeado de 'loading' para 'loadingReservas' para maior clareza.
   const [loadingReservas, setLoadingReservas] = useState(true);
   const [reservas, setReservas] = useState([]);
   const [error, setError] = useState(null);
   
-  // 3. Referência para o Toast
+  // 3. Referencia para o Toast
   const toast = useRef(null);
 
-  // 4. Efeito para buscar os dados específicos desta página (as reservas).
+  console.log('reservas', reservas);
+  console.log('reservas.length', reservas.filter(reserva => reserva.status === 'ativa').length);
+ 
+  
+
+  // 4. Efeito para buscar os dados especificos desta pagina (as reservas).
   useEffect(() => {
-    // Condição de guarda: se não há um usuário do nosso BD, não há reservas para buscar.
+    // Condicao de guarda: se nao ha um usuario do nosso BD, nao ha reservas para buscar.
     if (!usuarioUnibliBd?.id_usuario) {
-      setLoadingReservas(false); // Finaliza o carregamento, pois não há nada a fazer.
+      setLoadingReservas(false); // Finaliza o carregamento, pois nao ha nada a fazer.
       return;
     }
 
-    // Se temos um usuário, buscamos suas reservas.
+    // Se temos um usuario, buscamos suas reservas.
     const carregarReservas = async () => {
-      setLoadingReservas(true); // Garante que o spinner desta página seja exibido.
+      setLoadingReservas(true); // Garante que o spinner desta pagina seja exibido.
       try {
-        const response = await axios.get(`${serverOrigin}/reservas/usuario/${usuarioUnibliBd.id_usuario}`);
+        let uri = 
+          bibliotecario 
+            ? `${serverOrigin}/reservas` 
+            : `${serverOrigin}/reservas/usuario/${usuarioUnibliBd.id_usuario}`
+
+        const response = await axios.get(uri);
         setReservas(response.data.reservas || []);
         setError(null); // Limpa qualquer erro anterior em caso de sucesso.
       } catch (err) {
@@ -61,9 +71,9 @@ const DetalhesReserva = () => {
 
     carregarReservas();
     
-  }, [usuarioUnibliBd, serverOrigin]); // O useEffect agora depende apenas dos dados que realmente iniciam a busca.
+  }, [usuarioUnibliBd, serverOrigin, bibliotecario]); // O useEffect agora depende apenas dos dados que realmente iniciam a busca.
 
-  // 5. Funções auxiliares do componente.
+  // 5. Funcoes auxiliares do componente.
   const handleReservaCancelada = (reservaId) => {
     setReservas(prevReservas => prevReservas.filter(reserva => reserva.id_reserva !== reservaId));
     // Mostrar toast de sucesso
@@ -71,6 +81,17 @@ const DetalhesReserva = () => {
       severity: 'success', 
       summary: 'Sucesso', 
       detail: 'Reserva cancelada!', 
+      life: 3000
+    });
+  };
+
+  const handleReservaFinalizada = (reservaId) => {
+    setReservas(prevReservas => prevReservas.filter(reserva => reserva.id_reserva !== reservaId));
+    // Mostrar toast de sucesso
+    toast.current.show({
+      severity: 'success', 
+      summary: 'Sucesso', 
+      detail: 'Reserva finalizada!', 
       life: 3000
     });
   };
@@ -93,19 +114,19 @@ const DetalhesReserva = () => {
     return `${day}/${month}/${year}`;
   };
 
-  // --- LÓGICA DE RENDERIZAÇÃO DA PÁGINA ---
-  // O LayoutAutenticado já nos protegeu dos "pisca-piscas" iniciais.
-  // Agora, gerenciamos os estados internos desta página.
+  // --- LOGICA DE RENDERIZACAO DA PAGINA ---
+  // O LayoutAutenticado ja nos protegeu dos "pisca-piscas" iniciais.
+  // Agora, gerenciamos os estados internos desta pagina.
 
-  // ESTADO 1: Usuário autenticado, mas sem cadastro no nosso banco de dados.
-  // Esta verificação agora é segura e não vai piscar na tela.
+  // ESTADO 1: Usuario autenticado, mas sem cadastro no nosso banco de dados.
+  // Esta verificacao agora e segura e nao vai piscar na tela.
   if (!usuarioUnibliBd) {
     return (
       <div className={styles.semReservas}>
          <div className={styles.noReservationsFound}>
             <img 
               src='../imgStatus/mail-bro.svg' 
-              alt='Ilustração de um detetive' 
+              alt='Ilustracao de um detetive' 
             />
           </div>
           <h1 className={styles.txtNoReservationsFound}>
@@ -115,8 +136,8 @@ const DetalhesReserva = () => {
     ); 
   }
 
-  // ESTADO 2: Carregando os dados específicos desta página (as reservas).
-  // Usamos o estilo de carregamento local que você definiu.
+  // ESTADO 2: Carregando os dados especificos desta pagina (as reservas).
+  // Usamos o estilo de carregamento local que voce definiu.
   if (loadingReservas) {
     return (
       <div className={styles.loading}>
@@ -135,7 +156,7 @@ const DetalhesReserva = () => {
     );
   }
   
-  // ESTADO 4: Renderização de sucesso.
+  // ESTADO 4: Renderizacao de sucesso.
   // Exibe a lista de reservas ou a mensagem de "nenhuma reserva encontrada".
   return (
     <div className={styles.main}>
@@ -153,6 +174,7 @@ const DetalhesReserva = () => {
                   reserva={reserva}
                   formatDate={formatDate}
                   onReservaCancelada={handleReservaCancelada}
+                  onReservaFinalizada={handleReservaFinalizada}
                   onError={handleError}
                   origin={serverOrigin}
                   bibliotecario={usuarioUnibliBd?.tipoBibliotecario}
@@ -165,7 +187,7 @@ const DetalhesReserva = () => {
           <div className={styles.noReservationsFound}>
             <img 
               src='../imgStatus/fileSearching-bro.svg' 
-              alt='Ilustração de um detetive' 
+              alt='Ilustracao de um detetive' 
             />
           </div>
           <h1 className={styles.txtNoReservationsFound}>
@@ -175,13 +197,13 @@ const DetalhesReserva = () => {
         </div>
       )}
       
-      {/* Renderiza a legenda apenas se o usuário for um bibliotecário */}
-      {!!usuarioUnibliBd?.tipoBibliotecario && (
+      {/* Renderiza a legenda apenas se o usuario for um bibliotecario */}
+      {bibliotecario && (
         <div className={styles.legendas}>
           <h2>Legendas</h2>
           <span>
             <p><i className="pi pi-times-circle"></i>: Cancelar Reserva</p>
-            <p><i className="pi pi-check-circle"></i>: Título Retirado</p>
+            <p><i className="pi pi-check-circle"></i>: Titulo Retirado</p>
           </span>
         </div>
       )}
@@ -189,7 +211,7 @@ const DetalhesReserva = () => {
   );
 }
 
-// A exportação com o HOC do Auth0 permanece inalterada.
+// A exportacao com o HOC do Auth0 permanece inalterada.
 export default withAuthenticationRequired(DetalhesReserva, {
   onRedirecting: () => (<Redirect/>)
 });
