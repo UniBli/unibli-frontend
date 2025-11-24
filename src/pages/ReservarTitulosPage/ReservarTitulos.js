@@ -1,5 +1,3 @@
-// src/pages/ReservarTitulosPage/ReservarTitulos.js
-
 import CardBook from '../../components/CardBook/CardBook';
 import ReservarTitulosLoading from './ReservarTitulosLoading.js';
 import { Button } from 'primereact/button';
@@ -30,6 +28,7 @@ const ReservarTitulos = () => {
     const [book, setBook] = useState(null); // Iniciar como null para clareza
     const [fatecs, setFatecs] = useState([]);
     const [loading, setLoading] = useState(true); // Loading para os dados do livro
+    const [reserving, setReserving] = useState(false); // NOVO ESTADO: loading da reserva
     const [error, setError] = useState('');
     const [selectedFatecId, setSelectedFatecId] = useState(null);
     const [toastMessage, setToastMessage] = useState(null);
@@ -97,6 +96,8 @@ const ReservarTitulos = () => {
         }
 
         try {
+            setReserving(true); // INICIAR LOADING DA RESERVA
+            
             const response = await axios.post(`${serverOrigin}/reservas/reservar`, {
                 usuarioId: usuario,
                 livroId: parseInt(bookId),
@@ -115,6 +116,8 @@ const ReservarTitulos = () => {
             console.error('Erro ao efetuar reserva:', error);
             let errorMessage = error.response?.data?.error || 'Erro ao efetuar reserva!';
             setToastMessage({ severity: 'error', summary: 'Erro', detail: errorMessage });
+        } finally {
+            setReserving(false); // FINALIZAR LOADING DA RESERVA (sucesso ou erro)
         }
     };
     
@@ -148,11 +151,13 @@ const ReservarTitulos = () => {
                                             icon={(isAuthenticated && !integrado) ? "pi pi-exclamation-triangle" : undefined}
                                             // O label muda dependendo do estado
                                             label={
-                                                loading 
+                                                reserving // PRIORIDADE: mostrar loading da reserva
                                                     ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
-                                                    : (!isAuthenticated || integrado) 
-                                                        ? "RESERVAR" 
-                                                        : ""
+                                                    : loading 
+                                                        ? <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>
+                                                        : (!isAuthenticated || integrado) 
+                                                            ? "RESERVAR" 
+                                                            : ""
                                             }
                                             size="large"
                                             style={{
@@ -166,8 +171,8 @@ const ReservarTitulos = () => {
                                                         : styles.btnReservar // Estilo para integrado
                                                     : styles.disabledButton // Estilo para não autenticado
                                             }
-                                            // Desabilita se os dados do livro estiverem carregando
-                                            disabled={loading} 
+                                            // Desabilita se os dados do livro estiverem carregando OU se a reserva estiver em andamento
+                                            disabled={loading || reserving} 
                                         />
                                     </div>
                                 </form>

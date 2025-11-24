@@ -159,13 +159,17 @@ const DetalhesReserva = () => {
   // ESTADO 4: Renderizacao de sucesso.
   // Exibe a lista de reservas ou a mensagem de "nenhuma reserva encontrada".
   return (
-    <div className={styles.main}>
+    <div className={styles.main}
+    style={!bibliotecario ? {
+              justifyContent: 'flex-start',
+          } : null}
+    >
       {/* Toast centralizado no componente pai */}
       <Toast ref={toast} />
       
       {reservas.filter(reserva => reserva.status === 'ativa').length > 0 ? (
         <div 
-          className={styles.listBooksReservation} 
+          className={styles.listBooksReservation}
         >
           {
             reservas

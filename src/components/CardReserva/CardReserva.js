@@ -92,25 +92,28 @@ const CardReserva = ({ reserva, formatDate, onReservaCancelada, origin, bibliote
                         Livro: {reserva.Livro?.titulo || 'Nome não encontrado'}
                     </h2>
                 </span>
+                
                 <span className={styles.spanReserva}>
-                    {!!bibliotecario && (
                         <Badge 
                         style={{borderRadius:'16px', height:'auto'}} 
                         value={`ID da Reserva: ${reserva.id_reserva}`} 
                         severity="success"
                         ></Badge>
-                    )}
                     <p>
                         Reservado: {formatDate(reserva.dataDaReserva)}
                     </p>
                 </span>
+                <Badge 
+                style={{borderRadius:'16px', height:'auto'}} 
+                value={`Data de Expiração: ${reserva.dataExpiracao}`} 
+                severity="success"
+                ></Badge>
                 <p>Unidade/Polo: {reserva.Fatec?.nome || 'Fatec não encontrada'}</p>
                 
-
                 {!!bibliotecario && (<>
                         <Badge 
                         style={{borderRadius:'16px', height:'auto'}} 
-                        value={`RA: ${reserva.Usuario?.ra}`} 
+                        value={`RA/Nome: ${reserva.Usuario?.ra}`} 
                         severity="success"
                         ></Badge>
                         <Badge 
