@@ -233,7 +233,9 @@ const DetalhesReserva = () => {
   return (<>
 
     <div className={styles.main}
-      style={!!bibliotecario ? { justifyContent: 'flex-start' } : null}
+      style={!bibliotecario 
+              ? { justifyContent: 'flex-start'} 
+              : null}
     >
       <Toast ref={toast} />
       {/* Componente de Filtro - apenas para bibliotecários */}
@@ -249,7 +251,17 @@ const DetalhesReserva = () => {
 
       {/* Lista de reservas - agora mostra todas as reservas filtradas (sem filtrar por ativa) */}
       {reservasFiltradas.length > 0 ? (
-        <div className={styles.listBooksReservation}>
+        <div className={styles.listBooksReservation}
+          style={ bibliotecario 
+            ?{
+              width: '70%',
+              height:'65dvh',
+              overflowY: 'auto',
+              overflowX: 'hidden'
+            }
+            : null
+          }
+        >
           {reservasFiltradas.map((reserva) => (
             <CardReserva 
               key={reserva.id_reserva} 
