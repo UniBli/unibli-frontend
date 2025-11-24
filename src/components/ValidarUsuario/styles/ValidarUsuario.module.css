@@ -1,0 +1,153 @@
+div.mainUsuariosNaoValidados{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    height: 70vh;
+    overflow-y: auto;
+    margin: 20px 0 20px 0;
+    gap: 20px;
+}
+
+.divCardsUsuariosNaoValidados .cardUsuariosNaoValidados {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+.divCardsUsuariosNaoValidados button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    background-color: #055904;
+    color: #fff;
+    border: 2px solid #055904;
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 
+      2px 2px 5px rgba(0, 0, 0, 0.2),
+      2px 2px 5px rgba(0, 0, 0, 0.14),
+      2px 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.divCardsUsuariosNaoValidados button:hover{
+    cursor: pointer;
+    background-color: #fff;
+    color: #055904;
+}
+
+/* Estilos para o filtro */
+.filtroContainer {
+    background-color: #05590413;
+    padding: 30px;
+    border-radius: 16px;
+    margin: 30px 0 30px 0;
+    border: 1px solid #055904;
+    box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.14), 0 2px 20px 0 rgba(0, 0, 0, 0.12);
+}
+
+.filtroContainer h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #055904;
+}
+
+.filtroGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    align-items: end;
+}
+
+.filtroItem {
+    display: flex;
+    flex-direction: column;
+}
+
+.filtroItem label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #055904;
+}
+
+.filtroItem input,
+.filtroItem .p-dropdown {
+    width: 100%;
+}
+
+
+
+.botaoLimpar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    background-color: #055904;
+    color: #fff;
+    border: 2px solid #055904;
+    border-radius: 16px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.botaoLimpar:hover{
+    cursor: pointer;
+    background-color: #fff;
+    color: #055904;
+}
+
+
+
+
+/* Ajustes para inputs do PrimeReact */
+.p-inputtext,
+.p-dropdown {
+    width: 100%;
+}
+
+div.filtroContainer input{
+  height: 2.6em;
+  font-size: 13px;
+}
+
+
+div.mainResultadoBusca{
+    display: flex;
+    flex-direction: column;
+    align-items: center;/*eixo y*/
+    justify-content: flex-start;
+    width: 100%;
+    height:110dvh;
+    margin-top: 2dvh;
+}
+div.resultadoBusca{
+    height: 70dvh;
+}
+div.resultadoBusca img{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+div.mainResultadoBusca .txtNoReservationsFound {
+    font-family: 'Nunito', sans-serif;
+    color: #263238;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .filtroGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    div.mainUsuariosNaoValidados {
+        justify-content: center;
+    }
+}

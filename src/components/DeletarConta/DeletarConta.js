@@ -39,16 +39,14 @@ const DeletarConta = ({origin}) => {
       <p>
       Lamentamos ver você partir, mas entendemos que cada pessoa tem suas razões. Antes de tomar essa decisão definitiva, gostaríamos de lembrar algumas informações importantes:
       </p>
-      <p>
-        <ol>
-          <li>Ao excluir seu cadastro, você perderá acesso a todos os recursos e benefícios exclusivos associados à sua conta;</li>
-          <li>Não será possível recuperar seus dados após a exclusão;</li>
-          <li>Se você decidir voltar a utilizar nossos serviços, será necessário criar um novo cadastro e começar do zero.</li>
-        </ol>
-      </p>
+      <ol>
+        <li>Ao excluir seu cadastro, você perderá acesso a todos os recursos e benefícios exclusivos associados à sua conta;</li>
+        <li>Não será possível recuperar seus dados após a exclusão;</li>
+        <li>Se você decidir voltar a utilizar nossos serviços, será necessário criar um novo cadastro e começar do zero.</li>
+      </ol>
 
       <p>
-      Por favor, pense cuidadosamente antes de prosseguir. Se você ainda tem alguma dúvida ou preocupação, nossa equipe de suporte estará disponível para ajudar. Caso contrário, se você está certo de sua decisão, clique no botão <italic>"Confirmar Exclusão"</italic> abaixo.
+      Por favor, pense cuidadosamente antes de prosseguir. Se você ainda tem alguma dúvida ou preocupação, nossa equipe de suporte estará disponível para ajudar. Caso contrário, se você está certo de sua decisão, clique no botão <span className={styles.italic}>"Confirmar Exclusão"</span> abaixo.
       </p>
     </div>
     
@@ -66,7 +64,7 @@ const DeletarConta = ({origin}) => {
   
   <Dialog position='top' header="Confirmar exclusão de conta" visible={visible} modal={false} className={styles.dialog} onHide={() => {if (!visible) return; setVisible(false); }}>
         <p className="m-0">
-            Para confirmar a exclusão da sua conta, digite <italic>"Excluir conta"</italic> abaixo e clique no botão excluir.
+            Para confirmar a exclusão da sua conta, digite <span className={styles.italic}>"Excluir conta"</span> abaixo e clique no botão excluir.
         </p>
 
         <form onSubmit={handleDelete}>
@@ -75,8 +73,6 @@ const DeletarConta = ({origin}) => {
         </form>
 
     </Dialog>
-
-
 
     <p className={styles.support}>
           Caso precise, contate o suporte: 

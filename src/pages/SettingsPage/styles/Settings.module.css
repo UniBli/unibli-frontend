@@ -2,6 +2,5 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;/*eixo y*/
-    height: auto;
-    margin: 20px 30px 30px 30px;
+    margin: 20px 30px 30vh 30px;
 }
