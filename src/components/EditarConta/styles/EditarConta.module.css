@@ -26,7 +26,6 @@
 .divEditarconta form section div{
     display: flex;
     justify-content: space-between;
-    width: 100%;
     gap:40px;
 }
 
@@ -75,9 +74,13 @@
 }
 
 
-
-
-
+label.inputSwitchLabel{
+    display: flex;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex-direction: row !important;
+    gap:10px;
+}
 
 
 @media (max-width: 875px) {

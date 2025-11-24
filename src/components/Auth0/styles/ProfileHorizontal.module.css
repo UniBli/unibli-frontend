@@ -8,6 +8,11 @@
     margin-bottom: 20px;
 }
 
+.profileContainer small{
+    justify-content: flex-start;
+    margin: 8px;
+}
+
 .containerAvatarProfile  {
     display: flex;
 }
@@ -15,16 +20,20 @@
     border: 4px solid #055904;
 }
 
-
-
-
 .profileContainer h3 , .profileContainer p {
     margin: 8px;
     color: #055904 !important;
     text-align: left;
 }
-
+.profileContainer h3 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+}
 
 .profileContainer div > small{
     color: #0559043d !important;
 }
+
+

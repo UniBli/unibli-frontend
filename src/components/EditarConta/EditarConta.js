@@ -1,6 +1,8 @@
 import styles from './styles/EditarConta.module.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Toast } from 'primereact/toast';
+import { Dropdown } from 'primereact/dropdown';
+//import { InputSwitch } from 'primereact/inputswitch';
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { useUser } from '../../context/UserContext';
@@ -13,11 +15,15 @@ const EditarConta = () => {
     usuarioUnibliBd, 
     integrado, 
     serverOrigin, 
-    setUsuarioUnibliBd
+    setUsuarioUnibliBd,
+    bibliotecario,
+    fatecs // Consumindo a lista de Fatecs do contexto
   } = useUser();
 
-  const { user } = useAuth0();
-
+  const { user } = useAuth0(); 
+  //console.log('user',user.sub);
+  //console.log('usuarioUnibliBd',usuarioUnibliBd.auth0UserId);
+   
   // Estados locais para o formulário
   const [nome, setNome] = useState(user?.name ?? '');
   const [email, setEmail] = useState(user?.email ?? '');
@@ -32,8 +38,12 @@ const EditarConta = () => {
   const [matricula, setMatricula] = useState('');
   const [unidadePolo, setUnidadePolo] = useState('');
   const [loading, setLoading] = useState(false);
+  const [validado, setValidado] = useState(false);
+
+  console.log('unidadePolo', unidadePolo);
+  
     
-  useEffect(() => {
+    useEffect(() => {
     if (usuarioUnibliBd) {
       setNome(usuarioUnibliBd.nome ?? user?.name ?? '');
       setEmail(usuarioUnibliBd.email ?? user?.email ?? '');
@@ -46,9 +56,15 @@ const EditarConta = () => {
       setNumResidencial(usuarioUnibliBd.numResidencia ?? '');
       setComplemento(usuarioUnibliBd.complemento ?? '');
       setMatricula(usuarioUnibliBd.matricula ?? '');
-      setUnidadePolo(usuarioUnibliBd.unidadePolo ?? '');
+
+      // Garantindo que as flags sejam booleanas (ou null/undefined)
+      setValidado(usuarioUnibliBd.validado ?? false);
+
+      setUnidadePolo(fatecs.find(fatec => fatec.id_fatec===usuarioUnibliBd?.fk_id_fatec).id_fatec ?? '');
     }
-  }, [usuarioUnibliBd, user]);
+  }, [usuarioUnibliBd, user, fatecs]);
+
+
 
   const showToast = (severity, summary, detail) => {
     toast.current.show({ severity, summary, detail, life: 5000 });
@@ -59,8 +75,11 @@ const EditarConta = () => {
     try {
       const userDataPayload = {
         nome, cpf, endereco, "numResidencia": numResidencial, complemento, cep, 
-        "telefone": tel, email, ra, matricula, "tipoBibliotecario": null,
-        "auth0UserId": user?.sub, rg, "unidadePolo": null,
+	        "telefone": tel, email, ra, matricula, 
+	        "tipoBibliotecario": bibliotecario, 
+	        "validado": validado,
+	        "auth0UserId": user?.sub, rg, 
+	        "unidadePolo": unidadePolo,
       };
 
       const response = await axios.post(`${serverOrigin}/usuarios/cadastrar/usuario`, userDataPayload);
@@ -87,10 +106,17 @@ const EditarConta = () => {
         throw new Error("ID do usuário não encontrado para atualização.");
       }
 
+      console.log('const atualizar = async', unidadePolo);
+      
+
       const dadosAtualizados = {
-        nome, cpf, endereco, numResidencia: numResidencial, complemento, cep, 
-        telefone: tel, email, ra, rg,
-      };
+	        nome, cpf, endereco, numResidencia: numResidencial, complemento, cep, 
+	        telefone: tel, email, ra, rg,
+	        // Incluindo as flags e unidadePolo para atualização
+	        tipoBibliotecario: bibliotecario,
+	        validado: validado,
+	        fk_id_fatec: unidadePolo,
+	      };
 
       const response = await axios.put(`${serverOrigin}/usuarios/atualizar/${auth0UserId}`, dadosAtualizados);
 
@@ -133,27 +159,65 @@ const EditarConta = () => {
             <label><span>RG:*</span><input type="text" name="rg" placeholder="Digite o seu RG" onChange={(e) => setRg(e.target.value)} value={rg} required disabled={loading} /></label>
           </div>
           <div>
-            {!user.profile && (<label><span>RA:*</span><input type="text" name="ra" placeholder="Digite o seu RA" onChange={(e) => setRa(e.target.value)} value={ra} required disabled={loading} /></label>)}
-            <label><span>Telefone/Celular:*</span><input type="tel" name="tel" placeholder="Digite seu número de tel. ou cel." onChange={(e) => setTel(e.target.value)} value={tel} required disabled={loading} /></label>
+            {!bibliotecario && (
+              <label>
+                <span>RA:*</span>
+                <input 
+                  type="text" name="ra" placeholder="Digite o seu RA" 
+                  onChange={(e) => setRa(e.target.value)} 
+                  value={ra} required disabled={loading} 
+                />
+              </label>
+            )}
+            
+            <label>
+              <span>Telefone/Celular:*</span>
+              <input 
+                type="tel" name="tel" placeholder="Digite seu número de tel. ou cel." 
+                onChange={(e) => setTel(e.target.value)} 
+                value={tel} required disabled={loading} 
+              />
+            </label>
+            {!!bibliotecario && (<label></label>)}
           </div>
         </section>
-        <section className={styles.dadosEndereco}>
-          <div>
-            <label><span>CEP:*</span><input type="text" name="cep" placeholder="Digite o seu CEP" onChange={(e) => setCep(e.target.value)} value={cep} required disabled={loading} /></label>
-            <label><span>Endereço:*</span><input type="text" name="endereco" placeholder="Digite o seu endereco" onChange={(e) => setEndereco(e.target.value)} value={endereco} required disabled={loading} /></label>
-          </div>
-          <div>
-            <label><span>Número Residencial: *</span><input type="text" name="numResidencial" placeholder="Digite o seu número residencial" onChange={(e) => setNumResidencial(e.target.value)} value={numResidencial} required disabled={loading} /></label>
-            <label><span>Complemento:</span><input type="text" name="complemento" placeholder="Digite o seu complemento" onChange={(e) => setComplemento(e.target.value)} value={complemento} disabled={loading} /></label>
-          </div>
-        </section>
+
+        {!bibliotecario && (
+          <section className={styles.dadosEndereco}>
+            <div>
+              <label><span>CEP:*</span><input type="text" name="cep" placeholder="Digite o seu CEP" onChange={(e) => setCep(e.target.value)} value={cep} required disabled={loading} /></label>
+              <label><span>Endereço:*</span><input type="text" name="endereco" placeholder="Digite o seu endereco" onChange={(e) => setEndereco(e.target.value)} value={endereco} required disabled={loading} /></label>
+            </div>
+            <div>
+              <label><span>Número Residencial: *</span><input type="text" name="numResidencial" placeholder="Digite o seu número residencial" onChange={(e) => setNumResidencial(e.target.value)} value={numResidencial} required disabled={loading} /></label>
+              <label><span>Complemento:</span><input type="text" name="complemento" placeholder="Digite o seu complemento" onChange={(e) => setComplemento(e.target.value)} value={complemento} disabled={loading} /></label>
+            </div>
+          </section>
+        )}
         
-        <section className={styles.dadosBibliotecario}>
-          <div>
-            <label><span>Matrícula:</span><input type="text" name="matricula" placeholder="Sua Matrícula" onChange={(e) => setMatricula(e.target.value)} value={matricula} required/></label>
-            <label><span>Unidade/Polo:</span><input type="text" name="unidadePolo" placeholder="Sua Unidade/Polo" onChange={(e) => setUnidadePolo(e.target.value)} value={unidadePolo} required/></label>
-          </div>
-        </section>
+          <section className={styles.dadosBibliotecario}>
+            <div>
+              {!!bibliotecario &&(
+                <label><span>Matrícula:</span><input type="text" name="matricula" placeholder="Sua Matrícula" onChange={(e) => setMatricula(e.target.value)} value={matricula} required/></label>
+              )}
+              <label>
+                <span>Unidade/Polo:*</span>
+                <Dropdown 
+                  value={unidadePolo} 
+                  onChange={(e) => setUnidadePolo(e.value)} 
+                  options={fatecs} 
+                  optionLabel="nome" 
+                  optionValue="id_fatec" // O valor selecionado será o ID da Fatec
+                  placeholder="Selecione a Unidade/Polo" 
+                  required
+                  disabled={loading}
+                  className={styles.dropdownFatec}
+                />
+              </label>
+               {!bibliotecario && (<label></label>)}
+            </div>
+          </section>
+
         {loading ? (<button disabled>Carregando...</button>) : (<button>{integrado ? 'Atualizar' : 'Cadastrar'}</button>)}
       </form>
     </div>

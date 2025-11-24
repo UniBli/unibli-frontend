@@ -7,6 +7,8 @@ import { Badge } from 'primereact/badge';
 import ProfileHorizontal from '../../components/Auth0/ProfileHorizontal.js';
 import DeletarConta from '../../components/DeletarConta/DeletarConta.js';
 import EditarConta from '../../components/EditarConta/EditarConta.js';
+import ValidarUsuario from '../../components/ValidarUsuario/ValidarUsuario.js';
+
 
 import { useUser } from '../../context/UserContext'; // 1. Importar o hook
 
@@ -22,12 +24,14 @@ const Settings = () => {
     isLoadingUser, // Usar nosso loading para a lógica de UI
     serverOrigin, 
     usuarioUnibliBd, 
-    setIntegrado 
+    setIntegrado, 
+    bibliotecario
   } = useUser();
 
   // O auth0Domain ainda é uma variável de ambiente, podemos pegá-la aqui
   const auth0Domain = process.env.REACT_APP_AUTH0_DOMAIN;
-
+  //console.log(usuarioUnibliBd);
+  
   // Mostra um loading geral enquanto o Auth0 ou nosso BD estiverem carregando
   if (isLoadingAuth || isLoadingUser) {
     return <div>Loading ...</div>;
@@ -37,6 +41,7 @@ const Settings = () => {
     <div className={styles.main}>
       <ProfileHorizontal/>
       <TabView>
+        
         { !integrado ? (
           <TabPanel leftIcon="pi pi-user-edit" header="Completar cadastro">
             <Badge className={styles.customIcon} value="!" size="large" severity="warning"></Badge>
@@ -60,10 +65,22 @@ const Settings = () => {
             />
           </TabPanel>
         )}
-        <TabPanel leftIcon="pi pi-trash" header="Deletar conta">
-          {/* Passa a origin para o componente DeletarConta */}
-          <DeletarConta origin={serverOrigin}/>
-        </TabPanel>
+        
+        {bibliotecario 
+          ? (
+            <TabPanel leftIcon="pi pi-users" header="Validar usuarios" >
+              {/* Passa a origin para o componente DeletarConta */}
+              <ValidarUsuario origin={serverOrigin} />   
+            </TabPanel>
+          )
+          : (
+            <TabPanel leftIcon="pi pi-trash" header="Deletar conta">
+              {/* Passa a origin para o componente DeletarConta */}
+              <DeletarConta origin={serverOrigin}/>   
+            </TabPanel>
+          )
+        }
+        
       </TabView>
     </div>
   );
