@@ -1,11 +1,12 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+//import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const { user, isAuthenticated, isLoading: isLoadingAuth } = useAuth0();
+  const { user, isAuthenticated, isLoading: isLoadingAuth, logout, getAccessTokenSilently } = useAuth0();
   
   const [usuarioUnibliBd, setUsuarioUnibliBd] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
@@ -117,7 +118,9 @@ export const UserProvider = ({ children }) => {
     fatecs, // Expondo a lista de Fatecs
     usuariosNaoValidados, // Expondo a lista de usuários não validados
     fetchUsuariosNaoValidados, // Expondo a função para re-buscar a lista
-    finalizarReserva // Expondo a função para finalizar uma reserva
+    finalizarReserva, // Expondo a função para finalizar uma reserva
+    logout, // Expondo a função de logout do Auth0
+    getAccessTokenSilently // Expondo a função para obter o token de acesso
   };
 
   // O console.log de diagnóstico foi removido daqui.

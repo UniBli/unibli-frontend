@@ -311,10 +311,12 @@ const EditarConta = () => {
 
       const response = await axios.post(`${serverOrigin}/usuarios/cadastrar/usuario`, userDataPayload);
       
-      showToast('success', 'Sucesso!', response.data.message || 'Cadastro realizado com sucesso!');
+      showToast('success', 'Sucesso!', 'Cadastro realizado com sucesso!');
       
       if (response.data.usuario) {
-        setUsuarioUnibliBd(response.data.usuario);
+       setTimeout(() => {
+          setUsuarioUnibliBd(response.data.usuario);
+        }, 3500); 
       }
     } catch (error) {
       console.error('Erro no processo de cadastro:', error);

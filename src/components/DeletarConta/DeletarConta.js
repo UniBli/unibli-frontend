@@ -1,24 +1,59 @@
 import styles from './styles/DeletarConta.module.css';
+import { useUser } from '../../context/UserContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import { Dialog } from 'primereact/dialog';
 
 import { useState } from 'react';
 
 const DeletarConta = ({origin}) => {
+    const { usuarioUnibliBd, logout, getAccessTokenSilently } = useUser();
+    const navigate = useNavigate();
 
 
     const [visible, setVisible] = useState(false);
     const [excluir, setExcluir] = useState('')
   
   
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
       e.preventDefault();
       
       if (excluir === 'Excluir conta') {
-        console.log('Conta excluída');
-        setVisible(false);
+        try {
+          // O ID do usuário no BD é o auth0userID, que está em usuarioUnibliBd.auth0userID
+          const userId = usuarioUnibliBd.auth0UserId;
+          
+          // Obter o token de acesso para a chamada segura
+          const token = await getAccessTokenSilently();
+          
+          // 1. Chamar o endpoint de exclusão
+          await axios.delete(`${origin}/usuarios/deletar/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          
+          // 2. Deslogar o usuário
+          logout({ logoutParams: { returnTo: window.location.origin } });
+          
+          // 3. Redirecionar para a home (o logout já deve fazer isso, mas mantemos o navigate para garantir)
+          navigate('/');
+          
+          // Opcional: Adicionar um toast de sucesso aqui, se houver um sistema de toast.
+          console.log('Conta excluída com sucesso. Usuário deslogado.');
+          
+        } catch (error) {
+          console.error('Erro ao deletar conta:', error);
+          // Opcional: Adicionar um toast de erro aqui.
+          alert('Erro ao deletar conta. Tente novamente.');
+        } finally {
+          setVisible(false);
+        }
       } else {
-        console.log('Conta NÃO excluída');
+        console.log('Confirmação de exclusão incorreta.');
+        // Opcional: Adicionar um toast de aviso aqui.
+        alert('Confirmação de exclusão incorreta. Digite "Excluir conta" exatamente.');
       }
   
       setExcluir('');
