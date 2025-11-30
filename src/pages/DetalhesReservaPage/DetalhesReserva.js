@@ -298,7 +298,7 @@ const DetalhesReserva = () => {
           <h2>Legendas</h2>
           <span>
             <p><i className="pi pi-times-circle"></i>: Cancelar Reserva</p>
-            <p><i className="pi pi-check-circle"></i>: Titulo Retirado</p>
+            <p><i className="pi pi-check-circle"></i>: Finalizar Reserva</p>
           </span>
           <div className={styles.divContainerBtnFiltrar}>
             <Button label="Filtrar" icon="pi pi-filter-fill" onClick={() => show('right')} className="p-button-success" style={{borderRadius:'16px'}}/>
